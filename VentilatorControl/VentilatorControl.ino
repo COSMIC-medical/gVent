@@ -20,9 +20,11 @@ byte sensor = 0xAA;
 
 //correct values
 int valve = 2;
-int modeSwitch = 3;
-int startButton = 4;
-int pots[] = {A0, A1, A2}; // bpm/[max time before inhale], ratio/[pressure threshold], [exhale time]
+int modeSwitch = 3; // timed, pressure triggered
+int startButton = 7;
+int pots[] = {A0,  // bpm/[max time before inhale]
+              A1,  // ratio/[pressure threshold]
+              A2}; // [exhale time]
 int potValues[] = {0, 0, 0};
 byte disp = 0x27;
 
@@ -70,7 +72,7 @@ void setup() {
 
   lcd.init();
   lcd.backlight();
-  pinMode(modeSwitch, INPUT_PULLUP);
+  pinMode(modeSwitch, INPUT_PULLUP); //
   pinMode(startButton, INPUT_PULLUP);
   pinMode(valve, OUTPUT);
   digitalWrite(valve, HIGH);
@@ -80,6 +82,40 @@ void setup() {
   }
   calcTimes();
   Serial.begin(9600);
+}
+
+void loop() {
+  checkSwitches();
+  checkPots();
+  fs.read_flowrate_pressure();
+
+  if (started) {
+    // TIMED MODE
+    if (mode) {
+      // result = expression ? value_if_true : value_if_false
+      unsigned long tempTime = exhale ? outTime : inTime;   // temptime = outTime if exhale, intime if inhale
+      if ((millis() - currStart) >= tempTime) {             //
+        digitalWrite(valve, exhale = exhale ? LOW : HIGH);
+        currStart = millis();
+      }
+    }
+    // PRESSURE-TRIGGERED MODE
+    else { //in triggered mode, we have a minimum BPM timer that is overridden by patient breathing
+      if (exhale) { //EXHALE: during exhale, we wait for a pressure drop below threshold
+        if (fs.pressure_cmh2o <= pThreshold || (millis() - currStart) >= outTime) { //if below the threshold or the timer has expired
+          digitalWrite(valve, HIGH);
+          currStart = millis();
+        }
+      } else { //INHALE: on inhale we use timing
+        if ((millis() - currStart) >= inTime) {
+          digitalWrite(valve, LOW);
+          currStart = millis();
+        }
+      }
+    }
+    delay(10);
+  }
+
 }
 
 void calcTimes() {
@@ -130,11 +166,11 @@ void checkSwitches() {
 }
 
 void checkPots() {
-  if (!started) {
+  if (!started) { // cannot change pot values once ventilator is running, for safety
     for (int i = 0; i < NUM_POTS; i++) {
       potValues[i] = analogRead(pots[i]);
     }
-    if (mode) {
+    if (mode) { // TIMED MODE
       double tempBPM = map(potValues[0], 0, 1024, MIN_BPM, MAX_BPM);
       double tempRatio = map(potValues[1], 0, 1024, MIN_RATIO, MAX_RATIO);
       if (tempBPM != BPM) {
@@ -159,7 +195,7 @@ void checkPots() {
         calcTimes();
         return;
       }
-    } else {
+    } else { // PRESSURE-TRIGGERED MODE
       double tempInTime = map(potValues[0], 0, 1024, MIN_IN_TIME, MAX_IN_TIME);
       double tempOutTime = map(potValues[0], 0, 1024, MIN_OUT_TIME, MAX_OUT_TIME);
       double tempThreshold = map(potValues[0], 0, 1024, MIN_THRESHOLD, MAX_THRESHOLD);
@@ -202,35 +238,7 @@ void refreshScreen(boolean on) {
 }
 
 void checkAlarms() {
-
-}
-
-void loop() {
-  checkSwitches();
-  checkPots();
-  fs.read_flowrate_pressure();
-  if (started) {
-    // Timed Mode
-    if (mode) {
-      // result = expression ? value_if_true : value_if_false
-      unsigned long tempTime = exhale ? outTime : inTime;   // temptime = outTime if exhale, intime if inhale
-      if ((millis() - currStart) >= tempTime) {             //
-        digitalWrite(valve, exhale = exhale ? LOW : HIGH);
-        currStart = millis();
-      }
-    } else {//in triggered mode, we have a minimum BPM timer that is overridden by patient breathing
-      if (exhale) { //during exhale, we wait for a pressure drop below threshold
-        if (fs.pressure_cmh2o <= pThreshold || (millis() - currStart) >= outTime) { //if below the threshold or the timer has expired
-          digitalWrite(valve, HIGH);
-          currStart = millis();
-        }
-      } else { //on inhale we use timing
-        if ((millis() - currStart) >= inTime) {
-          digitalWrite(valve, LOW);
-          currStart = millis();
-        }
-      }
-    }
-    delay(10);
-  }
+    // minute ventilation,
+    // peak, and
+    // low expiratory pressure
 }
