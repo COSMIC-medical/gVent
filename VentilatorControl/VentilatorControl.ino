@@ -74,7 +74,7 @@ void setup() {
   lcd.backlight();
   pinMode(modeSwitch, INPUT_PULLUP);
   pinMode(startButton, INPUT_PULLUP);
-  pinMode(5, OUTPUT);
+  pinMode(valve, OUTPUT);
   digitalWrite(valve, HIGH);
 
   for (int i = 0; i < NUM_POTS; i++) {
