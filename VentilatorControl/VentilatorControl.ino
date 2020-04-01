@@ -5,7 +5,7 @@
 //pinout:
 //D2 = valve
 //D3 = Mode switch, low = time, high = trigger
-//D4 = start switch
+//D4 = start button
 //A0 = breaths per minute in time mode, maximum time before inhale in triggered mode
 //A1 = ratio in time mode, pressure threshold for starting inhale in triggered mode
 //A2 = disabled in time mode, exhale time in triggered mode
@@ -35,13 +35,11 @@ byte disp = 0x27;
 #define MAX_RATIO 6
 #define MIN_THRESHOLD  -4
 #define MAX_THRESHOLD  -1
-#define MIN_OUT_TIME  750 
+#define MIN_OUT_TIME  750
 #define MAX_OUT_TIME  6000
-#define MIN_IN_TIME  750 
+#define MIN_IN_TIME  750
 #define MAX_IN_TIME  6000
 #define DEBOUNCE_DELAY 250
-
-
 
 
 //Control variables
@@ -212,9 +210,11 @@ void loop() {
   checkPots();
   fs.read_flowrate_pressure();
   if (started) {
+    // Timed Mode
     if (mode) {
-      unsigned long tempTime = exhale ? outTime : inTime;
-      if ((millis() - currStart) >= tempTime) {
+      // result = expression ? value_if_true : value_if_false
+      unsigned long tempTime = exhale ? outTime : inTime;   // temptime = outTime if exhale, intime if inhale
+      if ((millis() - currStart) >= tempTime) {             //
         digitalWrite(valve, exhale = exhale ? LOW : HIGH);
         currStart = millis();
       }
