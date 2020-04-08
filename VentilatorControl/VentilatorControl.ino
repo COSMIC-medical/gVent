@@ -35,9 +35,9 @@ byte disp = 0x27;
 #define MAX_RATIO 6
 #define MIN_THRESHOLD  -4
 #define MAX_THRESHOLD  -1
-#define MIN_OUT_TIME  750 
+#define MIN_OUT_TIME  750
 #define MAX_OUT_TIME  6000
-#define MIN_IN_TIME  750 
+#define MIN_IN_TIME  750
 #define MAX_IN_TIME  6000
 #define DEBOUNCE_DELAY 250
 
@@ -204,6 +204,10 @@ void refreshScreen(boolean on) {
 }
 
 void checkAlarms() {
+
+}
+
+void tidalVolume() {
 
 }
 
