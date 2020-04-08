@@ -7,7 +7,6 @@ We believe that we add a novel solution to a landscape dominated by automated ba
 
 NOTE: At this point, this device is NOT medically approved for human use, and as such, improper use can result in harm or death of the patient. It is still in its development stages and any use in the clinical setting should be under the strict consultation and supervision of qualified healthcare experts and/or engineers.
 
----
 
 ## The Design
 
@@ -20,6 +19,6 @@ RMVS-compatible ventilators must be capable of providing one of two modes of ven
 
 The basis of the gVent system is gravity, water, and two cylindrical vessels fitted together to create a pressurized system. This pressure can then be used to ventilate a sick patient. The two vessels are each sealed at one end. The larger vessel is filled with water; the smaller vessel is placed inside the larger vessel.
 
-The basis of the gVent system is gravity, water and two cylindrical vessels that creates an inherently pressure-controlled system, capable of ventilating a sick patient. The two cylindrical vessels, each sealed at one end, are placed one-inside the other. Water is placed in the outside vessel, which creates a seal between the two vessels. Air is introduced into the system, using air supply from the hospital’s outlet. This allows the clinician to control the FiO2 by titrating the amount of hospital air vs O2 that is delivered. This pressurized gas builds up in the system, displacing the top pipe upwards from its resting position. The amount of pressure in the system is dictated by the weight of the top pipe, which can be modulated by the clinician.
+Air is then introduced into the system from the hospital's O<sub>2</sub> outlet. A clinician can thus control the FiO<sub>2</sub> by titrating the amount of hospital air to the amount of delivered O<sub>2</sub>. As this pressurized gas builds up in the system, the top cylinder is displaced upwards from its resting position, commensurate to the weight of the top cylinder (which can have weight added to adjust the pressure).
 
-Air/O2 builds up in the system and once the valve to the patient is opened, it is released through a port to the intubated patient. This valve is controlled on an electronic circuit, which gives the operator the ability to control respiratory rate, I:E ratio and the amount of volume delivered to the patient.
+To deliver air, a valve is opened, releasing the pressurized air/O<sub>2</sub> mixture through to the intubated patient. And with the valve controlled on an electronic circuit, the operator has the ability to control important respiratory parameters, including respiratory rate, I:E ratio, and the volume of air delivered to the patient.
