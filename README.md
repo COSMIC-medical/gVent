@@ -1,5 +1,5 @@
-## The Gravity Ventilator (gVent) 
-### The Idea
+### The Gravity Ventilator (gVent) 
+## The Idea
 
 In February 2020 amidst the CoVid-19 pandemic, concerns about a global shortage of ventilators began to surface and these discussions rapidly became a reality. We sought out to find a local solution to the rapidly evolving crisis, working alongside the hundreds of open-source projects worldwide, aimed at tackling the same problem. 
 
@@ -9,7 +9,7 @@ NOTE: At this point, this device is NOT medically approved for human use, and as
 
 ---
 
-### The Design
+## The Design
 
 Modern commercial ventilators are complex machines with specialized components. According to the Department of Health and Social Care guidance statement on Rapidly Manufactured Ventilator System Specification (20/03/2020), ventilators must meet certain criteria to be considered “clinically acceptable”.
 
