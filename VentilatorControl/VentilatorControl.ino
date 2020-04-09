@@ -58,6 +58,8 @@ unsigned long lastPress = 0; // for button debouncing
 boolean started = false;
 unsigned long inTime = halfTime;
 unsigned long outTime = halfTime;
+unsigned long tidal_volume = 0.0;
+unsigned long time_inverval = 0.0;
 
 //I2C devices
 fs6122 fs = fs6122();
@@ -208,7 +210,8 @@ void checkAlarms() {
 }
 
 void tidalVolume() {
-
+  fs.read_flowrate_pressure();
+  tidal_volume += fs.flow_rate_cmh2o*time_interval;
 }
 
 void loop() {
