@@ -59,7 +59,10 @@ boolean started = false;
 unsigned long inTime = halfTime;
 unsigned long outTime = halfTime;
 unsigned long tidal_volume = 0.0;
-unsigned long time_inverval = 0.0;
+unsigned long time_inverval = 10.0; // interval which loop checks itself
+unsigned long tidal_volumes[100]; // array storing tidal volumes for inhale/exhale
+int count = 0; //determining the full cycle for the tidal volume function
+int n = 0; // array spot for storing tidal volumes
 
 //I2C devices
 fs6122 fs = fs6122();
@@ -209,7 +212,13 @@ void checkAlarms() {
 
 }
 
+// this function stores the tidal volume by taking the instantaneous flowrate at 10ms time intervals
 void tidalVolume() {
+  if (count > 2) { // ** when the count reaches 2 it indicates that the system has hit inhale and exhale
+    tidal_volumes[n] = tidal_volume;
+    tidal_volume = 0; //resets tidal volume
+    n++; //move onto next spot
+  }
   fs.read_flowrate_pressure();
   tidal_volume += fs.flow_rate_cmh2o*time_interval;
 }
@@ -222,22 +231,26 @@ void loop() {
     if (mode) {
       unsigned long tempTime = exhale ? outTime : inTime;
       if ((millis() - currStart) >= tempTime) {
+        count++;
         digitalWrite(valve, exhale = exhale ? LOW : HIGH);
         currStart = millis();
       }
     } else {//in triggered mode, we have a minimum BPM timer that is overridden by patient breathing
       if (exhale) { //during exhale, we wait for a pressure drop below threshold
         if (fs.pressure_cmh2o <= pThreshold || (millis() - currStart) >= outTime) { //if below the threshold or the timer has expired
+          count++;
           digitalWrite(valve, HIGH);
           currStart = millis();
         }
       } else { //on inhale we use timing
         if ((millis() - currStart) >= inTime) {
+          count++;
           digitalWrite(valve, LOW);
           currStart = millis();
         }
       }
     }
+    tidalVolume();
     delay(10);
   }
 }
