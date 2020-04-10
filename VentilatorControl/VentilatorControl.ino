@@ -17,12 +17,14 @@
 //placeholders
 byte sensor = 0xAA;
 
-
 //correct values
 int valve = 2;
 int modeSwitch = 3;
 int startButton = 4;
-int pots[] = {A0, A1, A2}; // bpm/[max time before inhale], ratio/[pressure threshold], [exhale time]
+int pots[] = {
+  A0,  // bpm/[max time before inhale]
+  A1,  // ratio/[pressure threshold]
+  A2}; // [exhale time]
 int potValues[] = {0, 0, 0};
 byte disp = 0x27;
 
@@ -42,8 +44,6 @@ byte disp = 0x27;
 #define DEBOUNCE_DELAY 250
 
 
-
-
 //Control variables
 int pThreshold = -2; //cmH2O
 double ratio = 1;
@@ -60,9 +60,8 @@ unsigned long inTime = halfTime;
 unsigned long outTime = halfTime;
 unsigned long tidal_volume = 0.0;
 unsigned long time_inverval = 10.0; // interval which loop checks itself
-unsigned long tidal_volumes[100]; // array storing tidal volumes for inhale/exhale
+unsigned long current_volume = 0.0; //current volume
 int count = 0; //determining the full cycle for the tidal volume function
-int n = 0; // array spot for storing tidal volumes
 
 //I2C devices
 fs6122 fs = fs6122();
@@ -87,6 +86,38 @@ void setup() {
   }
   calcTimes();
   Serial.begin(9600);
+}
+
+void loop() {
+  checkSwitches();
+  checkPots();
+  fs.read_flowrate_pressure(); // reads to flow_rate_slpm, pressure_cmh2o
+  if (started) {
+    if (mode) {
+      unsigned long tempTime = exhale ? outTime : inTime;
+      if ((millis() - currStart) >= tempTime) {
+        count++;
+        digitalWrite(valve, exhale = exhale ? LOW : HIGH);
+        currStart = millis();
+      }
+    } else {//in triggered mode, we have a minimum BPM timer that is overridden by patient breathing
+      if (exhale) { //during exhale, we wait for a pressure drop below threshold
+        if (fs.pressure_cmh2o <= pThreshold || (millis() - currStart) >= outTime) { //if below the threshold or the timer has expired
+          count++;
+          digitalWrite(valve, HIGH);
+          currStart = millis();
+        }
+      } else { //on inhale we use timing
+        if ((millis() - currStart) >= inTime) {
+          count++;
+          digitalWrite(valve, LOW);
+          currStart = millis();
+        }
+      }
+    }
+    tidalVolume();
+    delay(10);
+  }
 }
 
 void calcTimes() {
@@ -208,49 +239,36 @@ void refreshScreen(boolean on) {
   }
 }
 
+// Issue #6
 void checkAlarms() {
+  // 1. High/low peak pressure: Highest pressure measured in one breath cycle exceeds x.
+  if (fs.pressure_cmh2o > MAX_THRESHOLD || fs.pressure_cmh2o < MIN_THRESHOLD){
+    soundAlarm();
+  }
 
+
+  // TODO: need volume.value to make these alarms
+  // 2. High/low VT: Total exhaled volume in one breath is under/over x
+  // 3. High/low Minute Ventilation: Total exhaled volume in one minute is overunder x
+
+  // 4. Low RR: I wouldnt worry about this
+  // 5. High/low Fi02: The oxygen concentration measured at the sensor is above/below x
+  // 6. High/low PEEP:
+  // 7. Apnea alarm with backup rate and tidal volume: We already have this coded for I believe. If the patient is on patient triggeredventilation and doesn't breathe on their own in longer than x, the ventilator gives an automatic breath.
+  // 8. Disconnection alarm
 }
 
-// this function stores the tidal volume by taking the instantaneous flowrate at 10ms time intervals
-void tidalVolume() {
-  if (count > 2) { // ** when the count reaches 2 it indicates that the system has hit inhale and exhale
-    tidal_volumes[n] = tidal_volume;
-    tidal_volume = 0; //resets tidal volume
-    n++; //move onto next spot
+void tidalVolume(){
+  if (count < 2) {
+    current_volume = tidal_volume;
+    count = 0;
   }
-  fs.read_flowrate_pressure();
-  tidal_volume += fs.flow_rate_cmh2o*time_interval;
+  fs.read_flowrate_pressure()
+  tidal_volume = fs.pressure_cmh2o*time_inverval;
 }
 
-void loop() {
-  checkSwitches();
-  checkPots();
-  fs.read_flowrate_pressure();
-  if (started) {
-    if (mode) {
-      unsigned long tempTime = exhale ? outTime : inTime;
-      if ((millis() - currStart) >= tempTime) {
-        count++;
-        digitalWrite(valve, exhale = exhale ? LOW : HIGH);
-        currStart = millis();
-      }
-    } else {//in triggered mode, we have a minimum BPM timer that is overridden by patient breathing
-      if (exhale) { //during exhale, we wait for a pressure drop below threshold
-        if (fs.pressure_cmh2o <= pThreshold || (millis() - currStart) >= outTime) { //if below the threshold or the timer has expired
-          count++;
-          digitalWrite(valve, HIGH);
-          currStart = millis();
-        }
-      } else { //on inhale we use timing
-        if ((millis() - currStart) >= inTime) {
-          count++;
-          digitalWrite(valve, LOW);
-          currStart = millis();
-        }
-      }
-    }
-    tidalVolume();
-    delay(10);
-  }
+void soundAlarm(){
+  // flashLED()
+  // refreshScreen(alarmMode)
+  // buzzer()
 }
