@@ -17,12 +17,14 @@
 //placeholders
 byte sensor = 0xAA;
 
-
 //correct values
 int valve = 2;
 int modeSwitch = 3;
 int startButton = 4;
-int pots[] = {A0, A1, A2}; // bpm/[max time before inhale], ratio/[pressure threshold], [exhale time]
+int pots[] = {
+  A0,  // bpm/[max time before inhale]
+  A1,  // ratio/[pressure threshold]
+  A2}; // [exhale time]
 int potValues[] = {0, 0, 0};
 byte disp = 0x27;
 
@@ -35,13 +37,11 @@ byte disp = 0x27;
 #define MAX_RATIO 6
 #define MIN_THRESHOLD  -4
 #define MAX_THRESHOLD  -1
-#define MIN_OUT_TIME  750 
+#define MIN_OUT_TIME  750
 #define MAX_OUT_TIME  6000
-#define MIN_IN_TIME  750 
+#define MIN_IN_TIME  750
 #define MAX_IN_TIME  6000
 #define DEBOUNCE_DELAY 250
-
-
 
 
 //Control variables
@@ -82,6 +82,34 @@ void setup() {
   }
   calcTimes();
   Serial.begin(9600);
+}
+
+void loop() {
+  checkSwitches();
+  checkPots();
+  fs.read_flowrate_pressure(); // reads to flow_rate_slpm, pressure_cmh2o
+  if (started) {
+    if (mode) {
+      unsigned long tempTime = exhale ? outTime : inTime;
+      if ((millis() - currStart) >= tempTime) {
+        digitalWrite(valve, exhale = exhale ? LOW : HIGH);
+        currStart = millis();
+      }
+    } else {//in triggered mode, we have a minimum BPM timer that is overridden by patient breathing
+      if (exhale) { //during exhale, we wait for a pressure drop below threshold
+        if (fs.pressure_cmh2o <= pThreshold || (millis() - currStart) >= outTime) { //if below the threshold or the timer has expired
+          digitalWrite(valve, HIGH);
+          currStart = millis();
+        }
+      } else { //on inhale we use timing
+        if ((millis() - currStart) >= inTime) {
+          digitalWrite(valve, LOW);
+          currStart = millis();
+        }
+      }
+    }
+    delay(10);
+  }
 }
 
 void calcTimes() {
@@ -203,34 +231,26 @@ void refreshScreen(boolean on) {
   }
 }
 
+// Issue #6
 void checkAlarms() {
+  // 1. High/low peak pressure: Highest pressure measured in one breath cycle exceeds x.
+  if (fs.pressure_cmh2o > MAX_THRESHOLD || fs.pressure_cmh2o < MIN_THRESHOLD){
+    soundAlarm();
+  }
 
+  // TODO: need volume.value to make these alarms
+  // 2. High/low VT: Total exhaled volume in one breath is under/over x
+  // 3. High/low Minute Ventilation: Total exhaled volume in one minute is overunder x
+
+  // 4. Low RR: I wouldnt worry about this
+  // 5. High/low Fi02: The oxygen concentration measured at the sensor is above/below x
+  // 6. High/low PEEP:
+  // 7. Apnea alarm with backup rate and tidal volume: We already have this coded for I believe. If the patient is on patient triggeredventilation and doesn't breathe on their own in longer than x, the ventilator gives an automatic breath.
+  // 8. Disconnection alarm
 }
 
-void loop() {
-  checkSwitches();
-  checkPots();
-  fs.read_flowrate_pressure();
-  if (started) {
-    if (mode) {
-      unsigned long tempTime = exhale ? outTime : inTime;
-      if ((millis() - currStart) >= tempTime) {
-        digitalWrite(valve, exhale = exhale ? LOW : HIGH);
-        currStart = millis();
-      }
-    } else {//in triggered mode, we have a minimum BPM timer that is overridden by patient breathing
-      if (exhale) { //during exhale, we wait for a pressure drop below threshold
-        if (fs.pressure_cmh2o <= pThreshold || (millis() - currStart) >= outTime) { //if below the threshold or the timer has expired
-          digitalWrite(valve, HIGH);
-          currStart = millis();
-        }
-      } else { //on inhale we use timing
-        if ((millis() - currStart) >= inTime) {
-          digitalWrite(valve, LOW);
-          currStart = millis();
-        }
-      }
-    }
-    delay(10);
-  }
+void soundAlarm(){
+  // flashLED()
+  // refreshScreen(alarmMode)
+  // buzzer()
 }
