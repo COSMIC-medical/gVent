@@ -60,8 +60,6 @@ unsigned long inTime = halfTime;
 unsigned long outTime = halfTime;
 unsigned long tidal_volume = 0.0;
 unsigned long time_inverval = 10.0; // interval which loop checks itself
-unsigned long current_volume = 0.0; //current volume
-int count = 0; //determining the full cycle for the tidal volume function
 
 //I2C devices
 fs6122 fs = fs6122();
@@ -92,6 +90,7 @@ void loop() {
   checkSwitches();
   checkPots();
   fs.read_flowrate_pressure(); // reads to flow_rate_slpm, pressure_cmh2o
+  tidalVolume();
   if (started) {
     if (mode) {
       unsigned long tempTime = exhale ? outTime : inTime;
@@ -115,7 +114,6 @@ void loop() {
         }
       }
     }
-    tidalVolume();
     delay(10);
   }
 }
@@ -259,12 +257,7 @@ void checkAlarms() {
 }
 
 void tidalVolume(){
-  if (count < 2) {
-    current_volume = tidal_volume;
-    count = 0;
-  }
-  fs.read_flowrate_pressure()
-  tidal_volume = fs.pressure_cmh2o*time_inverval;
+  tidal_volume += fs.flow_rate_slpm*time_inverval;
 }
 
 void soundAlarm(){
