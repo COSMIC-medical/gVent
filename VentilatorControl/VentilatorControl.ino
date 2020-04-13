@@ -90,25 +90,22 @@ void loop() {
   checkSwitches();
   checkPots();
   fs.read_flowrate_pressure(); // reads to flow_rate_slpm, pressure_cmh2o
-  tidalVolume();
   if (started) {
     if (mode) {
       unsigned long tempTime = exhale ? outTime : inTime;
       if ((millis() - currStart) >= tempTime) {
-        count++;
         digitalWrite(valve, exhale = exhale ? LOW : HIGH);
         currStart = millis();
       }
     } else {//in triggered mode, we have a minimum BPM timer that is overridden by patient breathing
       if (exhale) { //during exhale, we wait for a pressure drop below threshold
         if (fs.pressure_cmh2o <= pThreshold || (millis() - currStart) >= outTime) { //if below the threshold or the timer has expired
-          count++;
+          tidalVolume();
           digitalWrite(valve, HIGH);
           currStart = millis();
         }
       } else { //on inhale we use timing
         if ((millis() - currStart) >= inTime) {
-          count++;
           digitalWrite(valve, LOW);
           currStart = millis();
         }
@@ -239,11 +236,23 @@ void refreshScreen(boolean on) {
 
 // Issue #6
 void checkAlarms() {
+  //I'm using MAX_THRESHOLD as a placeholder for the maximum threshold for each alarm. I'm not sure what these values are.
+  //Fi02/peep - not sure where these are calculated.
   // 1. High/low peak pressure: Highest pressure measured in one breath cycle exceeds x.
   if (fs.pressure_cmh2o > MAX_THRESHOLD || fs.pressure_cmh2o < MIN_THRESHOLD){
+    soundAlarm();}
+  if (tidal_volume > MAX_THRESHOLD || tidal_volume < MIN_THRESHOLD){
     soundAlarm();
   }
-
+  if (tidal_volume*BPM > MAX_THRESHOLD || tidal_volume*BPM < MIN_THRESHOLD){
+    soundAlarm();
+  }
+  if (Fi02 > MAX_THRESHOLD || Fi02 < MIN_THRESHOLD){
+    soundAlarm();
+  }
+  if (peep > MAX_THRESHOLD || peep < MIN_THRESHOLD){
+    soundAlarm();
+  }
 
   // TODO: need volume.value to make these alarms
   // 2. High/low VT: Total exhaled volume in one breath is under/over x
@@ -254,7 +263,6 @@ void checkAlarms() {
   // 6. High/low PEEP:
   // 7. Apnea alarm with backup rate and tidal volume: We already have this coded for I believe. If the patient is on patient triggeredventilation and doesn't breathe on their own in longer than x, the ventilator gives an automatic breath.
   // 8. Disconnection alarm
-}
 
 void tidalVolume(){
   tidal_volume += fs.flow_rate_slpm*time_inverval;
