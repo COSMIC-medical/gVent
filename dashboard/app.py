@@ -5,13 +5,12 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly
 from dash.dependencies import Input, Output
-from sens_sim import get_vol, get_fr, get_pres
+from sens_sim import fake_sim
 
-# pip install pyorbital
-from pyorbital.orbital import Orbital
-satellite = Orbital('TERRA')
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+sim = fake_sim()
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.layout = html.Div(
@@ -54,9 +53,9 @@ def update_graph_live(n):
     # Collect some data
 
     time = datetime.datetime.now()
-    volume = get_vol()
-    flow_rate = get_fr()
-    pressure = get_pres()
+    volume = sim.get_vol()
+    flow_rate = sim.get_fr()
+    pressure = sim.get_pres()
     data['Flow Rate'].append(volume)
     data['Pressure'].append(flow_rate)
     data['Volume'].append(pressure)
