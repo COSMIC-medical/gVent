@@ -1,6 +1,7 @@
 import datetime
 
 import dash
+import pandas
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly
@@ -16,7 +17,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.layout = html.Div(
     html.Div([
         html.H4('UBC SOS eVent Gravity Ventilator Dashboard'),
-        html.Div(id='live-update-text'),
+        html.Div(id='live-update-text', className="row"),
         dcc.Graph(id='live-update-graph'),
         dcc.Interval(
             id='interval-component',
@@ -33,17 +34,34 @@ data = {
     'Volume': []
 }
 
-"""
+
 @app.callback(Output('live-update-text', 'children'),
               [Input('interval-component', 'n_intervals')])
 def update_metrics(n):
+    volume = sim.get_vol()
+    flow_rate = sim.get_fr()
+    pressure = sim.get_pres()
     style = {'padding': '5px', 'fontSize': '16px'}
     return [
-        html.Span('Flow Rate: {0:.2f}'.format(fr), style=style),
-        html.Span('Pressure: {0:.2f}'.format(prs), style=style),
-        html.Span('Volume: {0:0.2f}'.format(vol), style=style)
+        html.Div([
+            html.H3('Flow Rate'),
+            html.Span('{0:.2f}'.format(flow_rate), style=style)
+        ], className="four columns"),
+        html.Div([
+            html.H3('Pressure'),
+            html.Span('{0:.2f}'.format(pressure), style=style)
+        ], className="four columns"),
+        html.Div([
+            html.H3('Volume'),
+            html.Span('{0:0.2f}'.format(volume), style=style)
+        ], className="four columns")
     ]
-"""
+    """
+    return [
+        html.Span('Flow Rate: {0:.2f}'.format(flow_rate), style=style),
+        html.Span('Pressure: {0:.2f}'.format(pressure), style=style),
+        html.Span('Volume: {0:0.2f}'.format(volume), style=style)
+    ]"""
 
 
 # Multiple components can update everytime interval gets fired.
