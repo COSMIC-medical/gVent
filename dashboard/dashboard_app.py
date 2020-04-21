@@ -8,8 +8,13 @@ import plotly
 from dash.dependencies import Input, Output
 from sens_sim import fake_sim
 
-font_size   = 80
-font_str    = str(font_size) + "px"
+live_font_size  = 70
+live_font_px    = str(live_font_size) + "px"
+
+lineh1      = '15px'
+lineh2      = '85px'
+
+good_color  = '#90EE90'
 
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -54,33 +59,40 @@ def update_metrics(n):
     ins_vol     = float(sensor_words[4])
     ex_vol      = float(sensor_words[5])
 
-    style = {'padding': '5px', 'fontSize': '16px'}
+    ins_pres_col    = good_color
+    ex_pres_col     = good_color
+    ins_fr_col      = good_color
+    ex_fr_col       = good_color
+    ins_vol_col     = good_color
+    ex_vol_col      = good_color
+
+    style = {'padding': '0px', 'fontSize': '16px'}
     #TODO: make this all a table instead
     return [
         html.Div([
-            html.H5('Ins. Fl. RT. (SLPM)', style={'lineHeight': '0px'}),
-            html.Span('{0:.2f}'.format(ins_fr), style={'fontSize': font_str, 'lineHeight': '80px'})
-        ], className="two columns"),
+            html.H5('Ins. Fl. RT. (SLPM)', style={'lineHeight': lineh1}),
+            html.Span('{0:.2f}'.format(ins_fr), style={'fontSize': live_font_px, 'lineHeight': lineh2})
+        ], className="two columns", style={'backgroundColor': ins_pres_col}),
         html.Div([
-            html.H5('Ins. Pres. (cmH20)', style={'lineHeight': '0px'}),
-            html.Span('{0:.2f}'.format(ins_pres), style={'fontSize': font_str, 'lineHeight': '80px'})
-        ], className="two columns"),
+            html.H5('Ins. Pres. (cmH20)', style={'lineHeight': lineh1}),
+            html.Span('{0:.2f}'.format(ins_pres), style={'fontSize': live_font_px, 'lineHeight': lineh2})
+        ], className="two columns", style={'backgroundColor': ins_fr_col}),
         html.Div([
-            html.H5('Ins. Vol. (L)', style={'lineHeight': '0px'}),
-            html.Span('{0:0.3f}'.format(ins_vol), style={'fontSize': font_str, 'lineHeight': '80px'})
-        ], className="two columns"),
+            html.H5('Ins. Vol. (L)', style={'lineHeight': lineh1}),
+            html.Span('{0:0.3f}'.format(ins_vol), style={'fontSize': live_font_px, 'lineHeight': lineh2})
+        ], className="two columns", style={'backgroundColor': ex_fr_col}),
         html.Div([
-            html.H5('Ex. Fl. RT. (SLPM)', style={'lineHeight': '0px'}),
-            html.Span('{0:.2f}'.format(ex_fr), style={'fontSize': font_str, 'lineHeight': '80px'})
-        ], className="two columns"),
+            html.H5('Ex. Fl. RT. (SLPM)', style={'lineHeight': lineh1}),
+            html.Span('{0:.2f}'.format(ex_fr), style={'fontSize': live_font_px, 'lineHeight': lineh2})
+        ], className="two columns", style={'backgroundColor': ins_vol_col}),
         html.Div([
-            html.H5('Ex. Pres. (cmH20)', style={'lineHeight': '0px'}),
-            html.Span('{0:.2f}'.format(ex_pres), style={'fontSize': font_str, 'lineHeight': '80px'})
-        ], className="two columns"),
+            html.H5('Ex. Pres. (cmH20)', style={'lineHeight': lineh1}),
+            html.Span('{0:.2f}'.format(ex_pres), style={'fontSize': live_font_px, 'lineHeight': lineh2})
+        ], className="two columns", style={'backgroundColor': ex_vol_col}),
         html.Div([
-            html.H5('Ex. Vol. (L)', style={'lineHeight': '0px'}),
-            html.Span('{0:0.3f}'.format(ex_vol), style={'fontSize': font_str, 'lineHeight': '80px'})
-        ], className="two columns")
+            html.H5('Ex. Vol. (L)', style={'lineHeight': lineh1}),
+            html.Span('{0:0.3f}'.format(ex_vol), style={'fontSize': live_font_px, 'lineHeight': lineh2})
+        ], className="two columns", style={'backgroundColor': ex_pres_col})
     ]
 
 
