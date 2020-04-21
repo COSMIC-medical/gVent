@@ -116,7 +116,7 @@ def update_graph_live(n):
     # Create the graph with subplots
     fig = plotly.subplots.make_subplots(rows=3, cols=2, vertical_spacing=0.2,
     subplot_titles = ('Inspiratory Flow Rate (SLPM)', 'Expiratory Flow Rate (SLPM)',
-    'Inspiratory Pressure (cmH20)', 'Expiratory Pressure(cmH20)',
+    'Inspiratory Pressure (cmH20)', 'Expiratory Pressure (cmH20)',
     'Inspiratory Tidal Volume (L)', 'Expiratory Tidal Volume (L)'))
     fig['layout']['margin'] = {
         'l': 30, 'r': 10, 'b': 10, 't': 40
