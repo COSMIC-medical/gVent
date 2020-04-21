@@ -11,7 +11,6 @@ class fake_sim:
 
     def close_norm_dist(self, prev, mu, sd):
         retval = np.random.normal(mu, sd)
-
         for i in range(10):
             randvar = np.random.normal(mu, sd)
             if (abs(randvar-prev) < abs(retval-prev)):
@@ -21,12 +20,15 @@ class fake_sim:
     def get_vol(self):
         self.update()
         return self.vol
+
     def get_fr(self):
         self.update()
         return self.fr
+
     def get_pres(self):
         self.update()
         return self.pres
+
     def update(self):
         if (datetime.datetime.now()-self.last_update) > datetime.timedelta(milliseconds=1000):
             self.last_update = datetime.datetime.now()

@@ -8,6 +8,9 @@ import plotly
 from dash.dependencies import Input, Output
 from sens_sim import fake_sim
 
+font_size   = 80
+font_str    = str(font_size) + "px"
+
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -26,9 +29,9 @@ app.layout = html.Div(
         )
     ])
 )
-
+app.data = pandas.DataFrame(columns=['Time', 'Flow Rate', 'Pressure', 'Volume'])
 data = {
-    'time': [],
+    'Time': [],
     'Flow Rate': [],
     'Pressure': [],
     'Volume': []
@@ -44,24 +47,18 @@ def update_metrics(n):
     style = {'padding': '5px', 'fontSize': '16px'}
     return [
         html.Div([
-            html.H3('Flow Rate'),
-            html.Span('{0:.2f}'.format(flow_rate), style=style)
-        ], className="four columns"),
+            html.H4('Flow Rate'),
+            html.Span('{0:.2f}'.format(flow_rate), style={'fontSize': font_str})
+        ], className="three columns"),
         html.Div([
-            html.H3('Pressure'),
-            html.Span('{0:.2f}'.format(pressure), style=style)
-        ], className="four columns"),
+            html.H4('Pressure'),
+            html.Span('{0:.2f}'.format(pressure), style={'fontSize': font_str})
+        ], className="three columns"),
         html.Div([
-            html.H3('Volume'),
-            html.Span('{0:0.2f}'.format(volume), style=style)
-        ], className="four columns")
+            html.H4('Volume'),
+            html.Span('{0:0.2f}'.format(volume), style={'fontSize': font_str})
+        ], className="three columns")
     ]
-    """
-    return [
-        html.Span('Flow Rate: {0:.2f}'.format(flow_rate), style=style),
-        html.Span('Pressure: {0:.2f}'.format(pressure), style=style),
-        html.Span('Volume: {0:0.2f}'.format(volume), style=style)
-    ]"""
 
 
 # Multiple components can update everytime interval gets fired.
@@ -74,11 +71,13 @@ def update_graph_live(n):
     volume = sim.get_vol()
     flow_rate = sim.get_fr()
     pressure = sim.get_pres()
+    new_row = {'Time':[time], 'Flow Rate':[flow_rate], 'Pressure':[pressure], 'Volume':[volume]}
+    app.data = app.data.append(new_row, ignore_index=True)
+
     data['Flow Rate'].append(volume)
     data['Pressure'].append(flow_rate)
     data['Volume'].append(pressure)
-    data['time'].append(time)
-
+    data['Time'].append(time)
     # Create the graph with subplots
     fig = plotly.subplots.make_subplots(rows=3, cols=1, vertical_spacing=0.2)
     fig['layout']['margin'] = {
@@ -87,28 +86,29 @@ def update_graph_live(n):
     fig['layout']['legend'] = {'x': 0, 'y': 1, 'xanchor': 'left'}
 
     fig.append_trace({
-        'x': data['time'],
-        'y': data['Flow Rate'],
+        'x': data['Time'][-60:],
+        'y': data['Flow Rate'][-60:],
         'name': 'Flow Rate',
-        'mode': 'lines+markers',
+        'mode': 'lines',
         'type': 'scatter'
     }, 1, 1)
     fig.append_trace({
-        'x': data['time'],
-        'y': data['Pressure'],
+        'x': data['Time'][-60:],
+        'y': data['Pressure'][-60:],
         'name': 'Pressure',
-        'mode': 'lines+markers',
+        'mode': 'lines',
         'type': 'scatter'
     }, 2, 1)
     fig.append_trace({
-        'x': data['time'],
-        'y': data['Volume'],
+        'x': data['Time'][-60:],
+        'y': data['Volume'][-60:],
         'name': 'Volume',
-        'mode': 'lines+markers',
+        'mode': 'lines',
         'type': 'scatter'
     }, 3, 1)
-
+    #print(app.data['Flow Rate'].tolist())
     return fig
+
 
 
 if __name__ == '__main__':
