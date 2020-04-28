@@ -35,24 +35,8 @@ app.layout = html.Div(
             n_intervals=0
         ),
         html.A(id='download-link', children='Download File'),
-        dcc.Dropdown(
-            id='dropdown',
-            options=[{'label': i, 'value': i} for i in ['NYC', 'LA' 'SF']],
-            value='NYC',
-            clearable=False
-        )
     ])
 )
-"""
-app.df = pd.DataFrame(columns=['Time',
-    'Inspiratory Flow Rate',
-    'Expiratory Flow Rate',
-    'Inspiratory Pressure',
-    'Expiratory Pressure',
-    'Inspiratory Tidal Volume',
-    'Expiratory Tidal Volume'
-])
-"""
 
 app.f = open('temp.csv', 'w')
 app.f.write("Time,\
@@ -132,7 +116,7 @@ def update_graph_live(n):
 
     time = datetime.datetime.now()
     sensor_data = sim.readline()
-    app.f.write("\n" + str(time) + sensor_data)
+    app.f.write("\n" + time.strftime("%d-%b-%Y %H:%M:%S.%f") + ', ' + sensor_data)
     sensor_words = sensor_data.split(', ')
 
     ins_pres    = float(sensor_words[0])
@@ -211,7 +195,7 @@ def update_graph_live(n):
 
 
 @app.callback(Output('download-link', 'href'),
-              [Input('dropdown', 'value')])
+              [Input('interval-component', 'n_intervals')])
 def update_href(dropdown_value):
     timestr = time.strftime("%Y%m%d-%H%M%S")
     relative_filename = os.path.join(
