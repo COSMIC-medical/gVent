@@ -1,10 +1,13 @@
 import datetime
 
 import dash
-import pandas
+import time
+import pandas as pd
+import os
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly
+import flask
 from dash.dependencies import Input, Output
 from sens_sim import fake_sim
 
@@ -15,7 +18,6 @@ lineh1      = '15px'
 lineh2      = '85px'
 
 good_color  = '#90EE90'
-
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -31,10 +33,36 @@ app.layout = html.Div(
             id='interval-component',
             interval=1*1000, # in milliseconds
             n_intervals=0
+        ),
+        html.A(id='download-link', children='Download File'),
+        dcc.Dropdown(
+            id='dropdown',
+            options=[{'label': i, 'value': i} for i in ['NYC', 'LA' 'SF']],
+            value='NYC',
+            clearable=False
         )
     ])
 )
-#app.data = pandas.DataFrame(columns=['Time', 'Flow Rate', 'Pressure', 'Volume'])
+"""
+app.df = pd.DataFrame(columns=['Time',
+    'Inspiratory Flow Rate',
+    'Expiratory Flow Rate',
+    'Inspiratory Pressure',
+    'Expiratory Pressure',
+    'Inspiratory Tidal Volume',
+    'Expiratory Tidal Volume'
+])
+"""
+
+app.f = open('temp.csv', 'w')
+app.f.write("Time,\
+Inspiratory Pressure,\
+Expiratory Pressure,\
+Inspiratory Flow Rate,\
+Expiratory Flow Rate,\
+Inspiratory Tidal Volume,\
+Expiratory Tidal Volume")
+
 data = {
     'Time': [],
     'Inspiratory Flow Rate': [],
@@ -104,6 +132,7 @@ def update_graph_live(n):
 
     time = datetime.datetime.now()
     sensor_data = sim.readline()
+    app.f.write("\n" + str(time) + sensor_data)
     sensor_words = sensor_data.split(', ')
 
     ins_pres    = float(sensor_words[0])
@@ -181,6 +210,31 @@ def update_graph_live(n):
     return fig
 
 
+@app.callback(Output('download-link', 'href'),
+              [Input('dropdown', 'value')])
+def update_href(dropdown_value):
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    relative_filename = os.path.join(
+        'download',
+        'gVent' + timestr + '.csv')
+    absolute_filename = os.path.join(os.getcwd(), relative_filename)
+
+    fname = app.f.name
+    app.f.close()
+
+    os.rename(fname, absolute_filename)
+
+    app.f = open(absolute_filename, 'a')
+
+    return '/{}'.format(relative_filename)
+
+
+@app.server.route('/download/<path:path>')
+def serve_static(path):
+    root_dir = os.getcwd()
+    return flask.send_from_directory(
+        os.path.join(root_dir, 'download'), path
+    )
 
 if __name__ == '__main__':
     app.run_server(debug=True)
