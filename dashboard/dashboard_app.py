@@ -29,6 +29,18 @@ app.layout = html.Div(
         html.H2('gVent Monitoring Dashboard'),
         html.Div(id='live-update-text', className="row"),
         dcc.Graph(id='live-update-graph'),
+        html.H6('X axis'),
+        dcc.Dropdown(
+        id='xaxis-dropdown',
+            options=[
+                {'label': '1m', 'value': 60},
+                {'label': '5m', 'value': 300},
+                {'label': '15m', 'value': 900},
+                {'label': '1h', 'value': 3600},
+                {'label': '6h', 'value': 21600}
+            ],
+            value=60
+        ),
         dcc.Interval(
             id='interval-component',
             interval=1*1000, # in milliseconds
@@ -61,7 +73,11 @@ data = {
 @app.callback(Output('live-update-text', 'children'),
               [Input('interval-component', 'n_intervals')])
 def update_metrics(n):
+    # Collect some data
+
+    time = datetime.datetime.now()
     sensor_data = sim.readline()
+    app.f.write("\n" + time.strftime("%d-%b-%Y %H:%M:%S.%f") + ', ' + sensor_data)
     sensor_words = sensor_data.split(', ')
 
     ins_pres    = float(sensor_words[0])
@@ -70,6 +86,18 @@ def update_metrics(n):
     ex_fr       = float(sensor_words[3])
     ins_vol     = float(sensor_words[4])
     ex_vol      = float(sensor_words[5])
+    #new_row = {'Time':[time], 'Flow Rate':[flow_rate], 'Pressure':[pressure], 'Volume':[volume]}
+    #app.data = app.data.append(new_row, ignore_index=True)
+
+    data['Time'].append(time)
+
+    data['Inspiratory Flow Rate'].append(ins_fr)
+    data['Inspiratory Pressure'].append(ins_pres)
+    data['Inspiratory Tidal Volume'].append(ins_vol)
+
+    data['Expiratory Flow Rate'].append(ex_fr)
+    data['Expiratory Pressure'].append(ex_pres)
+    data['Expiratory Tidal Volume'].append(ex_vol)
 
     ins_pres_col    = good_color
     ex_pres_col     = good_color
@@ -110,34 +138,9 @@ def update_metrics(n):
 
 # Multiple components can update everytime interval gets fired.
 @app.callback(Output('live-update-graph', 'figure'),
-              [Input('interval-component', 'n_intervals')])
-def update_graph_live(n):
-    # Collect some data
-
-    time = datetime.datetime.now()
-    sensor_data = sim.readline()
-    app.f.write("\n" + time.strftime("%d-%b-%Y %H:%M:%S.%f") + ', ' + sensor_data)
-    sensor_words = sensor_data.split(', ')
-
-    ins_pres    = float(sensor_words[0])
-    ex_pres     = float(sensor_words[1])
-    ins_fr      = float(sensor_words[2])
-    ex_fr       = float(sensor_words[3])
-    ins_vol     = float(sensor_words[4])
-    ex_vol      = float(sensor_words[5])
-    #new_row = {'Time':[time], 'Flow Rate':[flow_rate], 'Pressure':[pressure], 'Volume':[volume]}
-    #app.data = app.data.append(new_row, ignore_index=True)
-
-    data['Time'].append(time)
-
-    data['Inspiratory Flow Rate'].append(ins_fr)
-    data['Inspiratory Pressure'].append(ins_pres)
-    data['Inspiratory Tidal Volume'].append(ins_vol)
-
-    data['Expiratory Flow Rate'].append(ex_fr)
-    data['Expiratory Pressure'].append(ex_pres)
-    data['Expiratory Tidal Volume'].append(ex_vol)
-
+              [Input('interval-component', 'n_intervals'),
+              Input('xaxis-dropdown', 'value')])
+def update_graph_live(n, secs):
     # Create the graph with subplots
     fig = plotly.subplots.make_subplots(rows=3, cols=2, vertical_spacing=0.2,
     subplot_titles = ('Inspiratory Flow Rate (SLPM)', 'Expiratory Flow Rate (SLPM)',
@@ -149,47 +152,50 @@ def update_graph_live(n):
     fig.update_layout(showlegend=False) # titles make legend redundant
 
     fig.append_trace({
-        'x': data['Time'][-60:],
-        'y': data['Inspiratory Flow Rate'][-60:],
+        'x': data['Time'],
+        'y': data['Inspiratory Flow Rate'],
         'name': 'Flow Rate',
         'mode': 'lines',
         'type': 'scatter'
     }, 1, 1)
     fig.append_trace({
-        'x': data['Time'][-60:],
-        'y': data['Inspiratory Pressure'][-60:],
+        'x': data['Time'],
+        'y': data['Inspiratory Pressure'],
         'name': 'Pressure',
         'mode': 'lines',
         'type': 'scatter'
     }, 2, 1)
     fig.append_trace({
-        'x': data['Time'][-60:],
-        'y': data['Inspiratory Tidal Volume'][-60:],
+        'x': data['Time'],
+        'y': data['Inspiratory Tidal Volume'],
         'name': 'Volume',
         'mode': 'lines',
         'type': 'scatter'
     }, 3, 1)
     fig.append_trace({
-        'x': data['Time'][-60:],
-        'y': data['Expiratory Flow Rate'][-60:],
+        'x': data['Time'],
+        'y': data['Expiratory Flow Rate'],
         'name': 'Flow Rate',
         'mode': 'lines',
         'type': 'scatter'
     }, 1, 2)
     fig.append_trace({
-        'x': data['Time'][-60:],
-        'y': data['Expiratory Pressure'][-60:],
+        'x': data['Time'],
+        'y': data['Expiratory Pressure'],
         'name': 'Pressure',
         'mode': 'lines',
         'type': 'scatter'
     }, 2, 2)
     fig.append_trace({
-        'x': data['Time'][-60:],
-        'y': data['Expiratory Tidal Volume'][-60:],
+        'x': data['Time'],
+        'y': data['Expiratory Tidal Volume'],
         'name': 'Volume',
         'mode': 'lines',
         'type': 'scatter'
     }, 3, 2)
+
+    fig.update_xaxes(range=[datetime.datetime.now()-datetime.timedelta(seconds=secs), datetime.datetime.now()])
+
     #print(app.data['Flow Rate'].tolist())
     return fig
 
