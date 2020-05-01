@@ -21,6 +21,26 @@ good_color  = '#90EE90'
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
+"""
+Data is transmitted, comma-seperated, in the following order
+-Time/date
+-Inspiratory Pressure (cmh20)
+-Exspiratory Pressure (cmh20)
+-Inspiratory Flow Rate (SLPM)
+-Exspiratory Flow Rate (SLPM)
+-Inspiratory Volume (L)
+-Expiratory Volume (L)
+Mode (0: timed, 1: pressure-triggered)
+Then if:
+mode=0:(timed)
+    -Inspiratory/expiratory ratio
+    -Breaths per minute
+mode=1:(pressure-triggered)
+    -Maximum expiratory time
+    -Inspiratory time
+    -Pressure threshold
+
+"""
 sim = fake_sim('baba')
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -43,21 +63,29 @@ app.layout = html.Div(
         ),
         dcc.Interval(
             id='interval-component',
-            interval=1*1000, # in milliseconds
+            interval=1000, # in milliseconds
             n_intervals=0
         ),
-        html.A(id='download-link', children='Download File'),
+        html.Div(id='mode-text'),
+        html.A(id='download-link', children='Download File')
     ])
 )
-
+"""
 app.f = open('temp.csv', 'w')
 app.f.write("Time,\
-Inspiratory Pressure,\
-Expiratory Pressure,\
-Inspiratory Flow Rate,\
-Expiratory Flow Rate,\
-Inspiratory Tidal Volume,\
-Expiratory Tidal Volume")
+Inspiratory Pressure (cmH20), \
+Expiratory Pressure (cmH20), \
+Inspiratory Flow Rate (SLPM), \
+Expiratory Flow Rate (SLPM), \
+Inspiratory Tidal Volume (L), \
+Expiratory Tidal Volume (L), \
+Mode, \
+IE ratio, \
+BPM, \
+Maximum Expiratory Time (ms), \
+Inspiratory Time (ms), \
+Pressure Threshold (cmH20)")
+"""
 
 data = {
     'Time': [],
@@ -66,8 +94,19 @@ data = {
     'Inspiratory Pressure': [],
     'Expiratory Pressure': [],
     'Inspiratory Tidal Volume': [],
-    'Expiratory Tidal Volume': []
+    'Expiratory Tidal Volume': [],
+    'Mode': [],
+    'Inspiratory/Expiratory Ratio': [],
+    'Breaths per Minute': [],
+    'Maximum Expiratory Time': [],
+    'Inspiratory Time': [],
+    'Pressure Threshold': []
 }
+
+@app.callback(Output('mode-text', 'children'),
+              [Input('interval-component', 'n_intervals')])
+def update_metrics2(n):
+    return html.H5('a')
 
 
 @app.callback(Output('live-update-text', 'children'),
@@ -77,7 +116,6 @@ def update_metrics(n):
 
     time = datetime.datetime.now()
     sensor_data = sim.readline()
-    app.f.write("\n" + time.strftime("%d-%b-%Y %H:%M:%S.%f") + ', ' + sensor_data)
     sensor_words = sensor_data.split(', ')
 
     ins_pres    = float(sensor_words[0])
@@ -98,6 +136,8 @@ def update_metrics(n):
     data['Expiratory Flow Rate'].append(ex_fr)
     data['Expiratory Pressure'].append(ex_pres)
     data['Expiratory Tidal Volume'].append(ex_vol)
+
+    #write_csv(app.f, data)
 
     ins_pres_col    = good_color
     ex_pres_col     = good_color
@@ -135,6 +175,63 @@ def update_metrics(n):
         ], className="two columns", style={'backgroundColor': ex_pres_col})
     ]
 
+def write_csv(f, ds):
+    wstr = '\n'
+    wstr += ds['Time'][-1].strftime("%d-%b-%Y %H:%M:%S.%f") + ', '
+    wstr += str(ds['Inspiratory Pressure'][-1]) + ', '
+    wstr += str(ds['Expiratory Pressure'][-1]) + ', '
+    wstr += str(ds['Inspiratory Flow Rate'][-1]) + ', '
+    wstr += str(ds['Expiratory Flow Rate'][-1]) + ', '
+    wstr += str(ds['Inspiratory Tidal Volume'][-1]) + ', '
+    wstr += str(ds['Expiratory Tidal Volume'][-1]) + ', '
+    wstr += str(ds['Mode'][-1]) + ', '
+    wstr += str(ds['Inspiratory/Expiratory Ratio'][-1]) + ', '
+    wstr += str(ds['Breaths per Minute'][-1]) + ', '
+    wstr += str(ds['Maximum Expiratory Time'][-1]) + ', '
+    wstr += str(ds['Inspiratory Time'][-1]) + ', '
+    wstr += str(ds['Pressure Threshold'][-1])
+    f.write(wstr)
+
+def make_csv():
+    f = open('temp.csv', 'w')
+
+    # csv header
+    f.write("Time, \
+    Inspiratory Pressure (cmH20), \
+    Expiratory Pressure (cmH20), \
+    Inspiratory Flow Rate (SLPM), \
+    Expiratory Flow Rate (SLPM), \
+    Inspiratory Tidal Volume (L), \
+    Expiratory Tidal Volume (L), \
+    Mode, \
+    IE ratio, \
+    BPM, \
+    Maximum Expiratory Time (ms), \
+    Inspiratory Time (ms), \
+    Pressure Threshold (cmH20)")
+
+    for i in range(len(data['Time'])):
+        wstr = '\n'
+        wstr += data['Time'][i].strftime("%d-%b-%Y %H:%M:%S.%f") + ', '
+        wstr += str(data['Inspiratory Pressure'][i]) + ', '
+        wstr += str(data['Expiratory Pressure'][i]) + ', '
+        wstr += str(data['Inspiratory Flow Rate'][i]) + ', '
+        wstr += str(data['Expiratory Flow Rate'][i]) + ', '
+        wstr += str(data['Inspiratory Tidal Volume'][i]) + ', '
+        wstr += str(data['Expiratory Tidal Volume'][i]) + ', '
+        """
+        wstr += str(data['Mode'][i]) + ', '
+        wstr += str(data['Inspiratory/Expiratory Ratio'][i]) + ', '
+        wstr += str(data['Breaths per Minute'][i]) + ', '
+        wstr += str(data['Maximum Expiratory Time'][i]) + ', '
+        wstr += str(data['Inspiratory Time'][i]) + ', '
+        wstr += str(data['Pressure Threshold'][i])
+        """
+        f.write(wstr)
+
+    f.close()
+    return "temp.csv"
+
 
 # Multiple components can update everytime interval gets fired.
 @app.callback(Output('live-update-graph', 'figure'),
@@ -147,7 +244,7 @@ def update_graph_live(n, secs):
     'Inspiratory Pressure (cmH20)', 'Expiratory Pressure (cmH20)',
     'Inspiratory Tidal Volume (L)', 'Expiratory Tidal Volume (L)'))
     fig['layout']['margin'] = {
-        'l': 30, 'r': 10, 'b': 10, 't': 40
+        'l': 10, 'r': 10, 'b': 5, 't': 40
     }
     fig.update_layout(showlegend=False) # titles make legend redundant
 
@@ -203,27 +300,17 @@ def update_graph_live(n, secs):
 @app.callback(Output('download-link', 'href'),
               [Input('interval-component', 'n_intervals')])
 def update_href(dropdown_value):
-    timestr = time.strftime("%Y%m%d-%H%M%S")
+    timestr = time.strftime("%Y%m%d-%H%M%S") # make time based filename
     relative_filename = os.path.join(
         'download',
         'gVent' + timestr + '.csv')
-    absolute_filename = os.path.join(os.getcwd(), relative_filename)
-
-    fname = app.f.name
-    app.f.close()
-
-    os.rename(fname, absolute_filename)
-
-    app.f = open(absolute_filename, 'a')
-
     return '/{}'.format(relative_filename)
 
 
 @app.server.route('/download/<path:path>')
 def serve_static(path):
-    root_dir = os.getcwd()
     return flask.send_from_directory(
-        os.path.join(root_dir, 'download'), path
+        os.getcwd(), make_csv()
     )
 
 if __name__ == '__main__':
