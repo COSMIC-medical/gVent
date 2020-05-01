@@ -70,22 +70,6 @@ app.layout = html.Div(
         html.A(id='download-link', children='Download File')
     ])
 )
-"""
-app.f = open('temp.csv', 'w')
-app.f.write("Time,\
-Inspiratory Pressure (cmH20), \
-Expiratory Pressure (cmH20), \
-Inspiratory Flow Rate (SLPM), \
-Expiratory Flow Rate (SLPM), \
-Inspiratory Tidal Volume (L), \
-Expiratory Tidal Volume (L), \
-Mode, \
-IE ratio, \
-BPM, \
-Maximum Expiratory Time (ms), \
-Inspiratory Time (ms), \
-Pressure Threshold (cmH20)")
-"""
 
 data = {
     'Time': [],
@@ -105,8 +89,20 @@ data = {
 
 @app.callback(Output('mode-text', 'children'),
               [Input('interval-component', 'n_intervals')])
-def update_metrics2(n):
-    return html.H5('a')
+def update_mode_text(n):
+    if len(data['Mode']) == 0:
+        return html.H5(' ')
+    mode = data['Mode'][-1]
+    if not mode:
+        retstr = "Timed mode."
+        retstr += "    IE Ratio: " + str(data['Inspiratory/Expiratory Ratio'][-1])
+        retstr += "    BPM: " + str(data['Breaths per Minute'][-1])
+    else:
+        retstr = "Pressure-triggered mode."
+        retstr += "    Max. Ex. time (ms): " + str(data['Maximum Expiratory Time'][-1])
+        retstr += "    Ins. time (ms): " + str(data['Inspiratory Time'][-1])
+        retstr += "    Pressure thresh (cmH2O): " + str(data['Pressure Threshold'][-1])
+    return html.H4(retstr)
 
 
 @app.callback(Output('live-update-text', 'children'),
@@ -124,8 +120,21 @@ def update_metrics(n):
     ex_fr       = float(sensor_words[3])
     ins_vol     = float(sensor_words[4])
     ex_vol      = float(sensor_words[5])
-    #new_row = {'Time':[time], 'Flow Rate':[flow_rate], 'Pressure':[pressure], 'Volume':[volume]}
-    #app.data = app.data.append(new_row, ignore_index=True)
+
+    mode        = int(sensor_words[6])
+
+    if (mode==0): # if we're in timed mode
+        ie_rat      = float(sensor_words[7])
+        bpm         = float(sensor_words[8])
+        max_ex_t    = None
+        ins_t       = None
+        pres_thresh = None
+    else: # in pressure triggered mode
+        max_ex_t    = int(sensor_words[7])
+        ins_t       = int(sensor_words[8])
+        pres_thresh = float(sensor_words[9])
+        ie_rat      = None
+        bpm         = None
 
     data['Time'].append(time)
 
@@ -137,7 +146,12 @@ def update_metrics(n):
     data['Expiratory Pressure'].append(ex_pres)
     data['Expiratory Tidal Volume'].append(ex_vol)
 
-    #write_csv(app.f, data)
+    data['Mode'].append(mode)
+    data['Inspiratory/Expiratory Ratio'].append(ie_rat)
+    data['Breaths per Minute'].append(bpm)
+    data['Maximum Expiratory Time'].append(max_ex_t)
+    data['Inspiratory Time'].append(ins_t)
+    data['Pressure Threshold'].append(pres_thresh)
 
     ins_pres_col    = good_color
     ex_pres_col     = good_color
@@ -175,23 +189,6 @@ def update_metrics(n):
         ], className="two columns", style={'backgroundColor': ex_pres_col})
     ]
 
-def write_csv(f, ds):
-    wstr = '\n'
-    wstr += ds['Time'][-1].strftime("%d-%b-%Y %H:%M:%S.%f") + ', '
-    wstr += str(ds['Inspiratory Pressure'][-1]) + ', '
-    wstr += str(ds['Expiratory Pressure'][-1]) + ', '
-    wstr += str(ds['Inspiratory Flow Rate'][-1]) + ', '
-    wstr += str(ds['Expiratory Flow Rate'][-1]) + ', '
-    wstr += str(ds['Inspiratory Tidal Volume'][-1]) + ', '
-    wstr += str(ds['Expiratory Tidal Volume'][-1]) + ', '
-    wstr += str(ds['Mode'][-1]) + ', '
-    wstr += str(ds['Inspiratory/Expiratory Ratio'][-1]) + ', '
-    wstr += str(ds['Breaths per Minute'][-1]) + ', '
-    wstr += str(ds['Maximum Expiratory Time'][-1]) + ', '
-    wstr += str(ds['Inspiratory Time'][-1]) + ', '
-    wstr += str(ds['Pressure Threshold'][-1])
-    f.write(wstr)
-
 def make_csv():
     f = open('temp.csv', 'w')
 
@@ -219,14 +216,12 @@ def make_csv():
         wstr += str(data['Expiratory Flow Rate'][i]) + ', '
         wstr += str(data['Inspiratory Tidal Volume'][i]) + ', '
         wstr += str(data['Expiratory Tidal Volume'][i]) + ', '
-        """
         wstr += str(data['Mode'][i]) + ', '
         wstr += str(data['Inspiratory/Expiratory Ratio'][i]) + ', '
         wstr += str(data['Breaths per Minute'][i]) + ', '
         wstr += str(data['Maximum Expiratory Time'][i]) + ', '
         wstr += str(data['Inspiratory Time'][i]) + ', '
         wstr += str(data['Pressure Threshold'][i])
-        """
         f.write(wstr)
 
     f.close()
