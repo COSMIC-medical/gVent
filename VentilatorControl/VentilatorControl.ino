@@ -21,8 +21,8 @@ int modeSwitch = 3;
 int startButton = 4;
 int pots[] = {
   A0,  // bpm/[max time before inhale]
-  A1,  // ratio/[pressure threshold]
-  A2
+  A1  // ratio/[pressure threshold]
+  
 }; // [exhale time]
 int potValues[] = {0, 0, 0};
 byte disp = 0x27;
@@ -32,7 +32,7 @@ byte expiratorySensor = 0x02;
 
 //Constants
 #define MS_PER_MINUTE 60000.0
-#define NUM_POTS 3
+#define NUM_POTS 2
 #define MIN_BPM  5
 #define MAX_BPM  41
 #define MIN_RATIO  1
@@ -52,8 +52,8 @@ byte expiratorySensor = 0x02;
 //Control variables
 int pThreshold = -2; //cmH2O
 double ratio = 1;
-boolean mode = true; //false = timed, true = triggered
-double BPM = 30;
+boolean mode = false; //false = timed, true = triggered
+double BPM = 5;
 double targetPressure = 15;
 
 //other
@@ -127,7 +127,7 @@ void loop() {
       }
     } else {//in triggered mode, we have a minimum BPM timer that is overridden by patient breathing
       if (exhale) { //during exhale, we wait for a pressure drop below threshold
-        if (fs.pressure_cmh2o <= pThreshold || (millis() - currStart) >= outTime) { //if below the threshold or the timer has expired
+        if (expiratoryPressure <= pThreshold || (millis() - currStart) >= outTime) { //if below the threshold or the timer has expired
           exhale = LOW;
           switchState(exhale);
           currStart = millis();
@@ -146,12 +146,11 @@ void loop() {
 
 
 void switchState(int currState) { //currState = true if exhaling, false if inhaling
-  digitalWrite(valve, currState);
+  digitalWrite(valve, !currState);
   if (currState) { //If transitioning from inhale to exhale
     expiratoryTidalVolume = 0;
   } else {
     inspiratoryTidalVolume = 0;
-
   }
 }
 
@@ -205,10 +204,10 @@ void checkSwitches() {
     lastPress = millis();
   }
 
-  if (digitalRead(modeSwitch) != mode) { //state change
-    mode = digitalRead(modeSwitch);
-    reset();
-  }
+  //if (digitalRead(modeSwitch) != mode) { //state change
+  //  mode = digitalRead(modeSwitch);
+   // reset();
+ // }
 
 }
 
@@ -216,12 +215,13 @@ void checkSensors() {
   inspiratoryFs.read_flowrate_pressure();
   expiratoryFs.read_flowrate_pressure();
   inspiratoryPressure = inspiratoryFs.pressure_cmh2o;
-  inspiratoryFlowRate = inspiratoryFs.flowrate_slpm;
+  inspiratoryFlowRate = inspiratoryFs.flow_rate_slpm;
   expiratoryPressure = expiratoryFs.pressure_cmh2o;
-  expiratoryFlowRate = expiratoryFs.flowrate_slpm;
+  expiratoryFlowRate = expiratoryFs.flow_rate_slpm;
   iFlow = inspiratoryFlowRate - expiratoryFlowRate;
   eFlow = expiratoryFlowRate - inspiratoryFlowRate;
   avgPressure = (inspiratoryPressure + expiratoryPressure) / 2.0;
+  Serial.println(expiratoryPressure);
 }
 
 void checkPots() {
@@ -255,8 +255,8 @@ void checkPots() {
       }
     } else {
       double tempInTime = map(potValues[0], 0, 1024, MIN_IN_TIME, MAX_IN_TIME);
-      double tempOutTime = map(potValues[0], 0, 1024, MIN_OUT_TIME, MAX_OUT_TIME);
-      double tempThreshold = map(potValues[0], 0, 1024, MIN_THRESHOLD, MAX_THRESHOLD);
+      double tempOutTime = map(potValues[1], 0, 1024, MIN_OUT_TIME, MAX_OUT_TIME);
+      //double tempThreshold = map(potValues[0], 0, 1024, MIN_THRESHOLD, MAX_THRESHOLD);
       if (tempInTime != inTime) {
         inTime = tempInTime;
         lcd.clear();
@@ -273,6 +273,7 @@ void checkPots() {
         lcd.setCursor(10, 0);
         lcd.print(outTime);
       }
+      /*
       if (tempThreshold != pThreshold) {
         pThreshold = tempThreshold;
         lcd.clear();
@@ -281,6 +282,7 @@ void checkPots() {
         lcd.setCursor(11, 0);
         lcd.print(pThreshold);
       }
+      */
 
     }
   }
@@ -298,6 +300,7 @@ void refreshScreen(boolean on) {
 }
 
 // Issue #6
+/*
 void checkAlarms() {
   //I'm using MAX_THRESHOLD as a placeholder for the maximum threshold for each alarm. I'm not sure what these values are.
   //Fi02/peep - not sure where these are calculated.
@@ -334,3 +337,4 @@ void checkAlarms() {
     // refreshScreen(alarmMode)
     // buzzer()
   }
+  */
