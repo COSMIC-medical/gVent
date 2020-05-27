@@ -31,8 +31,8 @@
 #define FS6122_READ_ADDRESS             0x85 // Bit7 ~ Bit1
 #define FS6122_READ_FILTERDEPTH         0x8B // Int8, 0~254
 #define FS6122_READ_PRESSURE            0xA3 // Int32/1000 cmH20
-#define FS6122_READ_TEMPERATURE         0x82  // Int16/100 deg celcius
-#define FS6122_READ_HUMIDITY            0x83  // Int16/100 %RH
+#define FS6122_READ_TEMPERATURE         0xB2  // Int16/100 deg celcius
+#define FS6122_READ_HUMIDITY            0xB3  // Int16/100 %RH
 
 
 class fs6122
