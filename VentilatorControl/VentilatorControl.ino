@@ -52,7 +52,7 @@ byte expiratorySensor = 0x02;
 //Control variables
 int pThreshold = -2; //cmH2O
 double ratio = 1;
-boolean mode = false; //false = timed, true = triggered
+boolean mode = false; //false = triggered, true = timed
 double BPM = 5;
 double targetPressure = 15;
 
