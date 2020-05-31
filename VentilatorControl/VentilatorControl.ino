@@ -85,7 +85,7 @@ float iFlow = 0.00; //inspiratory flow - expiratory flow
 float eFlow = 0.00; //expiratory flow - inspiratory flow
 float avgPressure = 0.00; // avg(inspiratory pressure, expiratory pressure)
 
-
+//I2C devices
 LiquidCrystal_I2C lcd(disp, 16, 2);
 
 
