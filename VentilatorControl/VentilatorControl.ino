@@ -330,6 +330,8 @@ void checkAlarms() {
   // 6. High/low PEEP:
   // 7. Apnea alarm with backup rate and tidal volume: We already have this coded for I believe. If the patient is on patient triggeredventilation and doesn't breathe on their own in longer than x, the ventilator gives an automatic breath.
   // 8. Disconnection alarm
+  
+ PressureSensorErrorAlarm() ;  //New => Date: 05/31/2020
 }
 
   void soundAlarm() {
@@ -338,3 +340,20 @@ void checkAlarms() {
     // buzzer()
   }
   */
+/* Date:05/31/2020 
+=>Pressure Sensor Error Alarm Function
+Notes: Not sure if I am reading both sensors A and B correctly. 
+       Maybe I should use avgPressure for the readings value? 
+*/
+/*
+void PressureSensorErrorAlarm(){   //issue#34
+  //Pressure readings in sensor a >1.2 or <0.8 pressure readings in sensor b 
+  //- excluding parameters meeting criteria for another alarm below.
+//read Sensor A and Sensor B
+  checkSensors(); //Check Sensors (Same with reading sensors)
+  checkPots();  //now we got the potValues[1] which should contain A1 pressure threshold value
+  double readings= potValues[1]; 
+if(readings>1.2 || readings <0.8) 
+  soundAlarm();
+}
+*/
