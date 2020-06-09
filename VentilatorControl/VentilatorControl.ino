@@ -1,5 +1,5 @@
 #include <Wire.h>
-#include <fs6122.h>
+#include "fs6122.h"
 #include <LiquidCrystal_I2C.h>
 
 //pinout:
@@ -47,6 +47,10 @@ byte expiratorySensor = 0x02;
 #define INSPIRATORY_HIGH_PRESSURE_MULTIPLIER 1.1
 #define INSPIRATORY_LOW_PRESSURE_MULTIPLIER 0.9
 
+#define AVG_PRESSURE_ARR_SECONDS 60
+#define AVG_PRESSURE_PER_SECOND 1
+#define AVG_PRESSURE_ARR_LENGTH AVG_PRESSURE_ARR_SECONDS*AVG_PRESSURE_PER_SECOND
+
 
 
 //Control variables
@@ -70,7 +74,6 @@ float actualMinuteVentilation = 0; //volume expired over last 60s
 //Inspiratory Arm
 float inspiratoryPressure = 0;
 float inspiratoryFlowRate = 0;
-
 
 //Expiratory Arm
 float expiratoryPressure = 0;
@@ -143,6 +146,61 @@ void loop() {
     delay(10);
   }
 }
+
+float update_rolling_avg_pressure(float new_val){
+  static float avg_pressure_arr[AVG_PRESSURE_ARR_LENGTH]; // circular array containing pressure values
+  static unsigned int arr_index = 0; // the index of the array head
+  static bool arr_filled = false; // whether or not the array has been fully populated
+  
+  static float avg_sum = 0;
+  static unsigned int avg_count = 0;
+  static float avg_pressure = 0;
+  unsigned long last_compute = 0;
+
+  float ret_val = update_rolling_avg(new_val, avg_pressure_arr, &arr_index, AVG_PRESSURE_ARR_LENGTH, &arr_filled, &avg_sum, &avg_count, AVG_PRESSURE_PER_SECOND*1000, &last_compute);
+  if (ret_val > 0){
+    avg_pressure = ret_val;
+  }
+  return avg_pressure;
+}
+
+float update_rolling_avg(float new_val, float arr[], unsigned int* arr_index, unsigned int arr_length, bool* arr_filled,
+  float* avg_sum, unsigned int* avg_count, unsigned int period, unsigned long* last_compute){
+  *avg_sum += new_val;
+  *avg_count++;
+  
+  if (millis() - *last_compute >= period){
+    *last_compute = millis();
+    arr[*arr_index] = *avg_sum/(*avg_count);
+    *arr_index++;
+
+    if (*arr_index == arr_length){ // restart array and raise flag tat array has been populated
+      *arr_filled = true;
+      *arr_index = 0;
+    }
+
+    // calculate average of last 60s (or since start of measurements if it's been less than 60s)
+    float total_avg;
+    if(arr_filled){
+      float total_sum = 0;
+      for(int i = 0; i < arr_length; i++){
+        total_sum += arr[i];
+      }
+      total_avg = total_sum/arr_length;
+    }
+    else{
+      float total_sum = 0;
+      for(int i = 0; i < *arr_index; i++){
+        total_sum += arr[i];
+      }
+      total_avg = total_sum/(*arr_index);
+    }
+    return total_avg;
+  }
+  return float(-1);
+}
+
+
 
 
 void switchState(int currState) { //currState = true if exhaling, false if inhaling
