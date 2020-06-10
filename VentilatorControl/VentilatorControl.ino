@@ -147,32 +147,27 @@ void loop() {
   }
 }
 
-float update_rolling_avg_pressure(float new_val){
-  static float avg_pressure_arr[AVG_PRESSURE_ARR_LENGTH]; // circular array containing pressure values
-  static unsigned int arr_index = 0; // the index of the array head
-  static bool arr_filled = false; // whether or not the array has been fully populated
-  
-  static float avg_sum = 0;
-  static unsigned int avg_count = 0;
-  static float avg_pressure = 0;
-  unsigned long last_compute = 0;
-
-  float ret_val = update_rolling_avg(new_val, avg_pressure_arr, &arr_index, AVG_PRESSURE_ARR_LENGTH, &arr_filled, &avg_sum, &avg_count, AVG_PRESSURE_PER_SECOND*1000, &last_compute);
-  if (ret_val > 0){
-    avg_pressure = ret_val;
-  }
-  return avg_pressure;
-}
-
-float update_rolling_avg(float new_val, float arr[], unsigned int* arr_index, unsigned int arr_length, bool* arr_filled,
-  float* avg_sum, unsigned int* avg_count, unsigned int period, unsigned long* last_compute){
+float update_rolling_avg(float new_val, float arr[], unsigned int* arr_index,
+  unsigned int arr_length, bool* arr_filled, float* avg_sum, unsigned int* avg_count,
+  unsigned int period, unsigned long* last_compute){
   *avg_sum += new_val;
-  *avg_count++;
-  
+  (*avg_count)++;
+
+  // add new entry to array every second
   if (millis() - *last_compute >= period){
-    *last_compute = millis();
+    *last_compute += period;
     arr[*arr_index] = *avg_sum/(*avg_count);
-    *arr_index++;
+
+    // the following block of code backfills the array to compensate for very long missed periods
+    while(millis() - *last_compute >= period){
+      *arr_index = (*arr_index + 1) % arr_length;
+      arr[*arr_index] = *avg_sum/(*avg_count);
+      *last_compute += period;
+    }
+
+    *avg_sum = 0;
+    *avg_count = 0;
+    (*arr_index)++;
 
     if (*arr_index == arr_length){ // restart array and raise flag tat array has been populated
       *arr_filled = true;
@@ -180,8 +175,8 @@ float update_rolling_avg(float new_val, float arr[], unsigned int* arr_index, un
     }
 
     // calculate average of last 60s (or since start of measurements if it's been less than 60s)
-    float total_avg;
-    if(arr_filled){
+    float total_avg; // the average of the values in the array
+    if(*arr_filled){
       float total_sum = 0;
       for(int i = 0; i < arr_length; i++){
         total_sum += arr[i];
@@ -197,9 +192,30 @@ float update_rolling_avg(float new_val, float arr[], unsigned int* arr_index, un
     }
     return total_avg;
   }
-  return float(-1);
+  float ret_val;
+  if(!(*arr_filled)&&(*arr_index==0)){
+    return (*avg_sum/float(*avg_count));
+  }
+  return -1.0;
 }
 
+float update_rolling_avg_pressure(float new_val){
+  static float avg_pressure_arr[AVG_PRESSURE_ARR_LENGTH]; // circular array containing pressure values
+  static unsigned int arr_index = 0; // the index of the array head
+  static bool arr_filled = false; // whether or not the array has been fully populated
+
+  static float avg_sum = 0;
+  static unsigned int avg_count = 0;
+  static float avg_pressure = 0;
+  static unsigned long* last_compute = (unsigned long*) calloc(0, sizeof(unsigned long));
+
+
+  float ret_val = update_rolling_avg(new_val, avg_pressure_arr, &arr_index, AVG_PRESSURE_ARR_LENGTH, &arr_filled, &avg_sum, &avg_count, AVG_PRESSURE_PER_SECOND*1000, last_compute);
+  if (ret_val > 0.0){
+    avg_pressure = ret_val;
+  }
+  return avg_pressure;
+}
 
 
 
