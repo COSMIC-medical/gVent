@@ -230,7 +230,12 @@ void checkSensors() {
   eFlow = expiratoryFlowRate - inspiratoryFlowRate;
   avgPressure = (inspiratoryPressure + expiratoryPressure) / 2.0;
   rolling_avg_pressure = update_rolling_avg_pressure(avgPressure);
-  rolling_avg_expiratory_fr = update_rolling_avg_pressure(expiratoryFlowRate);
+  if(exhale){
+    rolling_avg_expiratory_fr = update_rolling_avg_pressure(expiratoryFlowRate);
+  }
+  else{
+    rolling_avg_expiratory_fr = update_rolling_avg_pressure(0);
+  }
   actualMinuteVentilation = rolling_avg_expiratory_fr;
   Serial.println(expiratoryPressure);
 }
