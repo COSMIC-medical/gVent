@@ -50,7 +50,9 @@ byte expiratorySensor = 0x02;
 #define AVG_PRESSURE_ARR_SECONDS 60
 #define AVG_PRESSURE_PER_SECOND 1
 #define AVG_PRESSURE_ARR_LENGTH AVG_PRESSURE_ARR_SECONDS*AVG_PRESSURE_PER_SECOND
-
+#define AVG_FR_ARR_SECONDS 60
+#define AVG_FR_PER_SECOND 1
+#define AVG_FR_ARR_LENGTH AVG_FR_ARR_SECONDS*AVG_FR_PER_SECOND
 
 
 //Control variables
@@ -69,7 +71,6 @@ unsigned long intervalTime = 0; // for tidal volume calculation
 boolean started = false;
 unsigned long inTime = halfTime;
 unsigned long outTime = halfTime;
-float actualMinuteVentilation = 0; //volume expired over last 60s
 
 //Inspiratory Arm
 float inspiratoryPressure = 0;
@@ -85,6 +86,11 @@ float expiratoryTidalVolume = 0.0;
 float iFlow = 0; //inspiratory flow - expiratory flow
 float eFlow = 0; //expiratory flow - inspiratory flow
 float avgPressure = 0; // avg(inspiratory pressure, expiratory pressure);
+
+//Rolling averages
+float rolling_avg_pressure = 0; //avg pressure over the past 60s
+float rolling_avg_expiratory_fr = 0; //avg expiratory flow rate over the past 60s
+float actualMinuteVentilation = 0; //volume expired over last 60s
 
 //I2C devices
 fs6122 inspiratoryFs = fs6122();
@@ -146,78 +152,6 @@ void loop() {
     delay(10);
   }
 }
-
-float update_rolling_avg(float new_val, float arr[], unsigned int* arr_index,
-  unsigned int arr_length, bool* arr_filled, float* avg_sum, unsigned int* avg_count,
-  unsigned int period, unsigned long* last_compute){
-  *avg_sum += new_val;
-  (*avg_count)++;
-
-  // add new entry to array every second
-  if (millis() - *last_compute >= period){
-    *last_compute += period;
-    arr[*arr_index] = *avg_sum/(*avg_count);
-
-    // the following block of code backfills the array to compensate for very long missed periods
-    while(millis() - *last_compute >= period){
-      *arr_index = (*arr_index + 1) % arr_length;
-      arr[*arr_index] = *avg_sum/(*avg_count);
-      *last_compute += period;
-    }
-
-    *avg_sum = 0;
-    *avg_count = 0;
-    (*arr_index)++;
-
-    if (*arr_index == arr_length){ // restart array and raise flag tat array has been populated
-      *arr_filled = true;
-      *arr_index = 0;
-    }
-
-    // calculate average of last 60s (or since start of measurements if it's been less than 60s)
-    float total_avg; // the average of the values in the array
-    if(*arr_filled){
-      float total_sum = 0;
-      for(int i = 0; i < arr_length; i++){
-        total_sum += arr[i];
-      }
-      total_avg = total_sum/arr_length;
-    }
-    else{
-      float total_sum = 0;
-      for(int i = 0; i < *arr_index; i++){
-        total_sum += arr[i];
-      }
-      total_avg = total_sum/(*arr_index);
-    }
-    return total_avg;
-  }
-  float ret_val;
-  if(!(*arr_filled)&&(*arr_index==0)){
-    return (*avg_sum/float(*avg_count));
-  }
-  return -1.0;
-}
-
-float update_rolling_avg_pressure(float new_val){
-  static float avg_pressure_arr[AVG_PRESSURE_ARR_LENGTH]; // circular array containing pressure values
-  static unsigned int arr_index = 0; // the index of the array head
-  static bool arr_filled = false; // whether or not the array has been fully populated
-
-  static float avg_sum = 0;
-  static unsigned int avg_count = 0;
-  static float avg_pressure = 0;
-  static unsigned long* last_compute = (unsigned long*) calloc(0, sizeof(unsigned long));
-
-
-  float ret_val = update_rolling_avg(new_val, avg_pressure_arr, &arr_index, AVG_PRESSURE_ARR_LENGTH, &arr_filled, &avg_sum, &avg_count, AVG_PRESSURE_PER_SECOND*1000, last_compute);
-  if (ret_val > 0.0){
-    avg_pressure = ret_val;
-  }
-  return avg_pressure;
-}
-
-
 
 void switchState(int currState) { //currState = true if exhaling, false if inhaling
   digitalWrite(valve, !currState);
@@ -295,6 +229,9 @@ void checkSensors() {
   iFlow = inspiratoryFlowRate - expiratoryFlowRate;
   eFlow = expiratoryFlowRate - inspiratoryFlowRate;
   avgPressure = (inspiratoryPressure + expiratoryPressure) / 2.0;
+  rolling_avg_pressure = update_rolling_avg_pressure(avgPressure);
+  rolling_avg_expiratory_fr = update_rolling_avg_pressure(expiratoryFlowRate);
+  actualMinuteVentilation = rolling_avg_expiratory_fr;
   Serial.println(expiratoryPressure);
 }
 
@@ -360,6 +297,104 @@ void checkPots() {
 
     }
   }
+}
+
+/*
+ * updates a rolling average array and calculates a new rolling average
+ */
+float update_rolling_avg(float new_val, float arr[], unsigned int* arr_index,
+  unsigned int arr_length, bool* arr_filled, float* avg_sum, unsigned int* avg_count,
+  unsigned int period, unsigned long* last_compute){
+  if(!(*last_compute)){ // adjust for wait before first value
+    *last_compute = millis();
+  }
+  *avg_sum += new_val;
+  (*avg_count)++;
+
+  // add new entry to array every second
+  if (millis() - *last_compute >= period){
+    *last_compute += period;
+    arr[*arr_index] = *avg_sum/(*avg_count);
+
+    // the following block of code backfills the array to compensate for very long missed periods
+    while(millis() - *last_compute >= period){
+      *arr_index = (*arr_index + 1) % arr_length;
+      arr[*arr_index] = *avg_sum/(*avg_count);
+      *last_compute += period;
+    }
+
+    *avg_sum = 0;
+    *avg_count = 0;
+    (*arr_index)++;
+
+    if (*arr_index == arr_length){ // restart array and raise flag tat array has been populated
+      *arr_filled = true;
+      *arr_index = 0;
+    }
+
+    // calculate average of last 60s (or since start of measurements if it's been less than 60s)
+    float total_avg; // the average of the values in the array
+    if(*arr_filled){
+      float total_sum = 0;
+      for(int i = 0; i < arr_length; i++){
+        total_sum += arr[i];
+      }
+      total_avg = total_sum/arr_length;
+    }
+    else{
+      float total_sum = 0;
+      for(int i = 0; i < *arr_index; i++){
+        total_sum += arr[i];
+      }
+      total_avg = total_sum/(*arr_index);
+    }
+    return total_avg;
+  }
+  float ret_val;
+  if(!(*arr_filled)&&(*arr_index==0)){
+    return (*avg_sum/float(*avg_count));
+  }
+  return -1.0;
+}
+
+/*
+ * updates the average pressure rolling array and value
+ */
+float update_rolling_avg_pressure(float new_val){
+  static float avg_pressure_arr[AVG_PRESSURE_ARR_LENGTH]; // circular array containing pressure values
+  static unsigned int arr_index = 0; // the index of the array head
+  static bool arr_filled = false; // whether or not the array has been fully populated
+
+  static float avg_sum = 0;
+  static unsigned int avg_count = 0;
+  static float avg_pressure = 0;
+  static unsigned long* last_compute = (unsigned long*) calloc(0, sizeof(unsigned long));
+
+  float ret_val = update_rolling_avg(new_val, avg_pressure_arr, &arr_index, AVG_PRESSURE_ARR_LENGTH, &arr_filled, &avg_sum, &avg_count, AVG_PRESSURE_PER_SECOND*1000, last_compute);
+  if (ret_val > 0.0){
+    avg_pressure = ret_val;
+  }
+  return avg_pressure;
+}
+
+/*
+ * updates the average flowrate rolling array and value
+ */
+float update_rolling_avg_flowrate(float new_val){
+  static float avg_fr_arr[AVG_FR_ARR_LENGTH]; // circular array containing flow rate values
+  static unsigned int arr_index = 0; // the index of the array head
+  static bool arr_filled = false; // whether or not the array has been fully populated
+
+  static float avg_sum = 0;
+  static unsigned int avg_count = 0;
+  static float avg_fr = 0;
+  static unsigned long* last_compute = (unsigned long*) calloc(0, sizeof(unsigned long));
+
+  float ret_val = update_rolling_avg(new_val, avg_fr_arr, &arr_index, AVG_FR_ARR_LENGTH, &arr_filled, &avg_sum, &avg_count, AVG_FR_PER_SECOND*1000, last_compute);
+  if (ret_val > 0.0){
+    avg_fr = ret_val;
+  }
+  return avg_fr;
 }
 
 void refreshScreen(boolean on) {
