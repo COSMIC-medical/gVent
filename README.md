@@ -49,3 +49,7 @@ The basis of the gVent system is gravity, water, and two cylindrical vessels fit
 Air is then introduced into the system from the hospital's O<sub>2</sub> outlet. A clinician can thus control the FiO<sub>2</sub> by titrating the amount of hospital air to the amount of delivered O<sub>2</sub>. As this pressurized gas builds up in the system, the top cylinder is displaced upwards from its resting position, commensurate to the weight of the top cylinder (which can have weight added to adjust the pressure).
 
 To deliver air, a valve is opened, releasing the pressurized air/O<sub>2</sub> mixture through to the intubated patient. And with the valve controlled on an electronic circuit, the operator has the ability to control important respiratory parameters, including respiratory rate, I:E ratio, and the volume of air delivered to the patient.
+
+##  Installation Instructions
+
+1.
