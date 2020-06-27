@@ -1,4 +1,8 @@
-### The Gravity Ventilator (gVent)
+# The Gravity Ventilator (gVent)
+
+### A COSMIC Medical Project
+
+This repository contains all the design files necessary to assemble a gravity ventilator. Please read license.pdf before using any of the files to understanad the liabilities and limitations you are responsible for by using this repository.
 
 ### DISCLAIMER OF WARRANTIES
 
