@@ -52,4 +52,4 @@ To deliver air, a valve is opened, releasing the pressurized air/O<sub>2</sub> m
 
 ##  Installation Instructions
 
-1.
+1. The Assembly Instructions document for the gVent can be found at [The COSMIC Medical Website](https://cosmicmedical.ca/gvent-722-warnings-disclaimers).
