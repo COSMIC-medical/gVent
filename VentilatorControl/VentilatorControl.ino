@@ -1,5 +1,5 @@
 #include <Wire.h>
-#include "fs6122.h"
+//#include <fs6122.h> <- used in sensors.ino 
 #include <LiquidCrystal_I2C.h>
 
 //pinout:
@@ -26,9 +26,6 @@ int pots[] = {
 }; // [exhale time]
 int potValues[] = {0, 0, 0};
 byte disp = 0x27;
-byte inspiratorySensor = 0x01;
-byte expiratorySensor = 0x02;
-
 
 //Constants
 #define MS_PER_MINUTE 60000.0
@@ -62,6 +59,7 @@ boolean mode = false; //false = triggered, true = timed
 double BPM = 5;
 double targetPressure = 15;
 
+
 //other
 int exhale = HIGH; //HIGH = exhale, LOW = inhale
 unsigned long halfTime = MS_PER_MINUTE / (BPM); // ms per inhale/exhale = 2x cycle time
@@ -72,41 +70,41 @@ boolean started = false;
 unsigned long inTime = halfTime;
 unsigned long outTime = halfTime;
 
-//Inspiratory Arm
-float inspiratoryPressure = 0;
-float inspiratoryFlowRate = 0;
-
-//Expiratory Arm
-float expiratoryPressure = 0;
-float expiratoryFlowRate = 0;
-float inspiratoryTidalVolume = 0.0;
-float expiratoryTidalVolume = 0.0;
-
-//Combination values
-float iFlow = 0; //inspiratory flow - expiratory flow
-float eFlow = 0; //expiratory flow - inspiratory flow
-float avgPressure = 0; // avg(inspiratory pressure, expiratory pressure);
-
 //Rolling averages
 float rolling_avg_pressure = 0; //avg pressure over the past 60s
 float rolling_avg_expiratory_fr = 0; //avg expiratory flow rate over the past 60s
 float actualMinuteVentilation = 0; //volume expired over last 60s
 
+float actualMinuteVentilation = 0; //volume expired over last 60s
+
+/* 
+  output variables from sensors.ino, used for alarms. 
+*/
+//Inspiratory Arm
+float inspiratoryPressure = 0.00;
+float inspiratoryFlowRate = 0.00;
+
+//Expiratory Arm
+float expiratoryPressure = 0.00;
+float expiratoryFlowRate = 0.00;
+float inspiratoryTidalVolume = 0.00;
+float expiratoryTidalVolume = 0.00;
+
+//Combination values
+float iFlow = 0.00; //inspiratory flow - expiratory flow
+float eFlow = 0.00; //expiratory flow - inspiratory flow
+float avgPressure = 0.00; // avg(inspiratory pressure, expiratory pressure)
+
 //I2C devices
-fs6122 inspiratoryFs = fs6122();
-fs6122 expiratoryFs = fs6122();
 LiquidCrystal_I2C lcd(disp, 16, 2);
+
 
 void setup() {
 
-  if (! inspiratoryFs.begin(inspiratorySensor)) {
-    Serial.println("Couldnt start inspiratory arm sensor");
-    while (1);
-  }
-  if (! expiratoryFs.begin(expiratorySensor)) {
-    Serial.println("Couldnt start expiratory arm sensor");
-    while (1);
-  }
+  // initialize both flow sensors, will hang if failure occures 
+  initSensors(); 
+
+
   lcd.init();
   lcd.backlight();
   pinMode(modeSwitch, INPUT_PULLUP);
@@ -152,6 +150,7 @@ void loop() {
     delay(10);
   }
 }
+
 
 void switchState(int currState) { //currState = true if exhaling, false if inhaling
   digitalWrite(valve, !currState);
@@ -204,7 +203,11 @@ void checkSwitches() {
       refreshScreen(false);
     } else { //start everything up
       Serial.println("started");
+
       started = true;
+
+      started = true;  
+
       showStart();
       currStart = millis();
       intervalTime = currStart;
@@ -239,6 +242,7 @@ void checkSensors() {
   actualMinuteVentilation = rolling_avg_expiratory_fr;
   Serial.println(expiratoryPressure);
 }
+
 
 void checkPots() {
   if (!started) {
@@ -303,6 +307,7 @@ void checkPots() {
     }
   }
 }
+
 
 /*
  * updates a rolling average array and calculates a new rolling average
@@ -402,6 +407,7 @@ float update_rolling_avg_flowrate(float new_val){
   return avg_fr;
 }
 
+
 void refreshScreen(boolean on) {
   delay(50);
   lcd.clear();
@@ -453,3 +459,4 @@ void checkAlarms() {
     // buzzer()
   }
   */
+
