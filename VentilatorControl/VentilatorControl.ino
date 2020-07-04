@@ -70,6 +70,10 @@ unsigned long intervalTime = 0; // for tidal volume calculation
 boolean started = false;
 unsigned long inTime = halfTime;
 unsigned long outTime = halfTime;
+
+//Rolling averages
+float rolling_avg_pressure = 0; //avg pressure over the past 60s
+float rolling_avg_expiratory_fr = 0; //avg expiratory flow rate over the past 60s
 float actualMinuteVentilation = 0; //volume expired over last 60s
 
 /* 
