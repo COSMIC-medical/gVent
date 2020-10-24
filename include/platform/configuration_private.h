@@ -7,8 +7,6 @@
  * Should map, for example, the pins controlling a valve
  * to a constant like INSP_VALVE_OPEN.
  *
- *  Created on: Sep 25, 2020
- *      Author: sdiemert
  */
 
 #ifndef INC_PLATFORM_CONFIGURATION_PRIVATE_H_

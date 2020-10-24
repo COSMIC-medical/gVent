@@ -1,8 +1,6 @@
 /*
  * application.c
  *
- *  Created on: Sep. 22, 2020
- *      Author: sdiemert
  */
 
 #include <platform/scheduler.h>
