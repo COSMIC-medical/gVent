@@ -4,3 +4,4 @@
 /.pio
 /.vscode
 build/
+lib/googletest
