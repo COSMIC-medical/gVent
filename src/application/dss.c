@@ -3,9 +3,11 @@
  *
  */
 
+#include <application/dss.h>
+#include <platform/alarm.h>
 
 void dss() {
   while (1) {
-      set_alarm_on();
+    // TODO - implement DSS behaviour
   }
 }
