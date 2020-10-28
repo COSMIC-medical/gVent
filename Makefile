@@ -93,7 +93,6 @@ CFLAGS += -Wall
 CFLAGS += -DUSE_HAL_DRIVER -DSTM32F401xE -DDEBUG 
 CFLAGS += -ffunction-sections 
 CFLAGS += -fdata-sections 
-CFLAGS += -fstack-usage 
 CFLAGS += --specs=nano.specs
 CFLAGS += -mfpu=fpv4-sp-d16
 CFLAGS += -mfloat-abi=hard
