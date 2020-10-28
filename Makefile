@@ -56,6 +56,7 @@ INC_DIRS = $(HAL_INC)/ \
 INC_DIRS += $(INC_DIR)/
 INC_DIRS += $(INC_DIR)/platform
 INC_DIRS += $(INC_DIR)/application
+INC_DIRS += $(INC_DIR)/application/tasks
 
 INCLUDE = $(addprefix -I,$(INC_DIRS))
 
