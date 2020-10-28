@@ -1,12 +1,11 @@
 /*
  * platform.c
  *
- *  Created on: Sep 17, 2020
- *      Author: sdiemert
  */
 
+#include <platform/scheduler_private.h>
 #include <platform/scheduler.h>
-#include <application/application.h>
+#include <application/dss.h>
 
 // module level private variables
 task_t tasks[MAX_TASKS];
