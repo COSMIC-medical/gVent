@@ -4,6 +4,7 @@
  */
 
 #include <platform/scheduler.h>
+#include <platform/valve.h>
 #include <application/application.h>
 #include <application/dss.h>
 
@@ -22,5 +23,6 @@ void init_application() {
 }
 
 void task_1() {
-	// TODO - implement me
+	open_inspiratory_valve();
+	close_inspiratory_valve();
 }
