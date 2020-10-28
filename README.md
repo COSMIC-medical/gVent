@@ -54,3 +54,6 @@ To deliver air, a valve is opened, releasing the pressurized air/O<sub>2</sub> m
 
 1. The Assembly Instructions document for the gVent can be found at [The COSMIC Medical Website](https://cosmicmedical.ca/gvent-722-warnings-disclaimers).
 2. In order to view the code and upload it to the Arduino, download and install the [Arduino IDE](https://www.arduino.cc/en/Main/Software).
+
+## Contributing
+See the [CONTRIBUTOR.md](./CONTIBUTOR.md) file in the root of the repository for guidelines and additional instructions.

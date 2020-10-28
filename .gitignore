@@ -1,5 +1,12 @@
 .DS_Store
-.o
+*.o
+*.su
+*.elf
+*.hex
+*.bin
 *.log
+*.map
 /.pio
 /.vscode
+build/
+lib/googletest

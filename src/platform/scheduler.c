@@ -98,6 +98,9 @@ void run_platform() {
 	// start scheduler timer counting from zero (delays are referenced from zero)
 	__HAL_TIM_SetCounter(ticker, 0);
 
+	// indicate the platform has started running with the LED
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
+
 	// infinitely call scheduling dispatch function
 	while(1) {
 		scheduler_dispatch();

@@ -1,0 +1,7 @@
+name: "Test Actions"
+description: "run functional and unit tests"
+author: "candltwins@gmail.com"
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
