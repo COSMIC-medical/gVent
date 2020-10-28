@@ -4,7 +4,6 @@
  */
 
 #include <platform/scheduler.h>
-#include <platform/valve.h>
 #include <application/application.h>
 #include <application/dss.h>
 
@@ -15,14 +14,16 @@ void task_3();
 void init_application() {
 
 	status_t reg_suc = STATUS_OK;
-	reg_suc |= register_task("task 1", task_1, 50, 0, 5);
+
+	/*
+	 * Register new tasks to the time-triggered scheduler
+	 * here and record the status result.
+	 * 
+	 * See platform/scheduler.h for details of task registration.
+	 */
+	// reg_suc |= register_task("my task name", task_function, 50, 0, 5);
 
 	if (reg_suc == STATUS_ERR) {
 		dss();
 	}
-}
-
-void task_1() {
-	open_inspiratory_valve();
-	close_inspiratory_valve();
 }
