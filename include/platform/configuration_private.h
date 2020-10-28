@@ -14,7 +14,20 @@
 
 #include "stm32f4xx_hal.h"
 
-#define GPIO_PERIPHERAL GPIOA
-#define ALARM_LED_PIN GPIO_PIN_5
+/************************************************
+ * VALVE CONTROL DEFINITIONS
+ ************************************************/
+
+// GPIO PA6 maps to Pin D12 on the Nucleo-64 board.
+#define INSP_VALVE_PORT     GPIOA
+#define INSP_VALVE_PIN      GPIO_PIN_6
+
+// Pin PA7 maps to Pin D11 on the Nucleo-64 board.
+#define EXP_VALVE_PORT      GPIOA
+#define EXP_VALVE_PIN       GPIO_PIN_7
+
+// GPIO PB6 maps to Pin D10 on the Nucleo-64 board.
+#define TANK_VALVE_PORT     GPIOB
+#define TANK_VALVE_PIN      GPIO_PIN_6
 
 #endif /* INC_PLATFORM_CONFIGURATION_PRIVATE_H_ */
