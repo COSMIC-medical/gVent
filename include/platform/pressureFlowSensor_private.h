@@ -22,17 +22,17 @@
 /*
  * The lower and upper bounds of validity for the sensed inputs
  * pressure bounds are given in cmH2O
- * flow  bounds are given in ???
+ * flow  bounds are given in SLPM
  */
-#define PRESSURE_LOWER_BOUND 0
-#define PRESSURE_UPPER_BOUND 100
-#define FLOW_LOWER_BOUND 0
-#define FLOW_UPPER_BOUND 100
+#define PRESSURE_LOWER_BOUND -5
+#define PRESSURE_UPPER_BOUND 40
+#define FLOW_LOWER_BOUND -250
+#define FLOW_UPPER_BOUND 250
 
 /*
  * The maximum change rate
  * pressure change rate given in cmH2O per second
- * flow change rate given in ???
+ * flow change rate given in SLPM
  */
 #define PRESSURE_MAX_CHANGE_RATE 10
 #define FLOW_MAX_CHANGE_RATE 10

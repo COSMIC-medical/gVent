@@ -14,8 +14,8 @@
  * Reads and validates the read inspiratory pressure
  * Updates the measurement inputs
  *
- * returns the inspiratory pressure in ??? when it is valid
- * returns ??? when no valid pressure is available
+ * returns the inspiratory pressure in cmH2O when it is valid
+ * returns cmH2O when no valid pressure is available
  *
  */
 int get_inspiratory_pressure();
@@ -24,8 +24,8 @@ int get_inspiratory_pressure();
  * Reads and validates the read expiratory pressure
  * Updates the measurement inputs
  *
- * returns the expiratory pressure in ??? when it is valid
- * returns ??? when no valid pressure is available
+ * returns the expiratory pressure in cmH2O when it is valid
+ * returns cmH2O when no valid pressure is available
  */
 int get_expiratory_pressure();
 
@@ -33,8 +33,8 @@ int get_expiratory_pressure();
  * Reads and validates the read inspiratory flow
  * Updates the measurement inputs
  *
- * returns the inspiratory flow in ??? when it is valid
- * returns ??? when no valid flow is available
+ * returns the inspiratory flow in SLPM when it is valid
+ * returns SLPM when no valid flow is available
  */
 int get_inspiratory_flow();
 
@@ -42,8 +42,8 @@ int get_inspiratory_flow();
  * Reads and validates the read expiratory flow
  * Updates the measurement inputs
  *
- * returns the expiratory flow in ??? when it is valid
- * returns ???  when no valid flow is available
+ * returns the expiratory flow in SLPM when it is valid
+ * returns SLPM  when no valid flow is available
  */
 int get_expiratory_flow();
 
