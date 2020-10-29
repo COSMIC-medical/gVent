@@ -27,6 +27,7 @@
 #include "platform/scheduler.h"
 #include "platform/scheduler_private.h"
 #include "platform/configuration_private.h"
+#include "platform/init.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,7 +54,6 @@ TIM_HandleTypeDef htim3;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
@@ -92,7 +92,7 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
+  init_gpio();
   MX_TIM3_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
@@ -268,50 +268,6 @@ static void MX_TIM3_Init(void)
   /* USER CODE END TIM3_Init 2 */
 
 }
-
-/**
-  * @brief GPIO Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_GPIO_Init(void)
-{
-
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
-
-  /* Set default GPIO pin Output Level */
-  HAL_GPIO_WritePin(INSP_VALVE_PORT, INSP_VALVE_PIN, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(EXP_VALVE_PORT, EXP_VALVE_PIN, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(TANK_VALVE_PORT, TANK_VALVE_PIN, GPIO_PIN_RESET);
-
-  /* Configure each GPIO pin */
-  GPIO_InitStruct.Pin = INSP_VALVE_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-  HAL_GPIO_Init(INSP_VALVE_PORT, &GPIO_InitStruct);
-
-  GPIO_InitStruct.Pin = EXP_VALVE_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-  HAL_GPIO_Init(EXP_VALVE_PORT, &GPIO_InitStruct);
-
-  GPIO_InitStruct.Pin = TANK_VALVE_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-  HAL_GPIO_Init(TANK_VALVE_PORT, &GPIO_InitStruct);
-
-}
-
-/* USER CODE BEGIN 4 */
-
-/* USER CODE END 4 */
 
 /**
   * @brief  This function is executed in case of error occurrence.

@@ -49,11 +49,12 @@ OBJ += $(ASM_SRCS:.s=.o)
 # includes for the HAL and ARM Cortex hardware
 INC_DIRS = $(HAL_INC)/ \
  		   $(LIB)/CMSIS/Device/ST/STM32F4xx/Include/ \
-		   $(LIB)/CMSIS/Include/ \
+		   $(LIB)/CMSIS/Include/
 
 # we have to include all of our gVent include/*
 # directories separately...
 INC_DIRS += $(INC_DIR)/
+INC_DIRS += $(INC_DIR)/hardware
 INC_DIRS += $(INC_DIR)/platform
 INC_DIRS += $(INC_DIR)/application
 INC_DIRS += $(INC_DIR)/application/tasks
