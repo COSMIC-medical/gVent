@@ -12,7 +12,7 @@
  *
  */
 int get_inspiratory_pressure(){
-
+    
 }
 
 /*
@@ -45,5 +45,5 @@ int get_inspiratory_flow(){
  * returns SLPM  when no valid flow is available
  */
 int get_expiratory_flow(){
-    
+
 }
