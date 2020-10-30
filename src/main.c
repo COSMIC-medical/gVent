@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include <stm32f4xx_hal_i2c.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -30,6 +31,28 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+
+/* I2C PIN CONFIGURATION CODE
+
+Pinout: 
+PB6 -> D10
+PB9 -> D14
+
+ */
+void ConfigureI2CPins()
+{
+    GPIO_InitTypeDef GPIO_InitStruct;
+ 
+    GPIO_InitStruct.Pin = GPIO_PIN_6 | GPIO_PIN_9;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+    GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
+    __GPIOB_CLK_ENABLE();
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+}
+/* END I2C PIN CONFIGURATION CODE */
+
 
 /* USER CODE END PTD */
 
@@ -95,6 +118,26 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+
+  /* I2C CONFIGURATION AND TESTING CODE */
+  ConfigureI2CPins();
+
+  I2C_HandleTypeDef hI2C;
+
+  hI2C.Instance = I2C1;
+  hI2C.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hI2C.Init.ClockSpeed = 10240;
+  hI2C.Init.DutyCycle = I2C_DUTYCYCLE_2;
+
+  __I2C1_CLK_ENABLE();
+
+  if (HAL_I2C_Init(&hI2C) != HAL_OK)
+      asm("bkpt 255");
+
+  if (HAL_I2C_Master_Transmit(&hI2C, 0x5A, (uint8_t *)"1234", 4, 10000) != HAL_OK){
+      asm("bkpt 255");
+  }
+  /* END I2C CONFIGURATION AND TESTING CODE */
 
   // STEP 1: initialize the platform
   platform_config_t pconfig;
