@@ -36,55 +36,65 @@ void task_valve_demo() {
     switch(state) {
 
         case 0:
-            // initial state, all valves closed
+            // initial state, all valves closed, start timer
+            // to keep valves closed for 5 seconds.
             close_inspiratory_valve();
             close_expiratory_valve();
             close_tank_valve();
+            last = get_current_time();
             state = 1;
             break;
 
         case 1:
+            // wait 5 seconds while all valves are closed,
+            // once elapsed advance state machine.
+            if (now - last > wait_time_ms) {
+                state = 2;
+            }
+            break;
+
+        case 2:
             // open the inspiratory valve and set
             // a timer variable
             open_inspiratory_valve();
             last = get_current_time();
-            state = 2;
+            state = 3;
             break;
 
-        case 2:
+        case 3:
             // wait for 5 seconds while inspiratory valve is open
             // once elapsed, close inspiratory valve and advance
             if (now - last > wait_time_ms) {
                 close_inspiratory_valve();
-                state = 3;
+                state = 4;
             }
             break;
 
-        case 3:
+        case 4:
             // close inspiratory valve and open expiratory valve
             // also reset timer variable
             open_expiratory_valve();
             last = get_current_time();
-            state = 4;
+            state = 5;
             break;
 
-        case 4:
+        case 5:
             // wait for 5 seconds while the expiratory valve is open
             // once elapsed, close expiratory valve and advance
             if (now - last > wait_time_ms) {
                 close_expiratory_valve();
-                state = 5;
+                state = 6;
             }
             break;
 
-        case 5:
+        case 6:
             // open tank valve and set a timer variable
             open_tank_valve();
             last = get_current_time();
-            state = 6;
+            state = 7;
             break;
 
-        case 6:
+        case 7:
             // wait 5 seconds while tank valve is open
             // once elapsed, then close tank valve and
             // loop back to initial state.

@@ -1,18 +1,22 @@
 /**
  * This is a toy task for actuating a valve and demonstrating
- * the platform's valve management functionality. This task
- * does the following:
+ * the platform's valve management functionality. The purpose
+ * is to faciliate testing of the valve actuation and the 
+ * associated electronics.
  * 
- *  1. Opens the inspiratory valve.
- *  2. Waits 5 seconds
- *  3. Closes the inspiratory valve.
- *  4. Opens the expiratory valve.
- *  5. Waits 5 seconds
- *  6. Closes the expiratory valve.
- *  7. Opens the tank valve.
- *  8. Waits 5 seconds
- *  9. Closes the tank valve.
- *  10. Repeat from step (1) 
+ * This task does the following:
+ *  1. Closes all valves.
+ *  2. Waits for 5 seconds.
+ *  3. Opens the inspiratory valve.
+ *  4. Waits 5 seconds
+ *  5. Closes the inspiratory valve.
+ *  6. Opens the expiratory valve.
+ *  7. Waits 5 seconds
+ *  8. Closes the expiratory valve.
+ *  9. Opens the tank valve.
+ *  10. Waits 5 seconds
+ *  11. Closes the tank valve.
+ *  12. Repeat from step (1) 
  * 
  * This task should eventually be removed from the application.
  */
