@@ -49,13 +49,15 @@ OBJ += $(ASM_SRCS:.s=.o)
 # includes for the HAL and ARM Cortex hardware
 INC_DIRS = $(HAL_INC)/ \
  		   $(LIB)/CMSIS/Device/ST/STM32F4xx/Include/ \
-		   $(LIB)/CMSIS/Include/ \
+		   $(LIB)/CMSIS/Include/
 
 # we have to include all of our gVent include/*
 # directories separately...
 INC_DIRS += $(INC_DIR)/
+INC_DIRS += $(INC_DIR)/hardware
 INC_DIRS += $(INC_DIR)/platform
 INC_DIRS += $(INC_DIR)/application
+INC_DIRS += $(INC_DIR)/application/tasks
 
 INCLUDE = $(addprefix -I,$(INC_DIRS))
 
@@ -93,7 +95,6 @@ CFLAGS += -Wall
 CFLAGS += -DUSE_HAL_DRIVER -DSTM32F401xE -DDEBUG 
 CFLAGS += -ffunction-sections 
 CFLAGS += -fdata-sections 
-CFLAGS += -fstack-usage 
 CFLAGS += --specs=nano.specs
 CFLAGS += -mfpu=fpv4-sp-d16
 CFLAGS += -mfloat-abi=hard
