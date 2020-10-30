@@ -94,8 +94,8 @@ OBJ += $(EXT_SRCS:.c=.o)
 ########################################
 CFLAGS = -std=gnu11 
 CFLAGS += -mcpu=cortex-m4 
-CFLAGS += -g3 #to remove
-CFLAGS += -O0 #to remove 
+CFLAGS += -g3
+CFLAGS += -O0
 CFLAGS += -Wall
 CFLAGS += -DUSE_HAL_DRIVER -DSTM32F401xE -DDEBUG 
 CFLAGS += -ffunction-sections 
@@ -151,7 +151,12 @@ $(TARGET).bin: $(TARGET).elf
 flash:
 	$(SF) write $(TARGET).bin 0x8000000
 
-ventilation_test: test/testRunner.c src/application/ventilation.o test/ventilation-test.o test/stubs/systemInfo_stub.o test/stubs/valve_stub.o test/stubs/dss_stub.o test/testUtil.o
+ventilation_test: test/testRunner.c src/application/ventilation.o \
+	test/ventilation_test.o \
+	test/stubs/systemInfo_stub.o  \
+	test/stubs/valve_stub.o \
+	test/stubs/dss_stub.o \
+	test/testUtil.o
 	$(CC) -o $@ $^
 	
 test: CC=$(CC_TEST)

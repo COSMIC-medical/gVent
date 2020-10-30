@@ -1,19 +1,20 @@
 /*
  * systemInfo_stub.c
- *Stub for the function get_current_time
  *
+ * Stub for the function get_current_time
  */
 
 #include <stdlib.h>
 #include <string.h>
 
-int* time_to_return;
-int current_call = 0;
+static int* time_to_return;
+static int current_call = 0;
 
-void set_current_time(int* times){
-  time_to_return = (int*) malloc(sizeof(times));
-  memcpy(time_to_return, times, sizeof(times));
-  int current_call = 0;
+void set_current_time(int* times, size_t size){
+  free(time_to_return);
+  time_to_return = (int*) malloc(sizeof(*times) * size);
+  memcpy(time_to_return, times, sizeof(*times) * size);
+  current_call = 0;
 }
 
 int get_current_time(){

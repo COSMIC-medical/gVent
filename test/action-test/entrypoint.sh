@@ -2,6 +2,7 @@
 
 apt-get update -y
 apt-get install -y gcc-arm-none-eabi 
+apt-get install build-essential -y
 apt-get install make -y
 
 make clean 

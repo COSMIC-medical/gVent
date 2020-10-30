@@ -20,4 +20,9 @@
 	} \
     } while (0);
 
+
+/*
+ * Function that run a test function
+ */
+void test(void (* func)(), char* func_name);
 #endif /* TEST_UTIL_H_ */

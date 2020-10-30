@@ -1,11 +1,9 @@
-#include "ventilation-test.h"
+#include "ventilation_test.h"
 #include "testUtil.h"
 
 int main(int argc, char **argv) {
-  //test(addition, "addition");
-  test(startVentilation_openInspiratoryValve, "startVentilation_openInspiratoryValve");
-  test(startVentilation_doesNotopenInspiratoryValve, "startVentilation_doesNotopenInspiratoryValve");
-    
+  test(startVentilation_afterOneInspiration_openInspiratoryValve,
+   "startVentilation_afterOneInspiration_openInspiratoryValve");
+  test(startVentilation_duringInspiration_doesNotopenInspiratoryValve, 
+  "startVentilation_duringInspiration_doesNotopenInspiratoryValve");
 }
-
-
