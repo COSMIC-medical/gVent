@@ -6,4 +6,6 @@ int main(int argc, char **argv) {
    "startVentilation_afterOneInspiration_openInspiratoryValve");
   test(startVentilation_duringInspiration_doesNotopenInspiratoryValve, 
   "startVentilation_duringInspiration_doesNotopenInspiratoryValve");
+
+  printResult();
 }

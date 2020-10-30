@@ -165,7 +165,8 @@ test: INCLUDE=$(INCLUDE_TEST)
 test: ventilation_test
 
 clean:
-	rm -rf *.elf *.bin *.o *.su *.map
-	rm -rf $(OBJ)
-	rm -rf $(OBJ:.o=.su)
-	rm -rf ventilation_test
+	rm -f *.elf *.bin *.o *.su *.map
+	rm -f test/*.o test/*/*.o
+	rm -f $(OBJ)
+	rm -f $(OBJ:.o=.su)
+	rm -f ventilation_test

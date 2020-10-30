@@ -14,15 +14,23 @@
     do { \
         if (!(cond)) { \
             printf("%s:%s:%d: assert FAIL\n", __FILE__, __func__, __LINE__); \
-            return; \
+            return 0; \
         } else { \
-	    printf("%s:%s:%d: SUCESS \n", __FILE__, __func__, __LINE__); \
-	} \
+	        printf("%s:%s:%d: SUCESS \n", __FILE__, __func__, __LINE__); \
+            return 1; \
+	    } \
     } while (0);
 
 
 /*
  * Function that run a test function
  */
-void test(void (* func)(), char* func_name);
+void test(int (* func)(), char* func_name);
+
+/*
+ * Function that returns the coverage of test passed
+ */
+void printResult();
+
+
 #endif /* TEST_UTIL_H_ */

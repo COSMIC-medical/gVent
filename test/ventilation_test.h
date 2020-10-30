@@ -3,6 +3,6 @@
  *
  */
 
-void startVentilation_afterOneInspiration_openInspiratoryValve();
+int startVentilation_afterOneInspiration_openInspiratoryValve();
 
-void startVentilation_duringInspiration_doesNotopenInspiratoryValve();
+int startVentilation_duringInspiration_doesNotopenInspiratoryValve();
