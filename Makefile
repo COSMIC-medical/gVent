@@ -151,7 +151,7 @@ $(TARGET).bin: $(TARGET).elf
 flash:
 	$(SF) write $(TARGET).bin 0x8000000
 
-ventilation_test: test/testRunner.c src/application/ventilation.o \
+ventilation_test: test/testRunner.c src/application/tasks/ventilation.o \
 	test/ventilation_test.o \
 	test/stubs/systemInfo_stub.o  \
 	test/stubs/valve_stub.o \
@@ -168,3 +168,4 @@ clean:
 	rm -rf *.elf *.bin *.o *.su *.map
 	rm -rf $(OBJ)
 	rm -rf $(OBJ:.o=.su)
+	rm -rf ventilation_test
