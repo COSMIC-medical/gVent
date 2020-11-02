@@ -1,5 +1,5 @@
 /*
- * testUtil.c
+ * test_util.c
  *
  * contains the functions necessary for the testing framework
  */
@@ -31,7 +31,7 @@ void test(int (* func)(), char* func_name);
  * Function that print the coverage of test passed
  * and return 0 if tat least one test failed and 1 otherwise
  */
-int printResult();
+int print_result();
 
 
 #endif /* TEST_UTIL_H_ */

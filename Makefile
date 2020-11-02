@@ -151,12 +151,12 @@ $(TARGET).bin: $(TARGET).elf
 flash:
 	$(SF) write $(TARGET).bin 0x8000000
 
-ventilation_test: test/testRunner.c src/application/tasks/ventilation.o \
+ventilation_test: test/test_runner.c src/application/tasks/ventilation.o \
 	test/ventilation_test.o \
 	test/stubs/systemInfo_stub.o  \
 	test/stubs/valve_stub.o \
 	test/stubs/dss_stub.o \
-	test/testUtil.o
+	test/test_util.o
 	$(CC) -o $@ $^
 	
 test: CC=$(CC_TEST)

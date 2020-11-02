@@ -1,5 +1,5 @@
 #include "ventilation_test.h"
-#include "testUtil.h"
+#include "test_util.h"
 
 int main(int argc, char **argv) {
   test(startVentilation_afterOneInspiration_openInspiratoryValve,
@@ -7,6 +7,6 @@ int main(int argc, char **argv) {
   test(startVentilation_duringInspiration_doesNotopenInspiratoryValve, 
   "startVentilation_duringInspiration_doesNotopenInspiratoryValve");
 
-  int result = printResult();
+  int result = print_result();
   return !result;
 }

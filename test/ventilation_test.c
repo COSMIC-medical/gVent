@@ -7,7 +7,7 @@
 #include "application/tasks/ventilation.h"
 #include "stubs/systemInfo_stub.h"
 #include "stubs/valve_stub.h"
-#include "testUtil.h"
+#include "test_util.h"
 
 
 void reset_to_inspiration_start();
