@@ -8,5 +8,5 @@ int main(int argc, char **argv) {
   "startVentilation_duringInspiration_doesNotopenInspiratoryValve");
 
   int result = printResult();
-  return result;
+  return !result;
 }
