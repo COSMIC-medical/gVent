@@ -27,7 +27,7 @@ int startVentilation_afterOneInspiration_openInspiratoryValve() {
 
 int startVentilation_duringInspiration_doesNotopenInspiratoryValve() {
   int* times = (int*) malloc(1*sizeof(int)); 
-  times[0] = 125;
+  times[0] = 0;
   set_current_time (times, 1);
 
   close_inspiratory_valve();
@@ -36,5 +36,5 @@ int startVentilation_duringInspiration_doesNotopenInspiratoryValve() {
   start_inspiration();
 
   int inspiratory_valve_status = get_inspiratory_valve_status();
-  assertTrue(inspiratory_valve_status == VALVE_CLOSE);
+  assertTrue(inspiratory_valve_status == VALVE_OPEN);
 }

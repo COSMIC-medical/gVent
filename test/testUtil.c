@@ -16,9 +16,11 @@ void test(int (* func)(), char* func_name) {
   nb_test ++;
 }
 
-void printResult() {
+int printResult() {
   printf("----------------------------------------------\n");
   printf("%d out of %d tests PASSED\n", nb_pass, nb_test);
   printf("----------------------------------------------\n");
+
+  return nb_pass == nb_test;
 }
 

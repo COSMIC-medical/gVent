@@ -28,9 +28,10 @@
 void test(int (* func)(), char* func_name);
 
 /*
- * Function that returns the coverage of test passed
+ * Function that print the coverage of test passed
+ * and return 0 if tat least one test failed and 1 otherwise
  */
-void printResult();
+int printResult();
 
 
 #endif /* TEST_UTIL_H_ */

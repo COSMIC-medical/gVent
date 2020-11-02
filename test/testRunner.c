@@ -7,5 +7,6 @@ int main(int argc, char **argv) {
   test(startVentilation_duringInspiration_doesNotopenInspiratoryValve, 
   "startVentilation_duringInspiration_doesNotopenInspiratoryValve");
 
-  printResult();
+  int result = printResult();
+  return result;
 }

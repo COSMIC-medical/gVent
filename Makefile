@@ -137,7 +137,7 @@ $(TARGET).elf: $(OBJ)
 	$(SZ) $(TARGET).elf 
 
 $(TARGET).bin: $(TARGET).elf
-	$(CP) -O binary $(TARGET).elf  $(TARGET).bin	
+	$(CP) -O binary $(TARGET).elf $(TARGET).bin	
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $(INCLUDE) $^ -o $@ 
