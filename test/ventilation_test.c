@@ -36,5 +36,5 @@ int startVentilation_duringInspiration_doesNotopenInspiratoryValve() {
   start_inspiration();
 
   int inspiratory_valve_status = get_inspiratory_valve_status();
-  assertTrue(inspiratory_valve_status == VALVE_OPEN);
+  assertTrue(inspiratory_valve_status == VALVE_CLOSE);
 }
