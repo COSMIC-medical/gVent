@@ -1,5 +1,5 @@
 /*
- * systemInfo.h
+ * system_info.h
  *
  */
 

@@ -1,5 +1,5 @@
 /*
- * systemInfo.c
+ * system_info.c
  *
  */
 

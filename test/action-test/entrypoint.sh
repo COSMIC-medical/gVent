@@ -1,24 +1,14 @@
 #!/bin/sh -l
 
-apt-get update --yes
-apt-get install --yes cmake
-apt-get install --yes git
-apt-get install --yes g++-8
+apt-get update -y
+apt-get install -y gcc-arm-none-eabi 
+apt-get install build-essential -y
+apt-get install make -y
 
- 
-mkdir lib
-cd lib
-git clone https://github.com/google/googletest/
+make clean 
+make all 
 
-cd ..
-mkdir build
-cd build
-cmake .. -DCMAKE_CXX_COMPILER=g++-8
-make all
-
-ls -la ../build/test/
-
-chmod +x ../build/test/githubAction_test
-./../build/test/githubAction_test
+make clean test
+./ventilation_test
 
 
