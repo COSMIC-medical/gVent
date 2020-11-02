@@ -5,7 +5,7 @@
  */
 
 #include "application/tasks/ventilation.h"
-#include "stubs/systemInfo_stub.h"
+#include "stubs/system_info_stub.h"
 #include "stubs/valve_stub.h"
 #include "test_util.h"
 
