@@ -1,5 +1,5 @@
 /*
- * pressureFlowSensor_private.h
+ * pressure_flow_sensor_private.h
  *
  * private to the platform
  */

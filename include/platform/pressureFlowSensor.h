@@ -1,5 +1,5 @@
 /*
- * pressureFlowSensor.h
+ * pressure_flow_sensor.h
  *
  * This file contains the functions
  * for an application developer
