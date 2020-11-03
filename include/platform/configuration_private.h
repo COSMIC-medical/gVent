@@ -30,4 +30,16 @@
 #define TANK_VALVE_PORT     GPIOB
 #define TANK_VALVE_PIN      GPIO_PIN_6
 
+/************************************************
+ * ALARM CONTROL DEFINITIONS
+ ************************************************/
+
+// GPIO PC7 maps to Pin D9 on the Nucleo-64 board.
+#define ALARM_LED_PORT      GPIOC
+#define ALARM_LED_PIN       GPIO_PIN_7
+
+// GPIO PA9 maps to Pin D8 on the Nucleo-64 board.
+#define ALARM_BUZZ_PORT     GPIOA
+#define ALARM_BUZZ_PIN      GPIO_PIN_8
+
 #endif /* INC_PLATFORM_CONFIGURATION_PRIVATE_H_ */
