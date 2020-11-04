@@ -10,4 +10,13 @@
 
 #include <stdint.h>
 
+/**
+ * Status used by the platform associated to clinician and measured inputs
+ *   VALID means the input was available and valid
+ *   INVALID means the input is either unavailable or invalid 
+ * 
+ * where validity of an input is defined by some vality bounds
+ */
+enum Validity_Status {VALID = 1, INVALID = 0}; 
+
 #endif /* SRC_PLATFORM_PLATFORM_H_ */
