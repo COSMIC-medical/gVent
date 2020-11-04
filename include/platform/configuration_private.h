@@ -56,6 +56,6 @@
 #define ALARM_BUZZ_FREQ     1000
 
 // globally available handle for the alarm timer.
-// TIM_HandleTypeDef alarm_timer;
+TIM_HandleTypeDef alarm_timer;
 
 #endif /* INC_PLATFORM_CONFIGURATION_PRIVATE_H_ */

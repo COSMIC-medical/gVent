@@ -13,7 +13,8 @@
 typedef enum {
     OFF, // buzzer and alarm LED off. 
     ON, // buzzer and alarm LED both on.
-    MUTED // buzzer off and alarm LED on.
+    MUTED, // buzzer off and alarm LED on.
+    ERR // an error occured trying to set the alarm.
 } alarm_status_t;
 
 /**

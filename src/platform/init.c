@@ -2,9 +2,6 @@
 #include <platform/configuration_private.h>
 #include "stm32f4xx_hal.h"
 
-// globally available handle for the alarm timer.
-TIM_HandleTypeDef htim3;
-
 void init_gpio_clk(GPIO_TypeDef * port) {
   if (port == GPIOA) {
     __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -130,26 +127,26 @@ void init_alarm_buzzer() {
    * configuration regstier.
    */
 
-  htim3.Instance = ALARM_BUZZ_TIM;
-  htim3.Init.Prescaler = prescalar - 1;
-  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = period - 1;
-  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim3) != HAL_OK) {
+  alarm_timer.Instance = ALARM_BUZZ_TIM;
+  alarm_timer.Init.Prescaler = prescalar - 1;
+  alarm_timer.Init.CounterMode = TIM_COUNTERMODE_UP;
+  alarm_timer.Init.Period = period - 1;
+  alarm_timer.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  alarm_timer.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&alarm_timer) != HAL_OK) {
     Error_Handler();
   }
 
   // STEP 2: Set clock source for timer to internal clock (84MHz)
   // -----------------------------
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK) {
+  if (HAL_TIM_ConfigClockSource(&alarm_timer, &sClockSourceConfig) != HAL_OK) {
     Error_Handler();
   }
 
   // STEP 3: Initialize timer in PWM mode.
   // -----------------------------
-  if (HAL_TIM_PWM_Init(&htim3) != HAL_OK) {
+  if (HAL_TIM_PWM_Init(&alarm_timer) != HAL_OK) {
     Error_Handler();
   }
 
@@ -157,7 +154,7 @@ void init_alarm_buzzer() {
   // -----------------------------
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK) {
+  if (HAL_TIMEx_MasterConfigSynchronization(&alarm_timer, &sMasterConfig) != HAL_OK) {
     Error_Handler();
   }
 
@@ -167,7 +164,7 @@ void init_alarm_buzzer() {
   sConfigOC.Pulse = duty - 1;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, ALARM_BUZZ_CHL) != HAL_OK) {
+  if (HAL_TIM_PWM_ConfigChannel(&alarm_timer, &sConfigOC, ALARM_BUZZ_CHL) != HAL_OK) {
     Error_Handler();
   }
 
@@ -183,7 +180,7 @@ void init_alarm_buzzer() {
   HAL_GPIO_Init(ALARM_BUZZ_PORT, &GPIO_InitStruct);
 
   // TO DELETE - start the alarm for testing...
-  HAL_TIM_PWM_Start(&htim3, ALARM_BUZZ_CHL);
+  HAL_TIM_PWM_Start(&alarm_timer, ALARM_BUZZ_CHL);
 
 }
 
