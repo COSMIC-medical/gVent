@@ -8,4 +8,4 @@
  * todo add a comment here
  *
  */
-Status get_respiratory_rate(uint32_t * RR);
+Validity_Status get_respiratory_rate(uint32_t * RR);
