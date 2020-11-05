@@ -15,6 +15,19 @@
 void ventilation();
 
 /*
+ * Gets the respiratory rate inputted by clinician
+ * SRS-0001 & SRS-0004
+ * 
+ * (Add this into a header in platform instead of ventilation header)
+ * (Need to add stubs for testing)
+ * Step 1: Get clinician selected inspitory rate OR default inspiratory rate
+ * Step 2: Calculate duration of a breath cycle in milliseconds
+ * Step 3: Assign new inspiratory rate to breath_cycle_duration
+ */
+int calculate_breath_cycle_duration(){
+}
+
+/*
  * Computes the circuit pressure
  * SRS-0002
  */
