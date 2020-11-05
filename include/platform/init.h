@@ -8,6 +8,14 @@
 #ifndef INC_PLATFORM_INIT_H_
 #define INC_PLATFORM_INIT_H_
 
+/**
+ * Initialize general purpose output port of the 
+ * microprocessor for the purpose of indicating the
+ * system status. 
+ * 
+ * The status is indicated on the LED on the Nucleo
+ * board.
+ */
 void init_status_gpio(void);
 
 /**

@@ -5,6 +5,7 @@
 
 #include <platform/scheduler_private.h>
 #include <platform/scheduler.h>
+#include <platform/system_status.h>
 #include <application/dss.h>
 
 // module level private variables
@@ -98,7 +99,7 @@ void run_platform() {
 	__HAL_TIM_SetCounter(ticker, 0);
 
 	// indicate the platform has started running with the LED
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
+	set_system_status_on();
 
 	// infinitely call scheduling dispatch function
 	while(1) {
