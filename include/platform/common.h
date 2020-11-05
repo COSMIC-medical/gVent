@@ -5,8 +5,8 @@
  * application, e.g., basic type definitions (e.g., uint16_t).
  */
 
-#ifndef SRC_PLATFORM_PLATFORM_H_
-#define SRC_PLATFORM_PLATFORM_H
+#ifndef SRC_PLATFORM_COMMON_H_
+#define SRC_PLATFORM_COMMON_H_
 
 #include <stdint.h>
 
@@ -20,4 +20,4 @@ typedef enum {
     STATUS_ERR = 0xFF   // operation failed.
 } status_t;
 
-#endif /* SRC_PLATFORM_PLATFORM_H_ */
+#endif /* SRC_PLATFORM_COMMON_H_ */

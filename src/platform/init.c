@@ -179,9 +179,6 @@ void init_alarm_buzzer() {
   GPIO_InitStruct.Alternate = ALARM_BUZZ_AF2;
   HAL_GPIO_Init(ALARM_BUZZ_PORT, &GPIO_InitStruct);
 
-  // TO DELETE - start the alarm for testing...
-  HAL_TIM_PWM_Start(&alarm_timer, ALARM_BUZZ_CHL);
-
 }
 
 /**
@@ -206,8 +203,4 @@ void init_alarm_led() {
 void init_alarm() {
   init_alarm_led();
   init_alarm_buzzer();
-
-  // TODO - delete me...
-  HAL_GPIO_WritePin(ALARM_LED_PORT, ALARM_LED_PIN, SET);
-
 }
