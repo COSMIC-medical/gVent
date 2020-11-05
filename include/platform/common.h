@@ -12,15 +12,12 @@
 
 /**
  * Status type used by the platform, both internally and to
- * communicate with the application layer. 
- * 
- * For example, reading a sensor might return STATUS_OK to
- * indicate that the sensor was successfully read or STATUS_ERR
- * to indicate a read failure.
+ * communicate the outcome of an operation with the 
+ * application layer.
  */
 typedef enum {
-    STATUS_OK = 0x00,
-    STATUS_ERR = 0xFF
+    STATUS_OK = 0x00,   // operation complete without error.
+    STATUS_ERR = 0xFF   // operation failed.
 } status_t;
 
 #endif /* SRC_PLATFORM_PLATFORM_H_ */

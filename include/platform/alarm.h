@@ -13,8 +13,7 @@
 typedef enum {
     OFF, // buzzer and alarm LED off. 
     ON, // buzzer and alarm LED both on.
-    MUTED, // buzzer off and alarm LED on.
-    ERR // an error occured trying to set the alarm.
+    MUTED // buzzer off and alarm LED on.
 } alarm_status_t;
 
 /**
@@ -27,29 +26,41 @@ alarm_status_t get_alarm_status();
  * 
  * Powers on the alarm's LED, and if the alarm is not 
  * muted, powers on the alarm buzzer
+ * 
+ * @return STATUS_OK if the alarm was turned on or
+ *         STATUS_ERR if alarm was not turned off.
  */
-void set_alarm_on();
+status_t set_alarm_on();
 
 /*
  * Turn off the alarm. 
  * 
  * Powers off the alarm's LED and turns off the alarm's
  * buzzer.
+ * 
+ * @return STATUS_OK if the alarm was turned off and
+ *         STATUS_ERR if the alarm was not turned off.
  */
-void set_alarm_off();
+status_t set_alarm_off();
 
 /*
  * Updates the alarm status to muted
  * 
  * If the alarm is on powers off the alarm's buzzer
+ * 
+ * @return STATUS_OK if the alarm was muted and
+ *         STATUS_ERR if the alarm was not muted.
  */
-void mute_alarm();
+status_t mute_alarm();
 
 /*
  * Updates the alarm status to not muted
  * 
  * If the alarm is on powers on the alarm's buzzer.
+ * 
+ * @return STATUS_OK if the alarm was unmuted and
+ *         STATUS_ERR if the alarm was not unmuted. 
  */
-void unmute_alarm();
+status_t unmute_alarm();
 
 #endif /* SRC_PLATFORM_ALARM_H_ */
