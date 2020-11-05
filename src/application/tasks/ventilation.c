@@ -23,10 +23,12 @@
  */
 static int start_current_breath_cycle = 0;
 
-/*
- * the time the current breath cycle was supposed to start
- */
-static int breath_cycle_duration = 125; //to do replace this value by the real one
+//static int breath_cycle_duration = 125; (Victor: This was here previously, commenting it out)
+  void calculate_breath_cycle_duration(){
+    static int breath_cycle_duration = 0; // Variable initialization
+    int respiratory_rate = get_respiratory_rate(); // Retrieve clinician respiratory rate
+    breath_cycle_duration = 60000/respiratory_rate; // Calculate cycle duration
+  }
 
 /*
  * Phase of the ventilation
