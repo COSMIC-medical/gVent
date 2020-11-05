@@ -264,18 +264,8 @@ static void MX_TIM4_Init(void)
   * @brief  This function is executed in case of error occurrence.
   * @retval None
   */
-void Error_Handler(void)
-{
-  /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  while (1) {
-
-    HAL_Delay(500);
-    HAL_GPIO_TogglePin(STATUS_LED_PORT, STATUS_LED_PIN);
-
-  }
-
-  /* USER CODE END Error_Handler_Debug */
+void Error_Handler(void) {
+  dss();
 }
 
 #ifdef  USE_FULL_ASSERT

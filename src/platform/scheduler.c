@@ -185,6 +185,15 @@ void scheduler_dispatch() {
 }
 
 /**
+ * This is intentionally a light wrapper around the HAL delay
+ * function. To be used with extreme care since it is a blocking
+ * delay. Other tasks will not be able to proceed while this delay.
+ */ 
+void delay_ms(uint32_t ms) {
+	HAL_Delay(ms);
+}
+
+/**
  * This function is called by the HAL when any timer interrupt is
  * is called. The handle to the timer that triggered the interrupt
  * is passed.

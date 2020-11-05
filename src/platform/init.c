@@ -1,5 +1,6 @@
 #include <platform/init.h>
 #include <platform/configuration_private.h>
+#include <application/dss.h>
 #include "stm32f4xx_hal.h"
 
 void init_gpio_clk(GPIO_TypeDef * port) {
@@ -134,20 +135,20 @@ void init_alarm_buzzer() {
   alarm_timer.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   alarm_timer.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&alarm_timer) != HAL_OK) {
-    Error_Handler();
+    dss();
   }
 
   // STEP 2: Set clock source for timer to internal clock (84MHz)
   // -----------------------------
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
   if (HAL_TIM_ConfigClockSource(&alarm_timer, &sClockSourceConfig) != HAL_OK) {
-    Error_Handler();
+    dss();
   }
 
   // STEP 3: Initialize timer in PWM mode.
   // -----------------------------
   if (HAL_TIM_PWM_Init(&alarm_timer) != HAL_OK) {
-    Error_Handler();
+    dss();
   }
 
   // STEP 4: We don't require clock syncrohnization.
@@ -155,7 +156,7 @@ void init_alarm_buzzer() {
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&alarm_timer, &sMasterConfig) != HAL_OK) {
-    Error_Handler();
+    dss();
   }
 
   // STEP 5: Initialize channel in PWM mode for timer.
@@ -165,7 +166,7 @@ void init_alarm_buzzer() {
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&alarm_timer, &sConfigOC, ALARM_BUZZ_CHL) != HAL_OK) {
-    Error_Handler();
+    dss();
   }
 
   // STEP 6: Initialize GPIO pin in alternative function mode for PWM
