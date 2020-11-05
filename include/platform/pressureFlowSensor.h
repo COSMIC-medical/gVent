@@ -10,6 +10,8 @@
 #ifndef INC_PLATFORM_PRESSURE_FLOW_SENSOR_H_
 #define INC_PLATFORM_PRESSURE_FLOW_SENSOR_H_
 
+uint32_t read_FS6122_sensor(uint8_t, uint8_t);
+
 /*
  * Reads and validates the read inspiratory pressure
  * Updates the measurement inputs
