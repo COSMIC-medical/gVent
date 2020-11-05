@@ -1,7 +1,6 @@
 #include "stm32f4xx_hal.h"
 #include <platform/alarm.h>
 #include <platform/configuration_private.h>
-#include <platform/common.h>
 
 static alarm_status_t current_status = OFF;
 
@@ -20,7 +19,7 @@ status_t set_alarm_on() {
 
 status_t set_alarm_off() {
     HAL_GPIO_WritePin(ALARM_LED_PORT, ALARM_LED_PIN, RESET);
-    if (HAL_TIM_PWM_Stop(&alarm_timer, ALARM_BUZZ_CHL) != STATUS_OK) {
+    if (HAL_TIM_PWM_Stop(&alarm_timer, ALARM_BUZZ_CHL) != HAL_OK) {
         return STATUS_ERR;
     }
     current_status = OFF;
@@ -28,7 +27,7 @@ status_t set_alarm_off() {
 }
 
 status_t mute_alarm() {
-    if (HAL_TIM_PWM_Stop(&alarm_timer, ALARM_BUZZ_CHL) != STATUS_OK) {
+    if (HAL_TIM_PWM_Stop(&alarm_timer, ALARM_BUZZ_CHL) != HAL_OK) {
         return STATUS_ERR;
     }
     current_status = MUTED;
