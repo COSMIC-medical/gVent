@@ -11,12 +11,16 @@
 #include <stdint.h>
 
 /**
- * Status used by the platform associated to clinician and measured inputs
- *   VALID means the input was available and valid
- *   INVALID means the input is either unavailable or invalid 
+ * Status type used by the platform, both internally and to
+ * communicate with the application layer. 
  * 
- * where validity of an input is defined by some vality bounds
+ * For example, reading a sensor might return STATUS_OK to
+ * indicate that the sensor was successfully read or STATUS_ERR
+ * to indicate a read failure.
  */
-enum Validity_Status {VALID = 1, INVALID = 0}; 
+typedef enum {
+    STATUS_OK = 0x00,
+    STATUS_ERR = 0xFF
+} status_t;
 
 #endif /* SRC_PLATFORM_PLATFORM_H_ */

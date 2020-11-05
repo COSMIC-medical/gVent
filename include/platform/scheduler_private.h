@@ -9,17 +9,13 @@
 #define INC_PLATFORM_SCHEDULER_PRIVATE_H_
 
 #include "stm32f4xx_hal.h"
+#include <platform/common.h>
 
 /**
  * Maximum number of application level tasks supported by the
  * scheduler.
  */
 #define MAX_TASKS 10
-
-typedef enum {
-    STATUS_OK = 0x00,
-    STATUS_ERR = 0xFF
-} status_t;
 
 /**
  * Definition of a task callback function. Used by
