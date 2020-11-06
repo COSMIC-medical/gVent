@@ -15,6 +15,7 @@
  * initialized.
  */
 void init_valve_gpio(void);
+void init_gpio_clk();
 
 void init_alarm_led();
 void init_alarm_buzzer();
@@ -40,6 +41,12 @@ void init_adc1(void);
  * debug stages) for the platform has been initialized.
  */
 void init_uart(void);
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void);
 
 
 #endif /* INC_PLATFORM_INIT_H_ */

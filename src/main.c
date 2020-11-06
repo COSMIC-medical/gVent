@@ -24,12 +24,10 @@
 /* USER CODE BEGIN Includes */
 #include "application/application.h"
 #include "application/dss.h"
+#include "platform/init.h"
 #include "platform/scheduler.h"
 #include "platform/scheduler_private.h"
 #include "platform/configuration_private.h"
-#include "platform/init.h"
-#include "string.h"
-#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,8 +91,7 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  init_valve_gpio();
-  init_gpio_clk();
+  //init_valve_gpio();
   init_alarm();
   init_uart();
   init_i2c();

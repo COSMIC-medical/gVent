@@ -55,6 +55,7 @@ uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
  */
 int get_inspiratory_pressure(){
     return read_FS6122_sensor(INSPIRATORY_ADDR, FS6122_READ_PRESSURE);
+    // return pressureFlowSensor.MeasurementStatus.
 }
 
 /*

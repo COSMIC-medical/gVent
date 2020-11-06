@@ -5,14 +5,14 @@
 #include <platform/pressureFlowSensor_private.h>
 #include <platform/system_info.h>
 
-// number of milliseconds to wait between valve actuations
-uint32_t wait_time_ms = 5000;
+// // number of milliseconds to wait between valve actuations
+// uint32_t wait_time_ms = 5000;
 
 // current state of our internal task state machine
-uint32_t state = 2;
+uint32_t sensor_state = 0;
 
-// last time a valve state was changed
-uint32_t last = 0;
+// // last time a valve state was changed
+// uint32_t last = 0;
 
 // pressure
 uint32_t pressure = 0;
@@ -41,25 +41,25 @@ void task_sensor_demo() {
      * (2^32)/(1000*60*60*24) = ~49 days of continous operation without
      * a syste reset.
      */ 
-    uint32_t now = get_current_time();
+    // uint32_t rn = get_current_time();
 
-    switch(state) {
+    switch(sensor_state) {
 
         case 0:
             // initial state, all valves closed, start timer
             // to keep valves closed for 5 seconds.
             // get_inspiratory_pressure();
             // get_inspiratory_flow();
-            last = get_current_time();
-            state = 1;
+            // last = get_current_time();
+            sensor_state = 1;
             break;
 
         case 1:
             // wait 5 seconds while all valves are closed,
             // once elapsed advance state machine.
-            if (now - last > wait_time_ms) {
-                state = 2;
-            }
+            // if (now - last > wait_time_ms) {
+            sensor_state = 2;
+            // }
             break;
 
         case 2:
@@ -67,16 +67,17 @@ void task_sensor_demo() {
             // a timer variable
             pressure = get_expiratory_pressure();
             flow = get_expiratory_flow();
-            last = get_current_time();
-            state = 3;
+            // TODO add UART serial print
+            // last = get_current_time();
+            sensor_state = 3;
             break;
 
         case 3:
             // wait for 5 seconds while inspiratory valve is open
             // once elapsed, close inspiratory valve and advance
-            if (now - last > wait_time_ms) {
-                state = 0;
-            }
+            // if (now - last > wait_time_ms) {
+            sensor_state = 0;
+            // }
             break;
 
 
@@ -87,8 +88,4 @@ void task_sensor_demo() {
             break;
 
     }
-
-
-    
-
 }

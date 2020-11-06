@@ -42,7 +42,7 @@
 #define ALARM_BUZZ_CHL      TIM_CHANNEL_2
 #define ALARM_BUZZ_AF2      GPIO_AF2_TIM3
 // globally available handle for the alarm timer.
-TIM_HandleTypeDef alarm_timer = {0};
+// TIM_HandleTypeDef alarm_timer = {0};
 
 /************************************************
  * I2C CONTROL DEFINITIONS
@@ -55,7 +55,7 @@ TIM_HandleTypeDef alarm_timer = {0};
 #define I2C_PORT            GPIOB
 #define I2C_SCL_PIN         GPIO_PIN_8
 // globally available handle for the i2c peripheral.
-I2C_HandleTypeDef i2c1_bus = {0};
+I2C_HandleTypeDef i2c1_bus;
 // firmware-set i2c addresses for the FS6122 sensors
 #define INSPIRATORY_ADDR    0x1D << 1       // sensor 1
 #define EXPIRATORY_ADDR     0x02 << 1       // sensor 2
@@ -63,7 +63,7 @@ I2C_HandleTypeDef i2c1_bus = {0};
 /************************************************
  * POTENTIOMETER ADC CONTROL DEFINITIONS
  ************************************************/
-ADC_HandleTypeDef potentiometer_1 = {0};
+ADC_HandleTypeDef potentiometer_1;
 
 /************************************************
  * UART CONTROL DEFINITIONS
@@ -71,6 +71,6 @@ ADC_HandleTypeDef potentiometer_1 = {0};
 // globally available handle for the uart peripheral.
 // Used for serial communication to the from the target 
 // microcontroller (Nucleo-64), to the host computer.
-UART_HandleTypeDef serial1 = {0};
+UART_HandleTypeDef serial1;
 
 #endif /* INC_PLATFORM_CONFIGURATION_PRIVATE_H_ */
