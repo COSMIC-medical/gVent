@@ -1,6 +1,6 @@
-#include <platform/init.h>
-#include <platform/configuration_private.h>
-#include <application/dss.h>
+#include "platform/init.h"
+#include "platform/configuration_private.h"
+#include "application/dss.h"
 #include "stm32f4xx_hal.h"
 
 void init_gpio_clk(GPIO_TypeDef * port) {

@@ -2,7 +2,7 @@
 * This file contains the getter for the clinicina inputs
 */
 
-#include <platform/common.h> 
+#include "platform/common.h"
 
 /*
  * todo add a comment here

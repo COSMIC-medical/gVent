@@ -3,11 +3,11 @@
  *
  */
 
-#include <platform/scheduler.h>
-#include <application/application.h>
-#include <application/dss.h>
-#include <application/tasks/valve_demo.h>
-#include <application/tasks/alarm_demo.h>
+#include "platform/scheduler.h"
+#include "application/application.h"
+#include "application/dss.h"
+#include "application/tasks/valve_demo.h"
+#include "application/tasks/alarm_demo.h"
 
 void init_application() {
 

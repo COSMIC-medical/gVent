@@ -7,7 +7,7 @@
 #ifndef SRC_PLATFORM_ALARM_H_
 #define SRC_PLATFORM_ALARM_H_
 
-#include <platform/common.h>
+#include "platform/common.h"
 
 /**
  * Status of the alarm. 

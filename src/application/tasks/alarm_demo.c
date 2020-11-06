@@ -1,8 +1,8 @@
-#include <application/dss.h>
-#include <application/tasks/alarm_demo.h>
-#include <platform/common.h>
-#include <platform/alarm.h>
-#include <platform/system_info.h>
+#include "application/dss.h"
+#include "application/tasks/alarm_demo.h"
+#include "platform/common.h"
+#include "platform/alarm.h"
+#include "platform/system_info.h"
 
 // number of milliseconds to wait between state changes
 static uint32_t wait_time_ms = 1000;

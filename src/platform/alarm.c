@@ -1,6 +1,6 @@
 #include "stm32f4xx_hal.h"
-#include <platform/alarm.h>
-#include <platform/configuration_private.h>
+#include "platform/alarm.h"
+#include "platform/configuration_private.h"
 
 static alarm_status_t current_status = OFF;
 

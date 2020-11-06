@@ -3,9 +3,9 @@
  *
  */
 
-#include <application/dss.h>
-#include <platform/system_status.h>
-#include <platform/scheduler.h>
+#include "application/dss.h"
+#include "platform/system_status.h"
+#include "platform/scheduler.h"
 
 void dss() {
 

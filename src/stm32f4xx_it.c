@@ -23,7 +23,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <application/application.h>
+#include "application/application.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

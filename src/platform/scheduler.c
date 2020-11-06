@@ -3,10 +3,10 @@
  *
  */
 
-#include <platform/scheduler_private.h>
-#include <platform/scheduler.h>
-#include <platform/system_status.h>
-#include <application/dss.h>
+#include "platform/scheduler_private.h"
+#include "platform/scheduler.h"
+#include "platform/system_status.h"
+#include "application/dss.h"
 
 // module level private variables
 task_t tasks[MAX_TASKS];

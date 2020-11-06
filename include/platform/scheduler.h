@@ -7,7 +7,7 @@
 #define INC_PLATFORM_SCHEDULER_H_
 
 #include "stm32f4xx_hal.h"
-#include <platform/scheduler_private.h>
+#include "platform/scheduler_private.h"
 
 /**
  * Register a new task to the platform.

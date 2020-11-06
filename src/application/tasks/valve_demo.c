@@ -1,8 +1,8 @@
-#include <application/dss.h>
-#include <application/tasks/valve_demo.h>
-#include <platform/common.h>
-#include <platform/valve.h>
-#include <platform/system_info.h>
+#include "application/dss.h"
+#include "application/tasks/valve_demo.h"
+#include "platform/common.h"
+#include "platform/valve.h"
+#include "platform/system_info.h"
 
 // number of milliseconds to wait between valve actuations
 static uint32_t wait_time_ms = 5000;
