@@ -9,6 +9,7 @@
 #include <platform/system_info.h>
 #include <platform/pressureFlowSensor.h>
 #include <platform/valve.h>
+#include "platform/clinician_input.h" // Added to use get_respiratory_rate in breath cycle duration calc
 #include <application/tasks/ventilation.h>
 #include <application/dss.h>
 
@@ -23,13 +24,11 @@
  */
 static int start_current_breath_cycle = 0;
 
-//static int breath_cycle_duration = 125; (Victor: This was here previously, commenting it out)
-  static int calculate_breath_cycle_duration(){
-    int breath_cycle_duration = 0; // Variable initialization
-    int respiratory_rate = get_respiratory_rate(); // Retrieve clinician respiratory rate
-    return breath_cycle_duration = 60000/respiratory_rate; // Calculate cycle duration
-  }
-
+static int calculate_breath_cycle_duration(){
+  int breath_cycle_duration = 0; // Variable initialization
+  int respiratory_rate = get_respiratory_rate(); // Retrieve clinician respiratory rate
+  return breath_cycle_duration = 60000/respiratory_rate; // Calculate cycle duration
+}
 /*
  * Phase of the ventilation
  * This should always be one of
@@ -38,7 +37,6 @@ static int start_current_breath_cycle = 0;
  */
 
 static int ventilation_phase = EXPIRATORY_PAUSE;
-
 
 int get_circuit_pressure() { return 0; } //to do implement this function
 

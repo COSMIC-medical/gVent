@@ -38,3 +38,11 @@ int startVentilation_duringInspiration_doesNotopenInspiratoryValve() {
   int inspiratory_valve_status = get_inspiratory_valve_status();
   assertTrue(inspiratory_valve_status == VALVE_CLOSE);
 }
+/*
+ * Breath Cycle Duration calculation test with 15 Breaths Per Minute (BPM)
+ */
+static int calculateBreathCycleDuration_15BPM(){
+  int trial_Respiratory_Rate = 15;
+  int test_breath_cycle_duration = calculate_breath_cycle_duration();
+  assertTrue(test_breath_cycle_duration == 4000);
+}
