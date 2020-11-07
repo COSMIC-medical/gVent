@@ -24,10 +24,10 @@
 static int start_current_breath_cycle = 0;
 
 //static int breath_cycle_duration = 125; (Victor: This was here previously, commenting it out)
-  void calculate_breath_cycle_duration(){
-    static int breath_cycle_duration = 0; // Variable initialization
+  static int calculate_breath_cycle_duration(){
+    int breath_cycle_duration = 0; // Variable initialization
     int respiratory_rate = get_respiratory_rate(); // Retrieve clinician respiratory rate
-    breath_cycle_duration = 60000/respiratory_rate; // Calculate cycle duration
+    return breath_cycle_duration = 60000/respiratory_rate; // Calculate cycle duration
   }
 
 /*
@@ -67,6 +67,7 @@ void ventilation(){
 
 void start_inspiration(){
   uint32_t current_time = get_current_time();
+  uint32_t breath_cycle_duration = calculate_breath_cycle_duration(); //Added this line to calculate breath cycle (not sure if compatible with int variable)
   if (current_time >= start_current_breath_cycle + breath_cycle_duration) {
       start_current_breath_cycle = current_time;
     if (get_circuit_pressure() > MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP) {
