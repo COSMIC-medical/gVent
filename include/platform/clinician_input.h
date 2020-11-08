@@ -8,4 +8,9 @@
  * todo add a comment here
  *
  */
-Validity_Status get_respiratory_rate(uint32_t * RR);
+Validity_Status get_respiratory_rate(uint32_t * RR); // Victor: Should this be something like respiratory_rate_validity? Or should the check and the 
+                                                    //          value retrieval be in the same function? 
+
+int retrieve_RR(){
+    return 15;
+};
