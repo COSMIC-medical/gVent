@@ -30,8 +30,9 @@ uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
         //Combine the bytes
         val = ((int16_t)buf[0] << 24) | (buf[1] << 16) | (buf[2] << 8) | (buf[3]) >> 2; // value is 14 bit, so shift by 2
         
-        // Convert temperature to decimal format
-        // pressure_cmh2o *= 100;
+        // Convert pressure & flow
+        // pressure_cmh2o /= 1000;
+        // flow_slpm /= 1000;
         sprintf((char*)buf,
               "%li cmH2O\r\n",
               (val)
@@ -39,7 +40,7 @@ uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
       }
     }
 
-    // Send out buffer (temperature or error message)
+    // Send out buffer (sensor reading or error message)
     HAL_UART_Transmit(&serial1, buf, strlen((char*)buf), HAL_MAX_DELAY);
 
     return val;

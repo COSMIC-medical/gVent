@@ -1,5 +1,5 @@
 /*
- * pin.h
+ * alarm.h
  *
  * Functions an application developer will used to interact with the alarm.
  *
