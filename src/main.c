@@ -258,6 +258,8 @@ static void MX_TIM4_Init(void)
   // now.
   TIM4->SR = 0;
 
+  /* USER CODE END TIM4_Init 2 */
+
 }
 
 /**
