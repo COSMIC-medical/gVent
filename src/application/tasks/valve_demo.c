@@ -1,17 +1,17 @@
-#include <application/dss.h>
-#include <application/tasks/valve_demo.h>
-#include <platform/common.h>
-#include <platform/valve.h>
-#include <platform/system_info.h>
+#include "application/dss.h"
+#include "application/tasks/valve_demo.h"
+#include "platform/common.h"
+#include "platform/valve.h"
+#include "platform/system_info.h"
 
 // number of milliseconds to wait between valve actuations
-uint32_t wait_time_ms = 5000;
+static uint32_t wait_time_ms = 5000;
 
 // current state of our internal task state machine
-uint32_t state = 0;
+static uint32_t state = 0;
 
 // last time a valve state was changed
-uint32_t last = 0;
+static uint32_t last = 0;
 
 /**
  * This task runs every 50 ms. However, the requirements

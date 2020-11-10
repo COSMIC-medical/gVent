@@ -3,10 +3,11 @@
  *
  */
 
-#include <platform/scheduler.h>
-#include <application/application.h>
-#include <application/dss.h>
-#include <application/tasks/valve_demo.h>
+#include "platform/scheduler.h"
+#include "application/application.h"
+#include "application/dss.h"
+#include "application/tasks/valve_demo.h"
+#include "application/tasks/alarm_demo.h"
 
 void init_application() {
 
@@ -25,6 +26,13 @@ void init_application() {
 	 * then the scheduler intervenes.
 	 */ 
 	reg_suc |= register_task("valve_demo", task_valve_demo, 50, 0, 5);
+
+	/*
+	 * The alarm demo task runs every 50 ms starting
+	 * at offset 10 ms. if the task runs longer than 5 ms
+	 * then teh scheduler intervenes.
+	 */
+	reg_suc |= register_task("alarm_demo", task_alarm_demo, 50, 10, 5);
 
 	if (reg_suc == STATUS_ERR) {
 		dss();

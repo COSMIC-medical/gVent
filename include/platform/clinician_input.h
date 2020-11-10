@@ -2,10 +2,10 @@
 * This file contains the getter for the clinicina inputs
 */
 
-#include "common.h"
+#include "platform/common.h"
 
 /*
  * todo add a comment here
  *
  */
-Validity_Status get_respiratory_rate(uint32_t * RR);
+status_t get_respiratory_rate(uint32_t * RR);
