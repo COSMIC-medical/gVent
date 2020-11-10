@@ -1,7 +1,7 @@
 /**
  * system_status.h 
  * 
- * Contains functions for to indicate the system's
+ * Contains functions for indicate the system's
  * status using status indicators. For example, the
  * status can be indicated via the LD2 on the Nucleo
  * board.

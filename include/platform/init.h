@@ -24,7 +24,7 @@ void init_status_gpio(void);
  * valves. 
  * 
  * When this function completes all of the hardware
- * peripherals for the valve control has initialized.
+ * peripherals for the valve control have been initialized.
  */
 void init_valve_gpio(void);
 
@@ -37,7 +37,7 @@ void init_valve_gpio(void);
  * is setup.
  * 
  * When the this function completes a timer and GPIO 
- * is setup for the alarm buzzer.
+ * are setup for the alarm buzzer.
  */
 void init_alarm(void);
 
