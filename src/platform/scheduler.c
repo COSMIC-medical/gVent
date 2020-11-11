@@ -3,9 +3,10 @@
  *
  */
 
-#include <platform/scheduler_private.h>
-#include <platform/scheduler.h>
-#include <application/dss.h>
+#include "platform/scheduler_private.h"
+#include "platform/scheduler.h"
+#include "platform/system_status.h"
+#include "application/dss.h"
 
 // module level private variables
 task_t tasks[MAX_TASKS];
@@ -98,7 +99,7 @@ void run_platform() {
 	__HAL_TIM_SetCounter(ticker, 0);
 
 	// indicate the platform has started running with the LED
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
+	set_system_status_on();
 
 	// infinitely call scheduling dispatch function
 	while(1) {
@@ -181,6 +182,15 @@ void scheduler_dispatch() {
 		}
 	}
 
+}
+
+/**
+ * This is intentionally a light wrapper around the HAL delay
+ * function. To be used with extreme care since it is a blocking
+ * delay. Other tasks will not be able to proceed while this delay.
+ */ 
+void delay_ms(uint32_t ms) {
+	HAL_Delay(ms);
 }
 
 /**

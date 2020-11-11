@@ -7,7 +7,7 @@
 #define INC_PLATFORM_SCHEDULER_H_
 
 #include "stm32f4xx_hal.h"
-#include <platform/scheduler_private.h>
+#include "platform/scheduler_private.h"
 
 /**
  * Register a new task to the platform.
@@ -28,6 +28,21 @@ status_t register_task(const char * name,
 		uint32_t period,
 		uint32_t delay,
 		uint32_t duration);
+
+/**
+ * Delay the current execution by the specified number of
+ * milliseconds. 
+ * 
+ * This is a busy/blocking delay. The scheduler will *not*
+ * substitute/yeild control to the next task. To be used
+ * with extreme care.
+ * 
+ * This function is implemented as a wrapper around the
+ * STM32 HAL_Delay() function.
+ * 
+ * @param ms - number of milliseoncds to delay.
+ */
+void delay_ms(uint32_t ms);
 
 
 #endif /* INC_PLATFORM_SCHEDULER_H_ */

@@ -5,9 +5,19 @@
  * application, e.g., basic type definitions (e.g., uint16_t).
  */
 
-#ifndef SRC_PLATFORM_PLATFORM_H_
-#define SRC_PLATFORM_PLATFORM_H
+#ifndef SRC_PLATFORM_COMMON_H_
+#define SRC_PLATFORM_COMMON_H_
 
 #include <stdint.h>
 
-#endif /* SRC_PLATFORM_PLATFORM_H_ */
+/**
+ * Status type used by the platform, both internally and to
+ * communicate the outcome of an operation with the 
+ * application layer.
+ */
+typedef enum {
+    STATUS_OK = 0x00,   // operation complete without error.
+    STATUS_ERR = 0xFF   // operation failed.
+} status_t;
+
+#endif /* SRC_PLATFORM_COMMON_H_ */
