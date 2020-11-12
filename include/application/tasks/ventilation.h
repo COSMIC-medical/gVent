@@ -8,7 +8,7 @@
 #define INC_PLATFORM_VENTILATION_H_
 
 #define MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP 32 //todo replace this value by the real value
-
+#include <stdint.h>
 /*
  * SLS-0055
  */
