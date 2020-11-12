@@ -20,7 +20,7 @@ void ventilation();
  * Step 2: Calculate duration of a breath cycle in milliseconds
  * Step 3: Assign new inspiratory rate to breath_cycle_duration
  */
-static int calculate_breath_cycle_duration();
+uint32_t calculate_breath_cycle_duration();
 
 /*
  * Computes the circuit pressure

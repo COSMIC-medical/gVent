@@ -24,9 +24,9 @@
  */
 static int start_current_breath_cycle = 0;
 
-static int calculate_breath_cycle_duration(){
-  int breath_cycle_duration = 0; // Variable initialization
-  int respiratory_rate = retrieve_RR(); // Retrieve clinician respiratory rate, THIS FUNCTION IS JUST A PLACEHOLDER FOR NOW
+uint32_t calculate_breath_cycle_duration(){
+  uint32_t breath_cycle_duration = 0; // Variable initialization
+  uint32_t respiratory_rate = retrieve_RR(); // Retrieve clinician respiratory rate, THIS FUNCTION IS JUST A PLACEHOLDER FOR NOW
   return breath_cycle_duration = 60000/respiratory_rate; // Calculate cycle duration
 }
 /*
