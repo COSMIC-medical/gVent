@@ -48,19 +48,14 @@ void init_valve_gpio(void)
   HAL_GPIO_Init(TANK_VALVE_PORT, &GPIO_InitStruct);
 }
 
-void init_alarm(void)
-{
-  TIM_HandleTypeDef alarm_timer = {0};
-}
-
 /**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
   */
-void init_uart(UART_HandleTypeDef * serial1)
+void init_uart()
 {
-
+  // serial1 = {0};
   serial1.Instance = USART2;
   serial1.Init.BaudRate = 115200;
   serial1.Init.WordLength = UART_WORDLENGTH_8B;
@@ -81,8 +76,9 @@ void init_uart(UART_HandleTypeDef * serial1)
   * @param None
   * @retval None
   */
-void init_i2c(I2C_HandleTypeDef * i2c1_bus)
+void init_i2c()
 {
+  // i2c1_bus = {0};
   i2c1_bus.Instance = I2C1;
   i2c1_bus.Init.ClockSpeed = 100000;
   i2c1_bus.Init.DutyCycle = I2C_DUTYCYCLE_2;

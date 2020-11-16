@@ -46,7 +46,7 @@ void init_valve_gpio(void);
  * all of the the I2C bus for the platform has been
  * initialized.
  */
-void init_i2c(I2C_HandleTypeDef *);
+void init_i2c(void);
 
 /**
  * Initialize the uart peripheral
@@ -54,7 +54,7 @@ void init_i2c(I2C_HandleTypeDef *);
  * the uart (used for serial monitoring during build and 
  * debug stages) for the platform has been initialized.
  */
-void init_uart(UART_HandleTypeDef *);
+void init_uart(void);
 
 void init_alarm(void);
 
