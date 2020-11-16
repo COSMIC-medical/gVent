@@ -58,9 +58,8 @@ void init_alarm(void)
   * @param None
   * @retval None
   */
-void init_uart(void)
+void init_uart(UART_HandleTypeDef * serial1)
 {
-  UART_HandleTypeDef serial1 = {0};
 
   serial1.Instance = USART2;
   serial1.Init.BaudRate = 115200;
@@ -82,9 +81,8 @@ void init_uart(void)
   * @param None
   * @retval None
   */
-void init_i2c(void)
+void init_i2c(I2C_HandleTypeDef * i2c1_bus)
 {
-  I2C_HandleTypeDef i2c1_bus = {0};
   i2c1_bus.Instance = I2C1;
   i2c1_bus.Init.ClockSpeed = 100000;
   i2c1_bus.Init.DutyCycle = I2C_DUTYCYCLE_2;

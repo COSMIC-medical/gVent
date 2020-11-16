@@ -288,10 +288,6 @@
   #include "stm32f4xx_hal_cortex.h"
 #endif /* HAL_CORTEX_MODULE_ENABLED */
 
-#ifdef HAL_ADC_MODULE_ENABLED
-  #include "stm32f4xx_hal_adc.h"
-#endif /* HAL_ADC_MODULE_ENABLED */
-
 #ifdef HAL_CAN_MODULE_ENABLED
   #include "stm32f4xx_hal_can.h"
 #endif /* HAL_CAN_MODULE_ENABLED */
