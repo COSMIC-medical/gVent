@@ -10,17 +10,19 @@ uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
     HAL_StatusTypeDef ret;
     uint8_t buf[20];
     uint32_t val; 
+    uint32_t I2C_TIMEOUT_DELAY = 1000; // Return after 1s if no data transmitted/received
 
     // Tell FS6122 which register to read from (pressure, flow, temp, RH)
     buf[0] = reg_addr;
-    ret = HAL_I2C_Master_Transmit(&i2c1_bus, i2c_addr, buf, 1, HAL_MAX_DELAY);
+
+    ret = HAL_I2C_Master_Transmit(&i2c1_bus, i2c_addr, buf, 1, I2C_TIMEOUT_DELAY);
     if ( ret != HAL_OK ) {
       strcpy((char*)buf, "Error Tx\r\n");
       val = 128;
     } 
     else {
       // Read 4 bytes from the pressure register
-      ret = HAL_I2C_Master_Receive(&i2c1_bus, i2c_addr, buf, 4, HAL_MAX_DELAY);
+      ret = HAL_I2C_Master_Receive(&i2c1_bus, i2c_addr, buf, 4, I2C_TIMEOUT_DELAY);
       if ( ret != HAL_OK ) {
         strcpy((char*)buf, "Error Rx\r\n");
         val = 256;

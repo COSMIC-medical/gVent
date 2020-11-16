@@ -5,18 +5,9 @@
  * associated electronics.
  * 
  * This task does the following:
- *  1. Closes all valves.
- *  2. Waits for 5 seconds.
- *  3. Opens the inspiratory valve.
- *  4. Waits 5 seconds
- *  5. Closes the inspiratory valve.
- *  6. Opens the expiratory valve.
- *  7. Waits 5 seconds
- *  8. Closes the expiratory valve.
- *  9. Opens the tank valve.
- *  10. Waits 5 seconds
- *  11. Closes the tank valve.
- *  12. Repeat from step (1) 
+ *  1. Read a sensor.
+ *  2. Write the value thru uart to the terminal
+ *  3. Waits for 5 seconds.
  * 
  * This task should eventually be removed from the application.
  */

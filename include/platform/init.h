@@ -43,8 +43,7 @@ void init_valve_gpio(void);
 /**
  * Initialize the I2C peripheral
  * of the microprocessor. When this function completes
- * all of the the I2C bus for the platform has been
- * initialized.
+ * the I2C bus for the platform has been initialized.
  */
 void init_i2c(void);
 
