@@ -3,7 +3,8 @@
 #include "application/dss.h"
 #include "stm32f4xx_hal.h"
 
-void init_gpio_clk(GPIO_TypeDef * port) {
+void init_gpio_clk(GPIO_TypeDef * port) 
+{
   if (port == GPIOA) {
     __HAL_RCC_GPIOA_CLK_ENABLE();
   } else if (port == GPIOB) {
@@ -13,7 +14,8 @@ void init_gpio_clk(GPIO_TypeDef * port) {
   }
 }
 
-void init_valve_gpio(void) {
+void init_valve_gpio(void)
+{
 
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   /* GPIO Ports Clock Enable */
@@ -46,52 +48,9 @@ void init_valve_gpio(void) {
   HAL_GPIO_Init(TANK_VALVE_PORT, &GPIO_InitStruct);
 }
 
-void init_alarm(void){
-  TIM_HandleTypeDef alarm_timer = {0};
-}
-
-/**
-  * @brief ADC1 Initialization Function
-  * @param None
-  * @retval None
-  */
-void init_adc1(void)
+void init_alarm(void)
 {
-  ADC_ChannelConfTypeDef sConfig = {0};
-
-  ADC_HandleTypeDef potentiometer_1 = {0};
-
-  /* USER CODE BEGIN ADC1_Init 1 */
-
-  /* USER CODE END ADC1_Init 1 */
-  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
-  */
-  potentiometer_1.Instance = ADC1;
-  potentiometer_1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
-  potentiometer_1.Init.Resolution = ADC_RESOLUTION_12B;
-  potentiometer_1.Init.ScanConvMode = DISABLE;
-  potentiometer_1.Init.ContinuousConvMode = DISABLE;
-  potentiometer_1.Init.DiscontinuousConvMode = DISABLE;
-  potentiometer_1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  potentiometer_1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  potentiometer_1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  potentiometer_1.Init.NbrOfConversion = 1;
-  potentiometer_1.Init.DMAContinuousRequests = DISABLE;
-  potentiometer_1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-  if (HAL_ADC_Init(&potentiometer_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
-  */
-  sConfig.Channel = ADC_CHANNEL_1;
-  sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
-  if (HAL_ADC_ConfigChannel(&potentiometer_1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
+  TIM_HandleTypeDef alarm_timer = {0};
 }
 
 /**
@@ -123,7 +82,8 @@ void init_uart(void)
   * @param None
   * @retval None
   */
-void init_i2c(void){
+void init_i2c(void)
+{
   I2C_HandleTypeDef i2c1_bus = {0};
   i2c1_bus.Instance = I2C1;
   i2c1_bus.Init.ClockSpeed = 100000;
@@ -140,10 +100,8 @@ void init_i2c(void){
   }
 }
 
-
-}
-
-void init_status_gpio(void) {
+void init_status_gpio(void)
+{
 
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
@@ -160,7 +118,6 @@ void init_status_gpio(void) {
 
 }
 
-
 /**
  * Initialize the alarm buzzer.
  * 
@@ -175,7 +132,8 @@ void init_status_gpio(void) {
  * This requires that the GPIO be configured in an "alternative
  * function" (AF) mode.
  */ 
-void init_alarm_buzzer() {
+void init_alarm_buzzer()
+{
 
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
@@ -280,7 +238,8 @@ void init_alarm_buzzer() {
 /**
  * Initialize the LED used for the alarm.
  */
-void init_alarm_led() {
+void init_alarm_led()
+{
 
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
@@ -296,7 +255,8 @@ void init_alarm_led() {
 
 }
 
-void init_alarm() {
+void init_alarm()
+{
   init_alarm_led();
   init_alarm_buzzer();
 }

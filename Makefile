@@ -70,8 +70,6 @@ INCLUDE_TEST = $(INCLUDE_BASE)
 # Define HAL source dependencies
 ########################################
 EXT_SRCS = $(HAL_SRC)/stm32f4xx_hal.c \
-		   $(HAL_SRC)/stm32f4xx_hal_adc.c \
-		   $(HAL_SRC)/stm32f4xx_hal_adc_ex.c \
 		   $(HAL_SRC)/stm32f4xx_hal_cortex.c \
 		   $(HAL_SRC)/stm32f4xx_hal_dma.c \
 		   $(HAL_SRC)/stm32f4xx_hal_dma_ex.c \

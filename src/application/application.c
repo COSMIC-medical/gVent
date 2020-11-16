@@ -40,7 +40,7 @@ void init_application() {
 	/* TODO: Sensor Demo Requires a UART serial communication peripheral task
 	 * to communicate sensor readings to the host computer
 	 * for verification and validation purposes. 
-	 */
+	 *
 
 	 * The alarm demo task runs every 50 ms starting
 	 * at offset 10 ms. if the task runs longer than 5 ms

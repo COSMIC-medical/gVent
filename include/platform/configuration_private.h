@@ -70,11 +70,6 @@ I2C_HandleTypeDef i2c1_bus;
 #define EXPIRATORY_ADDR     0x02 << 1       // sensor 2
 
 /************************************************
- * POTENTIOMETER ADC CONTROL DEFINITIONS
- ************************************************/
-ADC_HandleTypeDef potentiometer_1;
-
-/************************************************
  * UART CONTROL DEFINITIONS
  ************************************************/
 // globally available handle for the uart peripheral.

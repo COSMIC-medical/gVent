@@ -47,12 +47,7 @@ void init_valve_gpio(void);
  * initialized.
  */
 void init_i2c(void);
-/**
- * Initialize an ADC (1) peripheral
- * of the microprocessor. When this function completes
- * an ADC for the platform has been initialized.
- */
-void init_adc1(void);
+
 /**
  * Initialize the uart peripheral
  * of the microprocessor. When this function completes

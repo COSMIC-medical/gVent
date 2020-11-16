@@ -97,7 +97,6 @@ int main(void)
   init_alarm();
   init_uart();
   init_i2c();
-  init_adc1();
   MX_TIM2_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
