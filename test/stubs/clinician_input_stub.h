@@ -1,5 +1,5 @@
 /*
- * clinician_info_stub.h
+ * clinician_input_stub.h
  *
  * Stub for the function that retreive the clinician inputs
  */

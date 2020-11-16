@@ -76,9 +76,8 @@ void start_inspiration(){
   uint32_t current_time = get_current_time();
   uint32_t RR = 0;
   uint32_t breath_cycle_duration = 125;
-  if (get_respiratory_rate(& RR) == STATUS_OK) {
-    breath_cycle_duration = RR / 60000;
-  }
+  get_respiratory_rate(& RR);
+  breath_cycle_duration = RR / 60000;
   if (current_time >= start_current_breath_cycle + breath_cycle_duration) {
       start_current_breath_cycle = current_time;
     if (get_circuit_pressure() > MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP) {
@@ -97,4 +96,12 @@ void start_inspiration(){
  */ 
 void reset_to_inspiration_start(){
    ventilation_phase = EXPIRATORY_PAUSE;
+}
+
+int get_ventilation_phase() {
+  return ventilation_phase;
+}
+
+int get_start_current_breath_cycle() {
+  return start_current_breath_cycle;
 }
