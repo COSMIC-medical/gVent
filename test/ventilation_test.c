@@ -26,6 +26,13 @@ int startVentilation_afterOneInspiration_openInspiratoryValve() {
   status_t status[1] = {STATUS_OK};
   set_respiratory_rate(RR, status, 1);
 
+  //initialize the function to get circuit pressure
+  uint32_t inspiratory[2] = {12, 53};
+  uint32_t expiratory[2] = {14, 53};
+  status_t status_pressure[2] = {STATUS_OK, STATUS_OK};
+	set_inspiratory_pressure(inspiratory, status_pressure);
+	set_expiratory_pressure(expiratory, status_pressure);
+
   //reinitialize the system to be sure that the valve wasn't previously open
   close_inspiratory_valve();
   
@@ -39,6 +46,18 @@ int startVentilation_duringInspiration_doesNotopenInspiratoryValve() {
   int* times = (int*) malloc(1*sizeof(int)); 
   times[0] = 0;
   set_current_time (times, 1);
+
+  //initialize the function get_respiratory_rate
+  uint32_t RR[1] = {7500000}; 
+  status_t status[1] = {STATUS_OK};
+  set_respiratory_rate(RR, status, 1);
+
+  //initialize the function to get circuit pressure
+  uint32_t inspiratory[2] = {35, 53};
+  uint32_t expiratory[2] = {40, 53};
+  status_t status_pressure[2] = {STATUS_OK, STATUS_OK};
+	set_inspiratory_pressure(inspiratory, status_pressure);
+	set_expiratory_pressure(expiratory, status_pressure);
 
   close_inspiratory_valve();
   reset_to_inspiration_start();

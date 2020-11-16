@@ -9,24 +9,44 @@
 #include "platform/common.h"
 
 static uint32_t* RR_to_return;
-static status_t* status_to_return;
-static int current_call = 0;
-
-
+static status_t* status_RR_to_return;
+static int RR_current_call = 0;
 
 void set_respiratory_rate(uint32_t* RR, status_t* status, size_t size){
   free(RR_to_return);
-  free(status_to_return);
+  free(status_RR_to_return);
   RR_to_return = (uint32_t*) malloc(sizeof(*RR) * size);
-  status_to_return = (status_t*) malloc(sizeof(*status) * size);
+  status_RR_to_return = (status_t*) malloc(sizeof(*status) * size);
   memcpy(RR_to_return, RR, sizeof(*RR) * size);
-  memcpy(status_to_return, status, sizeof(*status) * size);
-  current_call = 0;
+  memcpy(status_RR_to_return, status, sizeof(*status) * size);
+  RR_current_call = 0;
 }
 
 status_t get_respiratory_rate(uint32_t * RR) {
-  current_call ++;
-  *RR = RR_to_return[current_call-1];
-  return status_to_return[current_call-1];
+  RR_current_call ++;
+  *RR = RR_to_return[RR_current_call-1];
+  return status_RR_to_return[RR_current_call-1];
+}
+
+
+static uint32_t* insp_time_to_return;
+static status_t* status_insp_time_to_return;
+static int insp_time_current_call = 0;
+
+void set_selected_inspiratory_time(uint32_t* insp_times, status_t* status, 
+int size) {
+  free(insp_time_to_return);
+  free(status_insp_time_to_return);
+  insp_time_to_return = (uint32_t*) malloc(sizeof(*insp_times) * size);
+  status_insp_time_to_return = (status_t*) malloc(sizeof(*status) * size);
+  memcpy(insp_time_to_return, insp_times, sizeof(*insp_times) * size);
+  memcpy(status_insp_time_to_return, status, sizeof(*status) * size);
+  insp_time_current_call = 0;
+}
+
+status_t get_selected_inspiratory_time(uint32_t* insp_time) {
+  insp_time_current_call ++;
+  *insp_time = insp_time_to_return[insp_time_current_call-1];
+  return status_insp_time_to_return[insp_time_current_call-1];
 }
 
