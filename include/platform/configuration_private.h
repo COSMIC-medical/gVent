@@ -57,8 +57,6 @@ TIM_HandleTypeDef alarm_timer;
  * I2C CONTROL DEFINITIONS
  ************************************************/
 
-
-
 // GPIO PB9 maps to Pin D14 (I2C1_SDA) on the Nucleo-64 board.
 #define I2C_PORT            GPIOB
 #define I2C_SDA_PIN         GPIO_PIN_9

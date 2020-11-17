@@ -5,20 +5,8 @@
 #include <platform/pressureFlowSensor_private.h>
 #include <platform/system_info.h>
 
-// // number of milliseconds to wait between valve actuations
-// uint32_t wait_time_ms = 5000;
-
 // current state of our internal task state machine
 uint32_t sensor_state = 0;
-
-// // last time a valve state was changed
-// uint32_t last = 0;
-
-// pressure
-uint32_t pressure = 0;
-
-// flowrate
-uint32_t flow = 0;
 
 /**
  * This is a toy task for reading a sensor and demonstrating
@@ -42,14 +30,26 @@ void task_sensor_demo() {
      * a syste reset.
      */ 
     // uint32_t rn = get_current_time();
+    
+    // MeasurementsStatus.expiratory_flow = 0;
+    // MeasurementsStatus.inspiratory_flow = 0;
+    // MeasurementsStatus.expiratory_pressure = 0;
+    // MeasurementsStatus.inspiratory_pressure = 0;
+    int* expiratory_flow;
+    int* inspiratory_flow;
+    int* expiratory_pressure;
+    int* inspiratory_pressure;
+
+    status_t status = STATUS_ERR;
+
 
     switch(sensor_state) {
 
         case 0:
             // initial state, all valves closed, start timer
             // to keep valves closed for 5 seconds.
-            // get_inspiratory_pressure();
-            // get_inspiratory_flow();
+            status = get_inspiratory_pressure(*inspiratory_pressure);
+            status = get_inspiratory_flow(*inspiratory_flow);
             // last = get_current_time();
             sensor_state = 1;
             break;
@@ -65,8 +65,11 @@ void task_sensor_demo() {
         case 2:
             // open the inspiratory valve and set
             // a timer variable
-            pressure = get_expiratory_pressure();
-            flow = get_expiratory_flow();
+            status = get_expiratory_pressure(*expiratory_pressure);
+            // if (status == STATUS_ERR){
+                
+            // }
+            status = get_expiratory_flow(*expiratory_flow);
             // TODO add UART serial print
             // last = get_current_time();
             sensor_state = 3;

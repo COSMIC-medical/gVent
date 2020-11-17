@@ -41,6 +41,17 @@
 	https://www.servoflo.com/download-archive/data-sheets/254-mass-flow-vacuum-sensors/1220-fs6122-datasheet
 	or at 
 	https://github.com/patchworquill/fs6122/blob/master/fs6122_datasheet.pdf
+
+	### FS6122
+	| Pin | Color | Definition | 
+	| :-- | :-- | :-- |
+	| 1 | White | P_out, Pressure analog sensor output
+	| 2 | Green | F_out, Flow analog sensor output 
+	| 3 | Black | GND, Ground
+	| 4 | Red | VCC, Power supply
+	| 5 | Yellow | SCL 
+	| 6 | Blue | SDA 
+	
 =========================================================================*/
 
 /*
@@ -60,10 +71,10 @@
  * pressure bounds are given in cmH2O
  * flow  bounds are given in SLPM
  */
-#define PRESSURE_LOWER_BOUND -5
-#define PRESSURE_UPPER_BOUND 40
-#define FLOW_LOWER_BOUND -250
-#define FLOW_UPPER_BOUND 250
+#define PRESSURE_LOWER_BOUND -5000
+#define PRESSURE_UPPER_BOUND 40000
+#define FLOW_LOWER_BOUND -250000
+#define FLOW_UPPER_BOUND 250000
 
 /*
  * The maximum change rate
@@ -72,6 +83,14 @@
  */
 #define PRESSURE_MAX_CHANGE_RATE 10
 #define FLOW_MAX_CHANGE_RATE 10
+
+/* 
+ * Private i2c read function for the FS6122 sensor
+ * first byte is the i2c sensor address
+ * second byte is the flow/pressure/temp/RH select byte
+ */
+
+uint32_t read_FS6122_sensor(uint8_t, uint8_t);
 
 /**
  * Definition of the measured inputs data structure
