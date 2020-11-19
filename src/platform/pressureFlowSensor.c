@@ -12,7 +12,8 @@ uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
     uint8_t buf[20]; // i2c buffer
     uint8_t serial_buf[20]; // uart buffer
     uint32_t val; 
-    uint32_t I2C_TIMEOUT_DELAY = 1000; // Return after 1s if no data transmitted/received
+    uint32_t I2C_TIMEOUT_DELAY = 100; // Return after 1/10 s if no data transmitted/received
+    uint32_t UART_TIMEOUT_DELAY = 100; // Performance requirements for task require this function to return in < 100ms
 
     // Tell FS6122 which register to read from (pressure, flow, temp, RH)
     buf[0] = reg_addr;
@@ -51,7 +52,7 @@ uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
     * to print over UART. */
 
     // Send out buffer (sensor reading or error message)
-    HAL_UART_Transmit(&serial1, serial_buf, strlen((char*)serial_buf), HAL_MAX_DELAY);
+    HAL_UART_Transmit(&serial1, serial_buf, strlen((char*)serial_buf), UART_TIMEOUT_DELAY);
 
     return val;
 }
