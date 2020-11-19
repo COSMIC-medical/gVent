@@ -70,7 +70,6 @@ uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
  */
 status_t get_inspiratory_pressure(int * result){
     status_t sensor_status = STATUS_ERR;
-    uint32_t result = 0;
     result = read_FS6122_sensor(INSPIRATORY_ADDR, FS6122_READ_PRESSURE);
 
     if ((result < PRESSURE_LOWER_BOUND) && (result > PRESSURE_UPPER_BOUND))
@@ -89,7 +88,6 @@ status_t get_inspiratory_pressure(int * result){
  */
 status_t get_expiratory_pressure(int * result){
     status_t sensor_status = STATUS_ERR;
-    uint32_t result = 0;
     result = read_FS6122_sensor(EXPIRATORY_ADDR, FS6122_READ_PRESSURE);
 
     if ((result > PRESSURE_LOWER_BOUND) && (result < PRESSURE_UPPER_BOUND))
@@ -108,7 +106,6 @@ status_t get_expiratory_pressure(int * result){
  */
 status_t get_inspiratory_flow(int * result){
     status_t sensor_status = STATUS_ERR;
-    uint32_t result = 0;
     result = read_FS6122_sensor(INSPIRATORY_ADDR, FS6122_READ_FLOWRATE);
 
     if ((result > FLOW_LOWER_BOUND) && (result < FLOW_UPPER_BOUND))
@@ -127,7 +124,6 @@ status_t get_inspiratory_flow(int * result){
  */
 status_t get_expiratory_flow(int * result){
     status_t sensor_status = STATUS_ERR;
-    uint32_t result = 0;
     result = read_FS6122_sensor(INSPIRATORY_ADDR, FS6122_READ_FLOWRATE);
 
     if ((result > FLOW_LOWER_BOUND) && (result < FLOW_UPPER_BOUND))
