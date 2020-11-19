@@ -45,7 +45,7 @@ void init_valve_gpio(void);
  * of the microprocessor. When this function completes
  * the I2C bus for the platform has been initialized.
  */
-void init_i2c(void);
+void init_sensor_i2c(void);
 
 /**
  * Initialize the uart peripheral

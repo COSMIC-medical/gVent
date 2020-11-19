@@ -76,7 +76,7 @@ void init_uart()
   * @param None
   * @retval None
   */
-void init_i2c()
+void init_sensor_i2c()
 {
   // i2c1_bus = {0};
   i2c1_bus.Instance = I2C1;
