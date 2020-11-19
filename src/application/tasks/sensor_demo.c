@@ -1,8 +1,8 @@
 #include "application/dss.h"
 #include "application/tasks/sensor_demo.h"
 #include "platform/common.h"
-#include "platform/pressureFlowSensor.h"
-#include "platform/pressureFlowSensor_private.h"
+#include "platform/sensor.h"
+#include "platform/sensor_private.h"
 #include "platform/system_info.h"
 
 // current state of our internal task state machine
