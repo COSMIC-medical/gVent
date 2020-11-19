@@ -1,8 +1,8 @@
 #include "stm32f4xx_hal.h"
-#include <platform/pressureFlowSensor.h>
-#include <platform/pressureFlowSensor_private.h>
-#include <platform/configuration_private.h>
-#include <platform/common.h>
+#include "platform/sensor.h"
+#include "platform/sensor_private.h"
+#include "platform/configuration_private.h"
+#include "platform/common.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
