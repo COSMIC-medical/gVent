@@ -15,9 +15,12 @@ uint32_t sensor_state = 0;
  * associated electronics.
  * 
  * This task does the following:
- *  1. Read a sensor.
- *  2. Write the value thru uart to the terminal
- *  3. Waits for 5 seconds.
+ *  1. Reads inpiratory sensor for flow and pressure.
+ *  2. Writes the value thru UART to the terminal
+ *  3. Waits for 1 second.
+ *  4. Reads expiratory sensor for flow and pressure
+ *  5. Writes the value thru UART to the terminal
+ *  6. Waits for 1 second.
  * 
  * This task should eventually be removed from the application.
  */
@@ -29,7 +32,8 @@ void task_sensor_demo() {
      * (2^32)/(1000*60*60*24) = ~49 days of continous operation without
      * a syste reset.
      */ 
-    // uint32_t rn = get_current_time();
+    // number of milliseconds to wait between state changes
+    static uint32_t wait_time_ms = 1000;
     
     int* expiratory_flow;
     int* inspiratory_flow;
@@ -42,39 +46,31 @@ void task_sensor_demo() {
     switch(sensor_state) {
 
         case 0:
-            // initial state, all valves closed, start timer
-            // to keep valves closed for 5 seconds.
+            // initial state, read inspiratory pressure and flow
             status = get_inspiratory_pressure(*inspiratory_pressure);
             status = get_inspiratory_flow(*inspiratory_flow);
-            // last = get_current_time();
             sensor_state = 1;
             break;
 
         case 1:
-            // wait 5 seconds while all valves are closed,
+            // wait 1 second
             // once elapsed advance state machine.
-            // if (now - last > wait_time_ms) {
+            wait(wait_time_ms);
             sensor_state = 2;
             // }
             break;
 
         case 2:
-            // open the inspiratory valve and set
+            // read expiratory pressure and flow
             // a timer variable
             status = get_expiratory_pressure(*expiratory_pressure);
-            // if (status == STATUS_ERR){
-                
-            // }
             status = get_expiratory_flow(*expiratory_flow);
-            // TODO add UART serial print
-            // last = get_current_time();
             sensor_state = 3;
             break;
 
         case 3:
-            // wait for 5 seconds while inspiratory valve is open
-            // once elapsed, close inspiratory valve and advance
-            // if (now - last > wait_time_ms) {
+            // wait for 1 second
+            wait(wait_time_ms);
             sensor_state = 0;
             // }
             break;
