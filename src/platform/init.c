@@ -66,7 +66,7 @@ void init_uart()
   serial1.Init.OverSampling = UART_OVERSAMPLING_16;
   if (HAL_UART_Init(&serial1) != HAL_OK)
   {
-    Error_Handler();
+    dss();
   }
 
 }
@@ -90,7 +90,7 @@ void init_sensor_i2c()
   i2c1_bus.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
   if (HAL_I2C_Init(&i2c1_bus) != HAL_OK)
   {
-    Error_Handler();
+    dss();
   }
 }
 
