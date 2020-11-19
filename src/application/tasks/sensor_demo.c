@@ -1,9 +1,9 @@
-#include <application/dss.h>
-#include <application/tasks/sensor_demo.h>
-#include <platform/common.h>
-#include <platform/pressureFlowSensor.h>
-#include <platform/pressureFlowSensor_private.h>
-#include <platform/system_info.h>
+#include "application/dss.h"
+#include "application/tasks/sensor_demo.h"
+#include "platform/common.h"
+#include "platform/pressureFlowSensor.h"
+#include "platform/pressureFlowSensor_private.h"
+#include "platform/system_info.h"
 
 // current state of our internal task state machine
 uint32_t sensor_state = 0;
@@ -11,7 +11,7 @@ uint32_t sensor_state = 0;
 /**
  * This is a toy task for reading a sensor and demonstrating
  * the platform's sensor management functionality. The purpose
- * is to faciliate testing of the sensor reading via i2c and the 
+ * is to faciliate testing of the sensor reading via I2C and the 
  * associated electronics.
  * 
  * This task does the following:
@@ -31,10 +31,6 @@ void task_sensor_demo() {
      */ 
     // uint32_t rn = get_current_time();
     
-    // MeasurementsStatus.expiratory_flow = 0;
-    // MeasurementsStatus.inspiratory_flow = 0;
-    // MeasurementsStatus.expiratory_pressure = 0;
-    // MeasurementsStatus.inspiratory_pressure = 0;
     int* expiratory_flow;
     int* inspiratory_flow;
     int* expiratory_pressure;
