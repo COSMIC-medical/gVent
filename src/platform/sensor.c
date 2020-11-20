@@ -7,6 +7,9 @@
 #include <string.h>
 #include <stdint.h>
 
+// Declare and initialize structure variable
+struct MeasurementsStatus sensor_struct = {0,0, 0,0, 0,0, 0,0,};
+
 uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
     HAL_StatusTypeDef ret;
     uint8_t buf[20]; // i2c buffer
@@ -32,12 +35,12 @@ uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
       } 
       else {
 
-        //Combine the bytes
+        //Combine the bytes returned via I2C
         val = ((int16_t)buf[0] << 24) | (buf[1] << 16) | (buf[2] << 8) | (buf[3]) >> 2; // value is 14 bit, so shift by 2
         
         // Convert pressure & flow
-        // pressure_cmh2o /= 1000;
-        // flow_slpm /= 1000;
+        // pressure_cmh2o / = 1000;
+        // flow_slpm / = 1000;
         sprintf((char*)serial_buf,
               "%li cmH2O\r\n",
               (val)
@@ -71,6 +74,8 @@ uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
 status_t get_inspiratory_pressure(int * result){
     status_t sensor_status = STATUS_ERR;
     result = read_FS6122_sensor(INSPIRATORY_ADDR, FS6122_READ_PRESSURE);
+    sensor_struct.inspiratory_pressure = result;
+    sensor_struct.last_inspiratory_pressure_read_time = get_current_time();
 
     if ((result < PRESSURE_LOWER_BOUND) && (result > PRESSURE_UPPER_BOUND))
     {
@@ -90,6 +95,9 @@ status_t get_expiratory_pressure(int * result){
     status_t sensor_status = STATUS_ERR;
     result = read_FS6122_sensor(EXPIRATORY_ADDR, FS6122_READ_PRESSURE);
 
+    sensor_struct.expiratory_pressure = result;
+    sensor_struct.last_expiratory_pressure_read_time = get_current_time();
+
     if ((result > PRESSURE_LOWER_BOUND) && (result < PRESSURE_UPPER_BOUND))
     {
       sensor_status = STATUS_OK;
@@ -108,6 +116,9 @@ status_t get_inspiratory_flow(int * result){
     status_t sensor_status = STATUS_ERR;
     result = read_FS6122_sensor(INSPIRATORY_ADDR, FS6122_READ_FLOWRATE);
 
+    sensor_struct.inspiratory_flow = result;
+    sensor_struct.last_inspiratory_flow_read_time = get_current_time();
+
     if ((result > FLOW_LOWER_BOUND) && (result < FLOW_UPPER_BOUND))
     {
       sensor_status = STATUS_OK;
@@ -125,6 +136,9 @@ status_t get_inspiratory_flow(int * result){
 status_t get_expiratory_flow(int * result){
     status_t sensor_status = STATUS_ERR;
     result = read_FS6122_sensor(INSPIRATORY_ADDR, FS6122_READ_FLOWRATE);
+
+    sensor_struct.expiratory_flow = result;
+    sensor_struct.last_expiratory_flow_read_time = get_current_time();
 
     if ((result > FLOW_LOWER_BOUND) && (result < FLOW_UPPER_BOUND))
     {
