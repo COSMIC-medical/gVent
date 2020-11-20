@@ -55,19 +55,30 @@ void init_valve_gpio(void)
   */
 void init_uart()
 {
-  // serial1 = {0};
-  serial1.Instance = USART2;
-  serial1.Init.BaudRate = 115200;
-  serial1.Init.WordLength = UART_WORDLENGTH_8B;
-  serial1.Init.StopBits = UART_STOPBITS_1;
-  serial1.Init.Parity = UART_PARITY_NONE;
-  serial1.Init.Mode = UART_MODE_TX_RX;
-  serial1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  serial1.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&serial1) != HAL_OK)
-  {
-    dss();
-  }
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    /**USART2 GPIO Configuration
+    PA2     ------> USART2_TX
+    PA3     ------> USART2_RX
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF7_USART2;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    serial1.Instance = USART2;
+    serial1.Init.BaudRate = 115200;
+    serial1.Init.WordLength = UART_WORDLENGTH_8B;
+    serial1.Init.StopBits = UART_STOPBITS_1;
+    serial1.Init.Parity = UART_PARITY_NONE;
+    serial1.Init.Mode = UART_MODE_TX_RX;
+    serial1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    serial1.Init.OverSampling = UART_OVERSAMPLING_16;
+    if (HAL_UART_Init(&serial1) != HAL_OK)
+    {
+      dss();
+    }
 
 }
 
@@ -78,20 +89,31 @@ void init_uart()
   */
 void init_sensor_i2c()
 {
-  // i2c1_bus = {0};
-  i2c1_bus.Instance = I2C1;
-  i2c1_bus.Init.ClockSpeed = 100000;
-  i2c1_bus.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  i2c1_bus.Init.OwnAddress1 = 0;
-  i2c1_bus.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  i2c1_bus.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  i2c1_bus.Init.OwnAddress2 = 0;
-  i2c1_bus.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  i2c1_bus.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&i2c1_bus) != HAL_OK)
-  {
-    dss();
-  }
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    /**I2C1 GPIO Configuration
+    PB8     ------> I2C1_SCL
+    PB9     ------> I2C1_SDA
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    i2c1_bus.Instance = I2C1;
+    i2c1_bus.Init.ClockSpeed = 100000;
+    i2c1_bus.Init.DutyCycle = I2C_DUTYCYCLE_2;
+    i2c1_bus.Init.OwnAddress1 = 0;
+    i2c1_bus.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+    i2c1_bus.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+    i2c1_bus.Init.OwnAddress2 = 0;
+    i2c1_bus.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+    i2c1_bus.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+    if (HAL_I2C_Init(&i2c1_bus) != HAL_OK)
+    {
+        dss();
+    }
 }
 
 void init_status_gpio(void)
