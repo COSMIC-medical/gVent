@@ -37,11 +37,7 @@ void init_application() {
 	 */ 
 	reg_suc |= register_task("sensor_demo", task_sensor_demo, 50, 5, 10);
 
-	/* TODO: Sensor Demo Requires a UART serial communication peripheral task
-	 * to communicate sensor readings to the host computer
-	 * for verification and validation purposes. 
-	 *
-
+	/* 
 	 * The alarm demo task runs every 50 ms starting
 	 * at offset 10 ms. if the task runs longer than 5 ms
 	 * then teh scheduler intervenes.

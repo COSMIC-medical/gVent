@@ -49,40 +49,6 @@ void init_valve_gpio(void)
 }
 
 /**
-  * @brief USART2 Initialization Function
-  * @param None
-  * @retval None
-  */
-void init_uart()
-{
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-    /**USART2 GPIO Configuration
-    PA2     ------> USART2_TX
-    PA3     ------> USART2_RX
-    */
-    GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF7_USART2;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-    serial1.Instance = USART2;
-    serial1.Init.BaudRate = 115200;
-    serial1.Init.WordLength = UART_WORDLENGTH_8B;
-    serial1.Init.StopBits = UART_STOPBITS_1;
-    serial1.Init.Parity = UART_PARITY_NONE;
-    serial1.Init.Mode = UART_MODE_TX_RX;
-    serial1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-    serial1.Init.OverSampling = UART_OVERSAMPLING_16;
-    if (HAL_UART_Init(&serial1) != HAL_OK)
-    {
-      dss();
-    }
-
-}
-
-/**
   * @brief I2C1 Initialization Function
   * @param None
   * @retval None

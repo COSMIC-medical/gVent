@@ -72,14 +72,6 @@ I2C_HandleTypeDef i2c1_bus;
 #define INSPIRATORY_ADDR    0x1D << 1       // sensor 1
 #define EXPIRATORY_ADDR     0x02 << 1       // sensor 2
 
-/************************************************
- * UART CONTROL DEFINITIONS
- ************************************************/
-// globally available handle for the uart peripheral.
-// Used for serial communication to the from the target 
-// microcontroller (Nucleo-64), to the host computer.
-UART_HandleTypeDef serial1;
-
 #endif /* INC_PLATFORM_CONFIGURATION_PRIVATE_H_ */
 
 
