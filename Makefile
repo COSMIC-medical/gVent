@@ -157,6 +157,7 @@ ventilation_test: test/test_runner.c src/application/tasks/ventilation.o \
 	test/stubs/system_info_stub.o  \
 	test/stubs/valve_stub.o \
 	test/stubs/clinician_input_stub.o  \
+	test/stubs/pressure_sensor_stub.o  \
 	test/stubs/dss_stub.o \
 	test/test_util.o
 	$(CC) -o $@ $^

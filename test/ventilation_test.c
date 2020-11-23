@@ -8,6 +8,7 @@
 #include "stubs/system_info_stub.h"
 #include "stubs/valve_stub.h"
 #include "stubs/clinician_input_stub.h"
+#include "stubs/pressure_sensor_stub.h"
 #include "test_util.h"
 #include "platform/common.h"
 
@@ -33,7 +34,7 @@ int startVentilation_afterOneInspiration_openInspiratoryValve() {
   start_inspiration();
 
   int inspiratory_valve_status = get_inspiratory_valve_status();
-  assertTrue(inspiratory_valve_status == VALVE_OPEN);
+  assertTrue(inspiratory_valve_status == VALVE_CLOSE);
 }
 
 int startVentilation_duringInspiration_doesNotopenInspiratoryValve() {
