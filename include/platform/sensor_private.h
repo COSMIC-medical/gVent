@@ -22,7 +22,7 @@
 #define FS6122_CAL_PRESSURE_OFFSET      0x24 // calibration of offset of pressure, 1 byte, any value, ensure NO flow in the pipe
 
 // READ COMMANDS
-#define FS6122_READ_SENSOR_SN           0x82 // ASCII
+#define FS6122_READ_SENSOR_SN           0x82 // Serial Number of the sensor in ASCII
 #define FS6122_READ_FLOWRATE            0x83 // Int32/1000 SLPM
 #define FS6122_READ_FLOWRATE_PRESSURE   0x84 // Int32/1000 SLPM, int32/1000 cmH20
 
