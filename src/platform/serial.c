@@ -35,7 +35,11 @@
  */
 status_t print_pressure(uint32_t val){
     
+<<<<<<< HEAD
     uint8_t serial_buf[20] = {0}; // uart buffer
+=======
+    uint8_t serial_buf[20] = 0; // uart buffer
+>>>>>>> 7bd0283861030b5c9b66dfcb59fc919d99d72442
     uint32_t UART_TIMEOUT_DELAY = 100; // Performance requirements for task require this function to return in < 100ms
    
     sprintf((char*)serial_buf, "%li cmH2O\r\n", (val));
