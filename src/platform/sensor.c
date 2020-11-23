@@ -13,24 +13,21 @@ struct MeasurementsStatus sensor_struct = {0,0, 0,0, 0,0, 0,0,};
 uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
     HAL_StatusTypeDef ret;
     uint8_t buf[20]; // i2c buffer
-    uint8_t serial_buf[20]; // uart buffer
     uint32_t val; 
     uint32_t I2C_TIMEOUT_DELAY = 100; // Return after 1/10 s if no data transmitted/received
-    uint32_t UART_TIMEOUT_DELAY = 100; // Performance requirements for task require this function to return in < 100ms
+    
 
     // Tell FS6122 which register to read from (pressure, flow, temp, RH)
     buf[0] = reg_addr;
 
     ret = HAL_I2C_Master_Transmit(&i2c1_bus, i2c_addr, buf, 1, I2C_TIMEOUT_DELAY);
     if ( ret != HAL_OK ) {
-      strcpy((char*)serial_buf, "Error Tx\r\n");
       val = 128;
     } 
     else {
       // Read 4 bytes from the pressure register
       ret = HAL_I2C_Master_Receive(&i2c1_bus, i2c_addr, buf, 4, I2C_TIMEOUT_DELAY);
       if ( ret != HAL_OK ) {
-        strcpy((char*)serial_buf, "Error Rx\r\n");
         val = 256;
       } 
       else {
@@ -38,24 +35,8 @@ uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
         //Combine the bytes returned via I2C
         val = ((int16_t)buf[0] << 24) | (buf[1] << 16) | (buf[2] << 8) | (buf[3]) >> 2; // value is 14 bit, so shift by 2
         
-        // Convert pressure & flow
-        // pressure_cmh2o / = 1000;
-        // flow_slpm / = 1000;
-        sprintf((char*)serial_buf,
-              "%li cmH2O\r\n",
-              (val)
-              );
       }
     }
-
-    /* TODO Remove all UART code from this function. 
-    * If a user wants to debug, then we should 
-    * make a separate UART API in the platform 
-    * that provides all of the required services 
-    * to print over UART. */
-
-    // Send out buffer (sensor reading or error message)
-    HAL_UART_Transmit(&serial1, serial_buf, strlen((char*)serial_buf), UART_TIMEOUT_DELAY);
 
     return val;
 }
@@ -74,6 +55,9 @@ uint32_t read_FS6122_sensor(uint8_t i2c_addr, uint8_t reg_addr){
 status_t get_inspiratory_pressure(int * result){
     status_t sensor_status = STATUS_ERR;
     result = read_FS6122_sensor(INSPIRATORY_ADDR, FS6122_READ_PRESSURE);
+
+    // write inspiratory pressure to MeasurementsStatus struct
+    // 
     sensor_struct.inspiratory_pressure = result;
     sensor_struct.last_inspiratory_pressure_read_time = get_current_time();
 
