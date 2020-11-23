@@ -1,7 +1,7 @@
 /*
- * systemInfo_stub.c
+ * clinician_info_stub.h
  *
- * Stub for the function get_current_time
+ * Stub for the function that retreive the clinician inputs
  */
 
 #include <stddef.h>
@@ -12,6 +12,6 @@ void set_respiratory_rate(uint32_t* RR, status_t* status, size_t size);
 
 status_t get_respiratory_rate(uint32_t * RR);
 
-void set_selected_inspiratory_time(uint32_t* insp_times, status_t* status, int size);
+void set_selected_inspiratory_time(uint32_t* insp_times, status_t* status);
 
 status_t get_selected_inspiratory_time(uint32_t* insp_time);

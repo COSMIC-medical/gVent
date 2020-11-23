@@ -33,14 +33,9 @@ static uint32_t* insp_time_to_return;
 static status_t* status_insp_time_to_return;
 static int insp_time_current_call = 0;
 
-void set_selected_inspiratory_time(uint32_t* insp_times, status_t* status, 
-int size) {
-  free(insp_time_to_return);
-  free(status_insp_time_to_return);
-  insp_time_to_return = (uint32_t*) malloc(sizeof(*insp_times) * size);
-  status_insp_time_to_return = (status_t*) malloc(sizeof(*status) * size);
-  memcpy(insp_time_to_return, insp_times, sizeof(*insp_times) * size);
-  memcpy(status_insp_time_to_return, status, sizeof(*status) * size);
+void set_selected_inspiratory_time(uint32_t* insp_times, status_t* status) {
+  insp_time_to_return = insp_times;
+  status_insp_time_to_return = status;
   insp_time_current_call = 0;
 }
 
