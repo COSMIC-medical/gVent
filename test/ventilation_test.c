@@ -22,10 +22,8 @@ int startVentilation_afterOneInspiration_openInspiratoryValve() {
   set_current_time(times, 1);
 
   //initialize the function get_respiratory_rate
-  uint32_t* RR = (uint32_t*) malloc(1*sizeof(uint32_t)); 
-  RR[0] = 7500000;
-  status_t* status= (status_t*) malloc(1*sizeof(status_t));
-  status[0] = STATUS_OK;
+  uint32_t RR[1] = {7500000}; 
+  status_t status[1] = {STATUS_OK};
   set_respiratory_rate(RR, status, 1);
 
   //reinitialize the system to be sure that the valve wasn't previously open
@@ -34,7 +32,7 @@ int startVentilation_afterOneInspiration_openInspiratoryValve() {
   start_inspiration();
 
   int inspiratory_valve_status = get_inspiratory_valve_status();
-  assertTrue(inspiratory_valve_status == VALVE_CLOSE);
+  assertTrue(inspiratory_valve_status == VALVE_OPEN);
 }
 
 int startVentilation_duringInspiration_doesNotopenInspiratoryValve() {
