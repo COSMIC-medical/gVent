@@ -1,14 +1,14 @@
 /*
- * ensor.h
+ * sensor.h
  *
  * This file contains the functions
  * for an application developer
- * to read the pressure and flow sensors
+ * to read the pressure and flow sensor
  *
  */
 
-#ifndef INC_PLATFORM_PRESSURE_FLOW_SENSOR_H_
-#define INC_PLATFORM_PRESSURE_FLOW_SENSOR_H_
+#ifndef INC_PLATFORM_SENSOR_H_
+#define INC_PLATFORM_SENSOR_H_
 
 #include "platform/common.h"
 /*
@@ -74,4 +74,4 @@ status_t get_inspiratory_flow(int *);
 status_t get_expiratory_flow(int *);
 
 
-#endif /* INC_PLATFORM_PRESSURE_FLOW_SENSOR_H_ */
+#endif /* INC_PLATFORM_SENSOR_H_ */
