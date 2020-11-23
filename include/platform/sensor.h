@@ -28,7 +28,7 @@
  * returns cmH2O when no valid pressure is available
  *
  */
-status_t get_inspiratory_pressure(int *);
+status_t get_inspiratory_pressure(uint32_t *);
 
 /*
  * Reads and validates the read expiratory pressure
@@ -40,7 +40,7 @@ status_t get_inspiratory_pressure(int *);
  * returns the expiratory pressure in cmH2O when it is valid
  * returns cmH2O when no valid pressure is available
  */
-status_t get_expiratory_pressure(int *);
+status_t get_expiratory_pressure(uint32_t *);
 
 /*
  * Reads and validates the read inspiratory flow
@@ -59,7 +59,7 @@ status_t get_expiratory_pressure(int *);
  * returns the inspiratory flow in SLPM when it is valid
  * returns SLPM when no valid flow is available
  */
-status_t get_inspiratory_flow(int *);
+status_t get_inspiratory_flow(uint32_t *);
 
 /*
  * Reads and validates the read expiratory flow
@@ -71,7 +71,7 @@ status_t get_inspiratory_flow(int *);
  * returns the expiratory flow in SLPM when it is valid
  * returns SLPM when no valid flow is available
  */
-status_t get_expiratory_flow(int *);
+status_t get_expiratory_flow(uint32_t *);
 
 
 #endif /* INC_PLATFORM_SENSOR_H_ */

@@ -84,13 +84,22 @@
 #define PRESSURE_MAX_CHANGE_RATE 10
 #define FLOW_MAX_CHANGE_RATE 10
 
+
+// Internal I2C Error codes
+typedef enum {
+    I2C_OK = 0x00,   // operation complete without error.
+    TRANSMIT_ERROR = 0x02,   // operation failed.
+    RECEIVE_ERROR = 0x04,
+    I2C_ERROR = 0x10
+} sensor_status_t;
+
 /* 
  * Private i2c read function for the FS6122 sensor
  * first byte is the i2c sensor address
  * second byte is the flow/pressure/temp/RH select byte
  */
 
-uint32_t read_FS6122_sensor(uint8_t, uint8_t);
+sensor_status_t read_FS6122_sensor(uint8_t, uint8_t, uint32_t *);
 
 /**
  * Definition of the measured inputs data structure

@@ -95,7 +95,6 @@ int main(void)
   init_status_gpio();
   init_valve_gpio();
   init_alarm();
-  init_uart();
   init_sensor_i2c();
   MX_TIM2_Init();
   MX_TIM4_Init();

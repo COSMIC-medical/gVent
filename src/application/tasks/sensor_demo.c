@@ -4,6 +4,7 @@
 #include "platform/sensor.h"
 #include "platform/sensor_private.h"
 #include "platform/system_info.h"
+#include "platform/scheduler.h"
 
 // current state of our internal task state machine
 uint32_t sensor_state = 0;
@@ -32,47 +33,27 @@ void task_sensor_demo() {
      * (2^32)/(1000*60*60*24) = ~49 days of continous operation without
      * a syste reset.
      */ 
-    // number of milliseconds to wait between state changes
-    static uint32_t wait_time_ms = 1000;
     
-    int* expiratory_flow;
-    int* inspiratory_flow;
-    int* expiratory_pressure;
-    int* inspiratory_pressure;
-
-    status_t status = STATUS_ERR;
-
+    uint32_t expiratory_flow = 0;
+    uint32_t inspiratory_flow = 0;
+    uint32_t expiratory_pressure = 0;
+    uint32_t inspiratory_pressure = 0;
 
     switch(sensor_state) {
 
         case 0:
             // initial state, read inspiratory pressure and flow
-            status = get_inspiratory_pressure(*inspiratory_pressure);
-            status = get_inspiratory_flow(*inspiratory_flow);
+            get_inspiratory_pressure(&inspiratory_pressure);
+            get_inspiratory_flow(&inspiratory_flow);
             sensor_state = 1;
             break;
 
         case 1:
-            // wait 1 second
-            // once elapsed advance state machine.
-            wait(wait_time_ms);
-            sensor_state = 2;
-            // }
-            break;
-
-        case 2:
             // read expiratory pressure and flow
             // a timer variable
-            status = get_expiratory_pressure(*expiratory_pressure);
-            status = get_expiratory_flow(*expiratory_flow);
-            sensor_state = 3;
-            break;
-
-        case 3:
-            // wait for 1 second
-            wait(wait_time_ms);
+            get_expiratory_pressure(&expiratory_pressure);
+            get_expiratory_flow(&expiratory_flow);
             sensor_state = 0;
-            // }
             break;
 
 
