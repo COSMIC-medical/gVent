@@ -12,13 +12,9 @@ static uint32_t* RR_to_return;
 static status_t* status_RR_to_return;
 static int RR_current_call = 0;
 
-void set_respiratory_rate(uint32_t* RR, status_t* status, size_t size){
-  free(RR_to_return);
-  free(status_RR_to_return);
-  RR_to_return = (uint32_t*) malloc(sizeof(*RR) * size);
-  status_RR_to_return = (status_t*) malloc(sizeof(*status) * size);
-  memcpy(RR_to_return, RR, sizeof(*RR) * size);
-  memcpy(status_RR_to_return, status, sizeof(*status) * size);
+void set_respiratory_rate(uint32_t* RR, status_t* status) {
+  RR_to_return = RR;
+  status_RR_to_return = status;
   RR_current_call = 0;
 }
 

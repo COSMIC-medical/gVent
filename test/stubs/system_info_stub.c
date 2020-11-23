@@ -10,10 +10,8 @@
 static int* time_to_return;
 static int current_call = 0;
 
-void set_current_time(int* times, size_t size){
-  free(time_to_return);
-  time_to_return = (int*) malloc(sizeof(*times) * size);
-  memcpy(time_to_return, times, sizeof(*times) * size);
+void set_current_time(int* times){
+  time_to_return = times;
   current_call = 0;
 }
 

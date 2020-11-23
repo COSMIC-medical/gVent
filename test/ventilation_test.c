@@ -11,23 +11,21 @@
 #include "stubs/sensor_stub.h"
 #include "test_util.h"
 #include "platform/common.h"
-#include <stdio.h>
 
 //test functions defined in ventilation.c only
 void reset_to_inspiration_start();
 int get_ventilation_phase();
 int get_start_current_breath_cycle();
 
-int startVentilation_afterOneInspiration_openInspiratoryValve() {
-  //initialize the function get_current_time
-  int* times = (int*) malloc(1*sizeof(int)); 
-  times[0] = 130;
-  set_current_time(times, 1);
-
+int startInspiration_afterOneInspiration_openInspiratoryValve() {
   //initialize the function get_respiratory_rate
-  uint32_t RR[1] = {7500000}; 
+  uint32_t RR[1] = {7500000};
   status_t status[1] = {STATUS_OK};
-  set_respiratory_rate(RR, status, 1);
+  set_respiratory_rate(RR, status);
+
+  //initialize the function get_current_time
+  int times[1] = {RR[0] + 1};
+  set_current_time(times);
 
   //initialize the function to get circuit pressure
   uint32_t inspiratory[2] = {12, 53};
@@ -46,18 +44,15 @@ int startVentilation_afterOneInspiration_openInspiratoryValve() {
   assertTrue(inspiratory_valve_status == VALVE_OPEN);
 }
 
-int startVentilation_afterOneInspiration_setsVentilationPhaseToInspiration() {
-  //initialize the function get_current_time
-  int* times = (int*) malloc(1*sizeof(int)); 
-  times[0] = 260;
-  set_current_time(times, 1);
-
+int startInspiration_afterOneInspiration_setsVentilationPhaseToInspiration() {
   //initialize the function get_respiratory_rate
-  uint32_t* RR = (uint32_t*) malloc(1*sizeof(uint32_t)); 
-  RR[0] = 7500000;
-  status_t* status= (status_t*) malloc(1*sizeof(status_t));
-  status[0] = STATUS_OK;
-  set_respiratory_rate(RR, status, 1);
+  uint32_t RR[1] = {7500000};
+  status_t status[1] = {STATUS_OK};
+  set_respiratory_rate(RR, status);
+
+  //initialize the function get_current_time
+  int times[1] = {RR[0] * 2 + 2};
+  set_current_time(times);
 
   //initialize the function to get circuit pressure
   uint32_t inspiratory[2] = {12, 53};
@@ -74,19 +69,17 @@ int startVentilation_afterOneInspiration_setsVentilationPhaseToInspiration() {
   assertTrue(ventilation_phase == 1);
 }
 
-int startVentilation_afterTwoInspirations_updatesStartCurrentBreathCycle() {
+int startInspiration_afterTwoInspirations_updatesStartCurrentBreathCycle() {
   //initialize the function get_current_time
-  int* times = (int*) malloc(1*sizeof(int)); 
-  int time = 390;
-  times[0] = time;
-  set_current_time(times, 1);
+//initialize the function get_respiratory_rate
+  uint32_t RR[1] = {7500000};
+  status_t status[1] = {STATUS_OK};
+  set_respiratory_rate(RR, status);
 
-  //initialize the function get_respiratory_rate
-  uint32_t* RR = (uint32_t*) malloc(1*sizeof(uint32_t)); 
-  RR[0] = 7500000;
-  status_t* status= (status_t*) malloc(1*sizeof(status_t));
-  status[0] = STATUS_OK;
-  set_respiratory_rate(RR, status, 1);
+  //initialize the function get_current_time
+  int time = RR[0] * 3 + 3;
+  int times[1] = {time};
+  set_current_time(times);
 
   reset_to_inspiration_start();
 
@@ -96,15 +89,14 @@ int startVentilation_afterTwoInspirations_updatesStartCurrentBreathCycle() {
   assertTrue(time_of_start_current_breath_cycle == time);
 }
 
-int startVentilation_duringInspiration_doesNotopenInspiratoryValve() {
-  int* times = (int*) malloc(1*sizeof(int)); 
-  times[0] = 150;
-  set_current_time (times, 1);
+int startInspiration_duringInspiration_doesNotopenInspiratoryValve() {
+  int times[1] = {0};
+  set_current_time (times);
 
   //initialize the function get_respiratory_rate
   uint32_t RR[1] = {7500000}; 
   status_t status[1] = {STATUS_OK};
-  set_respiratory_rate(RR, status, 1);
+  set_respiratory_rate(RR, status);
 
   //initialize the function to get circuit pressure
   uint32_t inspiratory[2] = {35, 53};
@@ -139,10 +131,9 @@ int getCircuitPressure_validValues_returnsMeanPressure() {
 
 }
 
-int startVentilation_duringInspiration_doesNotChangeVentilationPhase() {
-  int* times = (int*) malloc(1*sizeof(int)); 
-  times[0] = 150;
-  set_current_time (times, 1);
+int startInspiration_duringInspiration_doesNotChangeVentilationPhase() {
+  int times[1] = {0};
+  set_current_time (times);
 
   reset_to_inspiration_start();
   
@@ -152,11 +143,10 @@ int startVentilation_duringInspiration_doesNotChangeVentilationPhase() {
   assertTrue(ventilation_phase == 4);
 }
 
-int startVentilation_duringInspiration_doesNotUpdatesStartOfcurrentBreathCycle() {
-  int* times = (int*) malloc(1*sizeof(int));
-  int time = 150;
-  times[0] = time;
-  set_current_time (times, 1);
+int startInspiration_duringInspiration_doesNotUpdateStartOfcurrentBreathCycle() {
+  int time = 0;
+  int times[1] = {time};
+  set_current_time (times);
 
   reset_to_inspiration_start();
   

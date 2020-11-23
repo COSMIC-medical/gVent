@@ -3,16 +3,16 @@
  *
  */
 
-int startVentilation_afterOneInspiration_openInspiratoryValve();
+int startInspiration_afterOneInspiration_openInspiratoryValve();
 
-int startVentilation_duringInspiration_doesNotopenInspiratoryValve();
+int startInspiration_duringInspiration_doesNotopenInspiratoryValve();
 
-int startVentilation_afterOneInspiration_setsVentilationPhaseToInspiration();
+int startInspiration_afterOneInspiration_setsVentilationPhaseToInspiration();
 
-int startVentilation_duringInspiration_doesNotChangeVentilationPhase();
+int startInspiration_duringInspiration_doesNotChangeVentilationPhase();
 
-int startVentilation_afterTwoInspirations_updatesStartCurrentBreathCycle();
+int startInspiration_afterTwoInspirations_updatesStartCurrentBreathCycle();
 
-int startVentilation_duringInspiration_doesNotUpdatesStartOfcurrentBreathCycle();
+int startInspiration_duringInspiration_doesNotUpdateStartOfcurrentBreathCycle();
 
 int getCircuitPressure_validValues_returnsMeanPressure();
