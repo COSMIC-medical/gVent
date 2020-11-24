@@ -60,7 +60,7 @@ void init_sensor_i2c()
     PB8     ------> I2C1_SCL
     PB9     ------> I2C1_SDA
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9;
+    GPIO_InitStruct.Pin = I2C_SCL_PIN|I2C_SDA_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -100,43 +100,6 @@ void init_status_gpio(void)
 
 }
 
-<<<<<<< HEAD
-/**
-  * @brief I2C1 Initialization Function
-  * @param None
-  * @retval None
-  */
-void init_i2c()
-{
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-    /**I2C1 GPIO Configuration
-    PB8     ------> I2C1_SCL
-    PB9     ------> I2C1_SDA
-    */
-    GPIO_InitStruct.Pin = I2C_SCL_PIN|I2C_SDA_PIN;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-    i2c1_bus.Instance = I2C1;
-    i2c1_bus.Init.ClockSpeed = 100000;
-    i2c1_bus.Init.DutyCycle = I2C_DUTYCYCLE_2;
-    i2c1_bus.Init.OwnAddress1 = 0;
-    i2c1_bus.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-    i2c1_bus.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-    i2c1_bus.Init.OwnAddress2 = 0;
-    i2c1_bus.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-    i2c1_bus.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-    if (HAL_I2C_Init(&i2c1_bus) != HAL_OK)
-    {
-        dss();
-    }
-}
-
-=======
->>>>>>> master
 /**
  * Initialize the alarm buzzer.
  * 
