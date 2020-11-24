@@ -72,8 +72,24 @@ I2C_HandleTypeDef i2c1_bus;
 #define INSPIRATORY_ADDR    0x1D << 1       // sensor 1
 #define EXPIRATORY_ADDR     0x02 << 1       // sensor 2
 
+/************************************************
+ * LCD CONTROL DEFINITIONS
+ ***********************************************/
 // firmware-set i2c addresses for the 16x2 LCD  display
-#define LCD_ADDR            0x27    
+#define LCD_ADDR                0x27 // Change this according to specific LCD address (default is 0x27)
+#define LCD_CMD_CLEAR           0x01 // Clear display
+#define LCD_CMD_ENTRY_MODE      0x06 // Entry mode set --> I/D = 1 (increment cursor) & S = 0 (no shift)
+#define LCD_CMD_DISPLAY_CONTROL 0x08 // Display on/off control --> D=0,C=0, B=0  ---> display off
+#define LCD_CMD_BLINKER         0x09 // Display on/off control --> D=0,C=0, B=1  ---> display off
+#define LCD_CMD_CURSOR          0x0A // Display on/off control --> D=0,C=1, B=0  ---> display off
+#define LCD_CMD_CURSOR_BLINKER  0x0B // Display on/off control --> D=0,C=1, B=1  ---> display off
+#define LCD_CMD_DISPLAY         0x0C // Display on/off control --> D=1,C=0, B=0  ---> display ON
+#define LCD_CMD_DISPLAY_CURSOR  0x0E // Display on/off control --> D=1,C=1, B=0  ---> display ON
+#define LCD_CMD_DISPLAY_CURSOR_BLINKER  0x0F // Display on/off control --> D=1,C=1, B=1  ---> display ON
+
+#define LCD_CMD_BIT_MODE        0x20 // 4bit mode
+#define LCD_cmd3                0x28 // Function set --> DL=0 (4 bit mode), N = 1 (2 line display) F = 0 (5x8 characters)
+#define LCD_cmd1                0x30 // 
 
 #endif /* INC_PLATFORM_CONFIGURATION_PRIVATE_H_ */
 
