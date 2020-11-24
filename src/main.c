@@ -95,6 +95,7 @@ int main(void)
   init_status_gpio();
   init_valve_gpio();
   init_alarm();
+  init_i2c();
   MX_TIM2_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */

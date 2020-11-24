@@ -29,6 +29,15 @@ void init_status_gpio(void);
 void init_valve_gpio(void);
 
 /**
+  * Initialize the I2C bus for the sensor input and LCD display
+  * output. 
+  * 
+  * When this function completes the I2C bus peripheral 
+  * has been initialized.
+  */
+void init_i2c();
+
+/**
  * Initialize the hardware peripherals used to actuate
  * the alarms. Includes setting up the alarm LED and
  * also setting up the buzzer output in PWM mode.

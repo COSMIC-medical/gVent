@@ -58,4 +58,24 @@
 // globally available handle for the alarm timer.
 TIM_HandleTypeDef alarm_timer;
 
+/************************************************
+ * I2C CONTROL DEFINITIONS
+ ************************************************/
+
+// GPIO PB9 maps to Pin D14 (I2C1_SDA) on the Nucleo-64 board.
+#define I2C_PORT            GPIOB
+#define I2C_SDA_PIN         GPIO_PIN_9
+
+// GPIO PB8 maps to Pin D15 (I2C1_SCL) on the Nucleo-64 board.
+#define I2C_PORT            GPIOB
+#define I2C_SCL_PIN         GPIO_PIN_8
+
+// globally available handle for the i2c peripheral.
+I2C_HandleTypeDef i2c1_bus;
+
+// firmware-set i2c addresses for the FS6122 sensors
+#define INSPIRATORY_ADDR    0x1D << 1       // sensor 1
+#define EXPIRATORY_ADDR     0x02 << 1       // sensor 2
+#define LCD_ADDR            0x27        
+
 #endif /* INC_PLATFORM_CONFIGURATION_PRIVATE_H_ */
