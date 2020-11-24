@@ -3,7 +3,8 @@
 #include "application/dss.h"
 #include "stm32f4xx_hal.h"
 
-void init_gpio_clk(GPIO_TypeDef * port) {
+void init_gpio_clk(GPIO_TypeDef * port) 
+{
   if (port == GPIOA) {
     __HAL_RCC_GPIOA_CLK_ENABLE();
   } else if (port == GPIOB) {
@@ -13,14 +14,16 @@ void init_gpio_clk(GPIO_TypeDef * port) {
   }
 }
 
-void init_valve_gpio(void) {
+void init_valve_gpio(void)
+{
 
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-
   /* GPIO Ports Clock Enable */
   init_gpio_clk(INSP_VALVE_PORT);
   init_gpio_clk(EXP_VALVE_PORT);
   init_gpio_clk(TANK_VALVE_PORT);
+
+  /* Set default output level and configure each pin */
 
   // inspratory valve
   HAL_GPIO_WritePin(INSP_VALVE_PORT, INSP_VALVE_PIN, GPIO_PIN_RESET);
@@ -29,7 +32,6 @@ void init_valve_gpio(void) {
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
   HAL_GPIO_Init(INSP_VALVE_PORT, &GPIO_InitStruct);
-
   // expiratory valve
   HAL_GPIO_WritePin(EXP_VALVE_PORT, EXP_VALVE_PIN, GPIO_PIN_RESET);
   GPIO_InitStruct.Pin = EXP_VALVE_PIN;
@@ -37,7 +39,6 @@ void init_valve_gpio(void) {
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
   HAL_GPIO_Init(EXP_VALVE_PORT, &GPIO_InitStruct);
-
   // tank valve
   HAL_GPIO_WritePin(TANK_VALVE_PORT, TANK_VALVE_PIN, GPIO_PIN_RESET);
   GPIO_InitStruct.Pin = TANK_VALVE_PIN;
@@ -45,10 +46,44 @@ void init_valve_gpio(void) {
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
   HAL_GPIO_Init(TANK_VALVE_PORT, &GPIO_InitStruct);
-
 }
 
-void init_status_gpio(void) {
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+void init_sensor_i2c()
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    /**I2C1 GPIO Configuration
+    PB8     ------> I2C1_SCL
+    PB9     ------> I2C1_SDA
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    i2c1_bus.Instance = I2C1;
+    i2c1_bus.Init.ClockSpeed = 100000;
+    i2c1_bus.Init.DutyCycle = I2C_DUTYCYCLE_2;
+    i2c1_bus.Init.OwnAddress1 = 0;
+    i2c1_bus.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+    i2c1_bus.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+    i2c1_bus.Init.OwnAddress2 = 0;
+    i2c1_bus.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+    i2c1_bus.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+    if (HAL_I2C_Init(&i2c1_bus) != HAL_OK)
+    {
+        dss();
+    }
+}
+
+void init_status_gpio(void)
+{
 
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
@@ -65,6 +100,7 @@ void init_status_gpio(void) {
 
 }
 
+<<<<<<< HEAD
 /**
   * @brief I2C1 Initialization Function
   * @param None
@@ -99,6 +135,8 @@ void init_i2c()
     }
 }
 
+=======
+>>>>>>> master
 /**
  * Initialize the alarm buzzer.
  * 
@@ -113,7 +151,8 @@ void init_i2c()
  * This requires that the GPIO be configured in an "alternative
  * function" (AF) mode.
  */ 
-void init_alarm_buzzer() {
+void init_alarm_buzzer()
+{
 
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
@@ -218,7 +257,8 @@ void init_alarm_buzzer() {
 /**
  * Initialize the LED used for the alarm.
  */
-void init_alarm_led() {
+void init_alarm_led()
+{
 
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
@@ -234,7 +274,8 @@ void init_alarm_led() {
 
 }
 
-void init_alarm() {
+void init_alarm()
+{
   init_alarm_led();
   init_alarm_buzzer();
 }
