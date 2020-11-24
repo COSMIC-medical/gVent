@@ -66,33 +66,17 @@
   */
 #define I2C_ANALOGFILTER_ENABLE        0x00000000U
 #define I2C_ANALOGFILTER_DISABLE       I2C_FLTR_ANOFF
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
 
 /* Exported macro ------------------------------------------------------------*/
 /* Peripheral Control functions  ************************************************/
 HAL_StatusTypeDef HAL_I2CEx_ConfigAnalogFilter(I2C_HandleTypeDef *hi2c, uint32_t AnalogFilter);
 HAL_StatusTypeDef HAL_I2CEx_ConfigDigitalFilter(I2C_HandleTypeDef *hi2c, uint32_t DigitalFilter);
-/**
-  * @}
 
-/**
-  * @}
-  */ 
 /* Private types -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private constants ---------------------------------------------------------*/
 /** @defgroup I2CEx_Private_Constants I2C Private Constants
   * @{
-  */
-
-/**
-  * @}
   */
 
 /* Private macros ------------------------------------------------------------*/
@@ -102,17 +86,6 @@ HAL_StatusTypeDef HAL_I2CEx_ConfigDigitalFilter(I2C_HandleTypeDef *hi2c, uint32_
 #define IS_I2C_ANALOG_FILTER(FILTER) (((FILTER) == I2C_ANALOGFILTER_ENABLE) || \
                                       ((FILTER) == I2C_ANALOGFILTER_DISABLE))
 #define IS_I2C_DIGITAL_FILTER(FILTER)   ((FILTER) <= 0x0000000FU)
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */ 
-
-/**
-  * @}
-  */
 
 #endif /* STM32F427xx || STM32F429xx || STM32F437xx || STM32F439xx || STM32F401xC ||\
           STM32F401xE || STM32F411xE || STM32F446xx || STM32F469xx || STM32F479xx ||\
