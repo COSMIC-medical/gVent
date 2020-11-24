@@ -6,7 +6,7 @@ There is also the hardware abstraction layer (HAL). The platform layer interacts
 
 These layers organized in the respository as follows:
 
-```
+```shell
 ./
     src/                /* .c files go here... */
         main.c          /* the startup code for gVent */
@@ -25,18 +25,23 @@ These layers organized in the respository as follows:
 ```
 
 ## Application Layer Development
+
 TODO
 
 ### Running Application Layer Unit Tests
+
 TODO - something about to run GoogleTest.
 
 ## Platform Layer Development
+
 TODO
 
 ### Building for STM32F4 Microprocessor Target
+
 The Makefile in the root of this repository contains the relevant compilation, linking to produce a binary that can be uploaded ("flashed") onto the the STM32F401RE microprocessor (the "target").
 
 #### Dependencies
+
 Building and flashing the target requires the following dependencies:
 
 * Standard C build packages - `build-essential`
