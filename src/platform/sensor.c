@@ -128,7 +128,7 @@ status_t get_expiratory_flow(uint32_t * result){
     status_t sensor_status = STATUS_ERR;
     sensor_status_t i2c_read_status = I2C_ERROR;
 
-    i2c_read_status = read_FS6122_sensor(INSPIRATORY_ADDR, FS6122_READ_FLOWRATE, result);
+    i2c_read_status = read_FS6122_sensor(EXPIRATORY_ADDR, FS6122_READ_FLOWRATE, result);
 
     sensor_struct.expiratory_flow = *result;
     sensor_struct.last_expiratory_flow_read_time = get_current_time();
