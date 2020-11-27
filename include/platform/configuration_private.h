@@ -69,8 +69,9 @@ TIM_HandleTypeDef alarm_timer;
 I2C_HandleTypeDef i2c1_bus;
 
 // firmware-set i2c addresses for the FS6122 sensors
-#define INSPIRATORY_ADDR    0x1D << 1       // sensor 1
+#define INSPIRATORY_ADDR    0x01 << 1       // sensor 1
 #define EXPIRATORY_ADDR     0x02 << 1       // sensor 2
+
 
 #endif /* INC_PLATFORM_CONFIGURATION_PRIVATE_H_ */
 
