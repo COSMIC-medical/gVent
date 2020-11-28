@@ -8,7 +8,7 @@
 #include "stubs/system_info_stub.h"
 #include "stubs/valve_stub.h"
 #include "stubs/clinician_input_stub.h"
-#include "stubs/pressure_sensor_stub.h"
+#include "stubs/sensor_stub.h"
 #include "test_util.h"
 #include "platform/common.h"
 
