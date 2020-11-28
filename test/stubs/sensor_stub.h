@@ -6,8 +6,8 @@
 
 #include <stddef.h>
 
-void set_inspiratory_pressure(int* values, status_t* status);
+void set_inspiratory_pressure(uint32_t* values, status_t* status);
 status_t get_inspiratory_pressure(uint32_t *insp_pressure);
-void set_expiratory_pressure(int* values, status_t* status);
+void set_expiratory_pressure(uint32_t* values, status_t* status);
 status_t get_expiratory_pressure(uint32_t *exp_pressure);
 

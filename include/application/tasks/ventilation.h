@@ -7,6 +7,7 @@
 #ifndef INC_PLATFORM_VENTILATION_H_
 #define INC_PLATFORM_VENTILATION_H_
 
+#include "platform/common.h"
 #define MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP 32 //todo replace this value by the real value
 
 /*
@@ -18,7 +19,7 @@ void ventilation();
  * Computes the circuit pressure
  * SRS-0002
  */
-int get_circuit_pressure();
+uint32_t get_circuit_pressure();
 
 /*
  * Starts an inspiration at the beginning of each breath cycle

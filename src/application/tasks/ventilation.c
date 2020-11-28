@@ -6,7 +6,6 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-
 #include "platform/system_info.h"
 #include "platform/sensor.h"
 #include "platform/valve.h"
@@ -28,7 +27,7 @@ static int start_current_breath_cycle = 0;
 /*
  * the time the current breath cycle was supposed to start
  */
-//static int breath_cycle_duration = 125; //to do replace this value by the real one
+// static int breath_cycle_duration = 125; //to do replace this value by the real one
 
 /*
  * Phase of the ventilation
@@ -40,7 +39,15 @@ static int start_current_breath_cycle = 0;
 static int ventilation_phase = EXPIRATORY_PAUSE;
 
 
-int get_circuit_pressure() { return 0; } //to do implement this function
+uint32_t get_circuit_pressure() {
+    uint32_t inspiratory_pressure = 0;
+    uint32_t expiratory_pressure = 0;
+    get_inspiratory_pressure(&inspiratory_pressure);
+    get_expiratory_pressure(&expiratory_pressure);
+
+    return (inspiratory_pressure + expiratory_pressure) / 2;
+}
+
 
 void ventilation(){
   switch (ventilation_phase) {
@@ -82,6 +89,8 @@ void start_inspiration(){
     }
   }
 }
+
+
 
 /*
  * function for test only
