@@ -6,13 +6,11 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-
-#include "platform/system_info.h"
-#include "platform/sensor.h"
-#include "platform/valve.h"
-#include "application/tasks/ventilation.h"
-#include "application/dss.h"
-#include "platform/clinician_input.h"
+#include <platform/system_info.h>
+#include <platform/pressureFlowSensor.h>
+#include <platform/valve.h>
+#include <application/tasks/ventilation.h>
+#include <application/dss.h>
 
 //todo rename this so that it does not look like they are time
 #define INSPIRATION         1
@@ -28,7 +26,7 @@ static int start_current_breath_cycle = 0;
 /*
  * the time the current breath cycle was supposed to start
  */
-//static int breath_cycle_duration = 125; //to do replace this value by the real one
+static int breath_cycle_duration = 125; //to do replace this value by the real one
 
 /*
  * Phase of the ventilation
@@ -40,7 +38,10 @@ static int start_current_breath_cycle = 0;
 static int ventilation_phase = EXPIRATORY_PAUSE;
 
 
-int get_circuit_pressure() { return 0; } //to do implement this function
+int get_circuit_pressure() {
+    return (get_inspiratory_pressure() + get_expiratory_pressure()) / 2;
+}
+
 
 void ventilation(){
   switch (ventilation_phase) {
@@ -67,11 +68,6 @@ void ventilation(){
 
 void start_inspiration(){
   uint32_t current_time = get_current_time();
-  uint32_t RR = 0;
-  uint32_t breath_cycle_duration = 125;
-  if (get_respiratory_rate(& RR) == STATUS_OK) {
-    breath_cycle_duration = RR / 60000;
-  }
   if (current_time >= start_current_breath_cycle + breath_cycle_duration) {
       start_current_breath_cycle = current_time;
     if (get_circuit_pressure() > MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP) {
@@ -82,6 +78,8 @@ void start_inspiration(){
     }
   }
 }
+
+
 
 /*
  * function for test only
