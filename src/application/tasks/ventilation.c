@@ -39,7 +39,12 @@ static int ventilation_phase = EXPIRATORY_PAUSE;
 
 
 int get_circuit_pressure() {
-    return (get_inspiratory_pressure() + get_expiratory_pressure()) / 2;
+    uint32_t inspiratory_pressure = 0;
+    uint32_t expiratory_pressure = 0;
+    get_inspiratory_pressure(&inspiratory_pressure);
+    get_expiratory_pressure(&expiratory_pressure);
+
+    return (inspiratory_pressure + expiratory_pressure) / 2;
 }
 
 
@@ -68,6 +73,11 @@ void ventilation(){
 
 void start_inspiration(){
   uint32_t current_time = get_current_time();
+  uint32_t RR = 0;
+  uint32_t breath_cycle_duration = 125;
+  if (get_respiratory_rate(& RR) == STATUS_OK) {
+    breath_cycle_duration = RR / 60000;
+  }
   if (current_time >= start_current_breath_cycle + breath_cycle_duration) {
       start_current_breath_cycle = current_time;
     if (get_circuit_pressure() > MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP) {

@@ -50,15 +50,18 @@ int startVentilation_duringInspiration_doesNotopenInspiratoryValve() {
 }
 
 int getCircuitPressure_validValues_returnsMeanPressure() {
-	int* values = (int*)malloc(2 * sizeof(int));
-	values[0] = 35;
-	values[1] = 60;
-	set_inspiratory_pressure(values, 2);
+  uint32_t inspiratory[2] = {35, 53};
+  uint32_t expiratory[2] = {40, 53};
 
-	values[0] = 40;
-	values[1] = 53;
-	set_expiratory_pressure(values, 2);
+  status_t status[2] = {STATUS_OK, STATUS_OK};
+
+	set_inspiratory_pressure(inspiratory, status);
+	set_expiratory_pressure(expiratory, status);
 
 	int circuit_pressure = get_circuit_pressure();
 	assertTrue(circuit_pressure == 37);
+
+  int circuit_pressure = get_circuit_pressure();
+	assertTrue(circuit_pressure == 53);
+
 }
