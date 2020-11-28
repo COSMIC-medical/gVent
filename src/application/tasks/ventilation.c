@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <platform/system_info.h>
-#include <platform/pressureFlowSensor.h>
+#include <platform/sensor.h>
 #include <platform/valve.h>
 #include <application/tasks/ventilation.h>
 #include <application/dss.h>
