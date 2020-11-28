@@ -18,7 +18,7 @@ void ventilation();
  * Computes the circuit pressure
  * SRS-0002
  */
-int get_circuit_pressure();
+uint32_t get_circuit_pressure();
 
 /*
  * Starts an inspiration at the beginning of each breath cycle

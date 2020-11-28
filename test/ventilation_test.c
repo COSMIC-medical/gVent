@@ -58,10 +58,10 @@ int getCircuitPressure_validValues_returnsMeanPressure() {
 	set_inspiratory_pressure(inspiratory, status);
 	set_expiratory_pressure(expiratory, status);
 
-	int circuit_pressure = get_circuit_pressure();
+	uint32_t circuit_pressure = get_circuit_pressure();
 	assertTrue(circuit_pressure == 37);
 
-  int circuit_pressure = get_circuit_pressure();
+  circuit_pressure = get_circuit_pressure();
 	assertTrue(circuit_pressure == 53);
 
 }
