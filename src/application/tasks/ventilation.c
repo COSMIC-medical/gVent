@@ -25,11 +25,6 @@
 static int start_current_breath_cycle = 0;
 
 /*
- * the time the current breath cycle was supposed to start
- */
-// static int breath_cycle_duration = 125; //to do replace this value by the real one
-
-/*
  * Phase of the ventilation
  * This should always be one of
  *  INSPIRATION | INSPIRATORY_PAUSE
@@ -50,6 +45,10 @@ uint32_t get_circuit_pressure() {
 
 
 void ventilation(){
+  /*Attention there is no initialisation of start_current_breath_cycle for the
+  * ventilation to start as soon as the code is called this will lead to a 
+  * a waiting period of breath_cycle_duration for the first ventilation preiod
+  */
   switch (ventilation_phase) {
     case EXPIRATORY_PAUSE:
       start_inspiration();
@@ -76,13 +75,13 @@ void start_inspiration(){
   uint32_t current_time = get_current_time();
   uint32_t RR = 15;
   uint32_t breath_cycle_duration;
-  get_respiratory_rate(& RR);
+  get_respiratory_rate(&RR);
   breath_cycle_duration = 60000 / RR;
   if (current_time >= start_current_breath_cycle + breath_cycle_duration) {
-      start_current_breath_cycle = current_time;
     if (get_circuit_pressure() > MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP) {
       dss();
     } else {
+      start_current_breath_cycle = current_time;
       open_inspiratory_valve();
       ventilation_phase = INSPIRATION;
     }
