@@ -74,10 +74,10 @@ void ventilation(){
 
 void start_inspiration(){
   uint32_t current_time = get_current_time();
-  uint32_t RR = 0;
-  uint32_t breath_cycle_duration = 125;
+  uint32_t RR = 15;
+  uint32_t breath_cycle_duration;
   get_respiratory_rate(& RR);
-  breath_cycle_duration = RR / 60000;
+  breath_cycle_duration = 60000 / RR;
   if (current_time >= start_current_breath_cycle + breath_cycle_duration) {
       start_current_breath_cycle = current_time;
     if (get_circuit_pressure() > MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP) {
