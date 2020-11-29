@@ -6,10 +6,16 @@ int main(int argc, char **argv) {
        "getCircuitPressure_validValues_returnsMeanPressure");
   test(startInspiration_afterOneInspiration_openInspiratoryValve,
        "startInspiration_afterOneInspiration_openInspiratoryValve");
+  test(startExpiration_afterOneInspiration_closeInspiratoryValve,
+       "startExpiration_afterOneInspiration_closeInspiratoryValve");
   test(startInspiration_afterOneInspiration_setsVentilationPhaseToInspiration,
        "startInspiration_afterOneInspiration_setsVentilationPhaseToInspiration");
+  test(startExpiration_afterOneInspiration_opensExpiratoryValve,
+       "startExpiration_afterOneInspiration_opensExpiratoryValve");
   test(startInspiration_afterTwoInspirations_updatesStartCurrentBreathCycle,
        "startInspiration_afterTwoInspirations_updatesStartCurrentBreathCycle");
+  test(startExpiration_afterThreeInspiration_updatesVentilationPhase,
+       "startExpiration_afterThreeInspiration_updatesVentilationPhase");
   test(startInspiration_duringInspiration_doesNotUpdateStartOfcurrentBreathCycle,
        "startInspiration_duringInspiration_doesNotUpdateStartOfcurrentBreathCycle");
   test(startInspiration_duringInspiration_doesNotChangeVentilationPhase,

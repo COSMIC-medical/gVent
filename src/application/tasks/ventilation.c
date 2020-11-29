@@ -15,9 +15,7 @@
 
 //todo rename this so that it does not look like they are time
 #define INSPIRATION         1
-#define INSPIRATORY_PAUSE   2
-#define EXPIRATION          3
-#define EXPIRATORY_PAUSE    4
+#define EXPIRATION          2
 
 /*
  * the time the current breath cycle was supposed to start
@@ -27,11 +25,14 @@ static int start_current_breath_cycle = 0;
 /*
  * Phase of the ventilation
  * This should always be one of
- *  INSPIRATION | INSPIRATORY_PAUSE
- *  | EXPIRATION | EXPIRATORY_PAUSE
+ *  INSPIRATION | EXPIRATION 
+ * The pauses are obtained through the mechanical parts of the system
+ * and not the software parts.
+ * The inspiration pause is obtained through the maximal pressure
+ * The expiration pause is obtained through the PEEP valve
  */
 
-static int ventilation_phase = EXPIRATORY_PAUSE;
+static int ventilation_phase = EXPIRATION;
 
 
 uint32_t get_circuit_pressure() {
@@ -50,20 +51,12 @@ void ventilation(){
   * a waiting period of breath_cycle_duration for the first ventilation preiod
   */
   switch (ventilation_phase) {
-    case EXPIRATORY_PAUSE:
+    case EXPIRATION:
       start_inspiration();
       break;
 
     case INSPIRATION:
-      // statements
-      break;
-
-    case INSPIRATORY_PAUSE:
-      // statements
-      break;
-
-    case EXPIRATION:
-      // statements
+      start_expiration();
       break;
 
     default:
@@ -86,13 +79,26 @@ void start_inspiration(){
   }
 }
 
+void start_expiration(){
+  uint32_t current_time = get_current_time();
+  uint32_t selected_inspiratory_time;
+  get_selected_inspiratory_time(&selected_inspiratory_time);
+   if (current_time >= start_current_breath_cycle + selected_inspiratory_time) {
+     if (get_circuit_pressure() > MIN_CIRCUIT_PRESSURE_FOR_OPENING_EXP_VALVE_CSP){
+      close_inspiratory_valve();
+      open_expiratory_valve();
+      ventilation_phase = EXPIRATION;
+     }
+   }
+}
+
 
 
 /*
  * function for test only
  */ 
 void reset_to_inspiration_start(){
-   ventilation_phase = EXPIRATORY_PAUSE;
+   ventilation_phase = EXPIRATION;
 }
 
 int get_ventilation_phase() {

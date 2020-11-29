@@ -7,6 +7,12 @@ int getCircuitPressure_validValues_returnsMeanPressure();
 
 int startInspiration_afterOneInspiration_openInspiratoryValve();
 
+int startExpiration_afterOneInspiration_closeInspiratoryValve();
+
+int startExpiration_afterOneInspiration_opensExpiratoryValve();
+
+int startExpiration_afterThreeInspiration_updatesVentilationPhase();
+
 int startInspiration_duringInspiration_doesNotopenInspiratoryValve();
 
 int startInspiration_afterOneInspiration_setsVentilationPhaseToInspiration();
