@@ -44,7 +44,7 @@ int startInspiration_afterOneInspiration_openInspiratoryValve() {
 
   //initialize the function get_current_time
   int breath_cycle_duration = 60000/RR[0];
-  int times[1] = {breath_cycle_duration + 1};
+  int times[1] = {breath_cycle_duration};
   set_current_time(times);
 
   //initialize the function to get circuit pressure
@@ -63,6 +63,35 @@ int startInspiration_afterOneInspiration_openInspiratoryValve() {
   assertTrue(inspiratory_valve_status == VALVE_OPEN);
 }
 
+int startExpiration_afterOneInspiration_closeInspiratoryValve() {
+  //initialize the function get_respiratory_rate
+  uint32_t RR[1] = {20};
+  status_t status[1] = {STATUS_OK};
+  set_respiratory_rate(RR, status);
+
+  int breath_cycle_duration = 60000/RR[0];
+
+  //initialize the selected inspiratory time
+  uint32_t insp_time [1] = {breath_cycle_duration/2};
+  set_selected_inspiratory_time(insp_time, status);
+
+  //initialize the function get_current_time
+  int times[1] = {breath_cycle_duration + insp_time[0]};
+  set_current_time(times);
+
+  //initialize the function to get circuit pressure
+  uint32_t inspiratory[1] = {40};
+  uint32_t expiratory[1] = {41};
+	set_inspiratory_pressure(inspiratory, status);
+	set_expiratory_pressure(expiratory, status);
+
+  //reinitialize the system to be sure that the valve wasn't previously open
+  start_expiration();
+
+  int inspiratory_valve_status = get_inspiratory_valve_status();
+  assertTrue(inspiratory_valve_status == VALVE_CLOSE);
+}
+
 int startInspiration_afterOneInspiration_setsVentilationPhaseToInspiration() {
   //initialize the function get_respiratory_rate
   uint32_t RR[1] = {20};
@@ -71,7 +100,7 @@ int startInspiration_afterOneInspiration_setsVentilationPhaseToInspiration() {
 
   //initialize the function get_current_time
   int breath_cycle_duration = 60000/RR[0];
-  int times[1] = {(breath_cycle_duration + 1) * 2};
+  int times[1] = {(breath_cycle_duration) * 2};
   set_current_time(times);
 
   //initialize the function to get circuit pressure
@@ -88,6 +117,35 @@ int startInspiration_afterOneInspiration_setsVentilationPhaseToInspiration() {
   assertTrue(ventilation_phase == 1);
 }
 
+int startExpiration_afterOneInspiration_opensExpiratoryValve() {
+  //initialize the function get_respiratory_rate
+  uint32_t RR[1] = {20};
+  status_t status[1] = {STATUS_OK};
+  set_respiratory_rate(RR, status);
+
+  int breath_cycle_duration = 60000/RR[0];
+
+  //initialize the selected inspiratory time
+  uint32_t insp_time [1] = {breath_cycle_duration/2};
+  set_selected_inspiratory_time(insp_time, status);
+
+  //initialize the function get_current_time
+  int times[1] = {breath_cycle_duration * 2 + insp_time[0]};
+  set_current_time(times);
+
+  //initialize the function to get circuit pressure
+  uint32_t inspiratory[1] = {40};
+  uint32_t expiratory[1] = {41};
+	set_inspiratory_pressure(inspiratory, status);
+	set_expiratory_pressure(expiratory, status);
+
+  //reinitialize the system to be sure that the valve wasn't previously open
+  start_expiration();
+
+  int expiratory_valve_status = get_expiratory_valve_status();
+  assertTrue(expiratory_valve_status == VALVE_OPEN);
+}
+
 int startInspiration_afterTwoInspirations_updatesStartCurrentBreathCycle() {
   //initialize the function get_respiratory_rate
   uint32_t RR[1] = {20};
@@ -96,7 +154,7 @@ int startInspiration_afterTwoInspirations_updatesStartCurrentBreathCycle() {
 
   //initialize the function get_current_time
   int breath_cycle_duration = 60000/RR[0];
-  int time = (breath_cycle_duration + 1) * 3;
+  int time = (breath_cycle_duration) * 3;
   int times[1] = {time};
   set_current_time(times);
 
@@ -112,6 +170,35 @@ int startInspiration_afterTwoInspirations_updatesStartCurrentBreathCycle() {
 
   int time_of_start_current_breath_cycle = get_start_current_breath_cycle();
   assertTrue(time_of_start_current_breath_cycle == time);
+}
+
+int startExpiration_afterThreeInspiration_updatesVentilationPhase() {
+  //initialize the function get_respiratory_rate
+  uint32_t RR[1] = {20};
+  status_t status[1] = {STATUS_OK};
+  set_respiratory_rate(RR, status);
+
+  int breath_cycle_duration = 60000/RR[0];
+
+  //initialize the selected inspiratory time
+  uint32_t insp_time [1] = {breath_cycle_duration/2};
+  set_selected_inspiratory_time(insp_time, status);
+
+  //initialize the function get_current_time
+  int times[1] = {breath_cycle_duration * 3 + insp_time[0]};
+  set_current_time(times);
+
+  //initialize the function to get circuit pressure
+  uint32_t inspiratory[1] = {40};
+  uint32_t expiratory[1] = {41};
+	set_inspiratory_pressure(inspiratory, status);
+	set_expiratory_pressure(expiratory, status);
+
+  //reinitialize the system to be sure that the valve wasn't previously open
+  start_expiration();
+
+  int ventilation_phase = get_ventilation_phase();
+  assertTrue(ventilation_phase == 2);
 }
 
 int startInspiration_duringInspiration_doesNotopenInspiratoryValve() {
@@ -158,7 +245,7 @@ int startInspiration_duringInspiration_doesNotChangeVentilationPhase() {
   start_inspiration();
 
   int ventilation_phase = get_ventilation_phase();
-  assertTrue(ventilation_phase == 4);
+  assertTrue(ventilation_phase == 2);
 }
 
 int startInspiration_duringInspiration_doesNotUpdateStartOfcurrentBreathCycle() {
