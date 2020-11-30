@@ -6,7 +6,7 @@
 
 #include <stddef.h>
 
-void set_current_time(int* times, size_t size);
+void set_current_time(int* times);
 
 int get_current_time();
 
