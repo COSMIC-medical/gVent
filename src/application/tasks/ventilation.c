@@ -78,9 +78,7 @@ void start_inspiration(){
   get_respiratory_rate(&RR);
   breath_cycle_duration = 60000 / RR;
   if (current_time >= start_current_breath_cycle + breath_cycle_duration) {
-    if (get_circuit_pressure() > MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP) {
-      dss();
-    } else {
+    if (get_circuit_pressure() < MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP) {
       start_current_breath_cycle = current_time;
       open_inspiratory_valve();
       ventilation_phase = INSPIRATION;
