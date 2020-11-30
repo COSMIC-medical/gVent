@@ -17,4 +17,4 @@ int startInspiration_afterTwoInspirations_updatesStartCurrentBreathCycle();
 
 int startInspiration_duringInspiration_doesNotUpdateStartOfcurrentBreathCycle();
 
-int startInspiration_circuitPressureToHigh_DoesNotStartCurrentBreathCycle();
+int startInspiration_circuitPressureTooHigh_DoesNotStartCurrentBreathCycle();

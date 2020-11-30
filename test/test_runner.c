@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
        "startInspiration_duringInspiration_doesNotChangeVentilationPhase");
   test(startInspiration_duringInspiration_doesNotopenInspiratoryValve,
        "startInspiration_duringInspiration_doesNotopenInspiratoryValve");
-  test(startInspiration_circuitPressureToHigh_DoesNotStartCurrentBreathCycle,
+  test(startInspiration_circuitPressureTooHigh_DoesNotStartCurrentBreathCycle,
        "startInspiration_circuitPressureToHigh_DoesNotStartCurrentBreathCycle");
 
   int result = print_result();

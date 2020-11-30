@@ -50,8 +50,8 @@ int startInspiration_afterOneInspiration_openInspiratoryValve() {
   //initialize the function to get circuit pressure
   uint32_t inspiratory[1] = {12};
   uint32_t expiratory[1] = {14};
-	set_inspiratory_pressure(inspiratory, status);
-	set_expiratory_pressure(expiratory, status);
+  set_inspiratory_pressure(inspiratory, status);
+  set_expiratory_pressure(expiratory, status);
 
   //reinitialize the system to be sure that the valve wasn't previously open
   close_inspiratory_valve();
@@ -185,7 +185,7 @@ int startInspiration_duringInspiration_doesNotUpdateStartOfcurrentBreathCycle() 
   assertTrue(time_of_start_current_breath_cycle != time);
 }
 
-int startInspiration_circuitPressureToHigh_DoesNotStartCurrentBreathCycle() {
+int startInspiration_circuitPressureTooHigh_DoesNotStartCurrentBreathCycle() {
   //initialize the function get_current_time
   //initialize the function get_respiratory_rate
   uint32_t RR[1] = {20};
