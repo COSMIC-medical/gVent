@@ -16,6 +16,7 @@
 void reset_to_inspiration_start();
 int get_ventilation_phase();
 int get_start_current_breath_cycle();
+uint32_t get_breath_cycle_duration();
 
 int getCircuitPressure_validValues_returnsMeanPressure() {
   uint32_t inspiratory[2] = {35, 53};
@@ -34,6 +35,30 @@ int getCircuitPressure_validValues_returnsMeanPressure() {
   //The integer divion of an even number by two is as expected
 	assertTrue(circuit_pressure == 53);
 
+}
+
+int compute_breath_cycle_duration_RRInvalid_ReturnDefault() {
+  //initialize the function get_respiratory_rate
+  uint32_t RR[1] = {200};
+  status_t status[1] = {STATUS_ERR};
+  set_respiratory_rate(RR, status);
+
+  compute_breath_cycle_duration();
+
+  uint32_t breath_cycle_duration = get_breath_cycle_duration();
+  assertTrue(breath_cycle_duration == PRESET_BREATH_CYCLE_DURATION);
+}
+
+int compute_breath_cycle_duration_RRValid_ReturnCorrectValue() {
+  //initialize the function get_respiratory_rate
+  uint32_t RR[1] = {15};
+  status_t status[1] = {STATUS_OK};
+  set_respiratory_rate(RR, status);
+
+  compute_breath_cycle_duration();
+
+  uint32_t breath_cycle_duration = get_breath_cycle_duration();
+  assertTrue(breath_cycle_duration == 4000);
 }
 
 int startInspiration_afterOneInspiration_openInspiratoryValve() {

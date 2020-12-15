@@ -4,6 +4,10 @@
 int main(int argc, char **argv) {
   test(getCircuitPressure_validValues_returnsMeanPressure,
        "getCircuitPressure_validValues_returnsMeanPressure");
+  test(compute_breath_cycle_duration_RRInvalid_ReturnDefault,
+       "compute_breath_cycle_duration_RRInvalid_ReturnDefault");
+  test(compute_breath_cycle_duration_RRValid_ReturnCorrectValue,
+       "compute_breath_cycle_duration_RRValid_ReturnCorrectValue");
   test(startInspiration_afterOneInspiration_openInspiratoryValve,
        "startInspiration_afterOneInspiration_openInspiratoryValve");
   test(startInspiration_afterOneInspiration_setsVentilationPhaseToInspiration,
