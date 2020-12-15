@@ -39,6 +39,22 @@ void init_valve_gpio(void);
  * When the this function completes a timer and GPIO 
  * are setup for the alarm buzzer.
  */
+
+/**
+ * Initialize the I2C peripheral
+ * of the microprocessor. When this function completes
+ * the I2C bus for the platform has been initialized.
+ */
+void init_sensor_i2c(void);
+
+/**
+ * Initialize the uart peripheral
+ * of the microprocessor. When this function completes
+ * the uart (used for serial monitoring during build and 
+ * debug stages) for the platform has been initialized.
+ */
+void init_uart(void);
+
 void init_alarm(void);
 
 #endif /* INC_PLATFORM_INIT_H_ */

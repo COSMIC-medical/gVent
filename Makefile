@@ -78,6 +78,7 @@ EXT_SRCS = $(HAL_SRC)/stm32f4xx_hal.c \
 		   $(HAL_SRC)/stm32f4xx_hal_flash_ex.c \
 		   $(HAL_SRC)/stm32f4xx_hal_flash_ramfunc.c \
 		   $(HAL_SRC)/stm32f4xx_hal_gpio.c \
+		   $(HAL_SRC)/stm32f4xx_hal_i2c.c \
 		   $(HAL_SRC)/stm32f4xx_hal_pwr.c \
 		   $(HAL_SRC)/stm32f4xx_hal_pwr_ex.c \
 		   $(HAL_SRC)/stm32f4xx_hal_rcc.c \
@@ -156,6 +157,7 @@ ventilation_test: test/test_runner.c src/application/tasks/ventilation.o \
 	test/stubs/system_info_stub.o  \
 	test/stubs/valve_stub.o \
 	test/stubs/clinician_input_stub.o  \
+	test/stubs/sensor_stub.o  \
 	test/stubs/dss_stub.o \
 	test/test_util.o
 	$(CC) -o $@ $^

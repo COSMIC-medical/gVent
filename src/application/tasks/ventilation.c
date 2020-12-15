@@ -6,11 +6,11 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <platform/system_info.h>
-#include <platform/pressureFlowSensor.h>
-#include <platform/valve.h>
-#include <application/tasks/ventilation.h>
-#include <application/dss.h>
+#include "platform/system_info.h"
+#include "platform/sensor.h"
+#include "platform/valve.h"
+#include "application/tasks/ventilation.h"
+#include "application/dss.h"
 #include "platform/clinician_input.h"
 
 //todo rename this so that it does not look like they are time
@@ -25,9 +25,10 @@
 static int start_current_breath_cycle = 0;
 
 /*
- * the time the current breath cycle was supposed to start
- */
-//static int breath_cycle_duration = 125; //to do replace this value by the real one
+ * Value returned from clinician respiratory rate input
+ */  
+
+static uint32_t breath_cycle_duration;
 
 /*
  * Phase of the ventilation
@@ -39,9 +40,21 @@ static int start_current_breath_cycle = 0;
 static int ventilation_phase = EXPIRATORY_PAUSE;
 
 
-int get_circuit_pressure() { return 0; } //to do implement this function
+uint32_t get_circuit_pressure() {
+    uint32_t inspiratory_pressure = 0;
+    uint32_t expiratory_pressure = 0;
+    get_inspiratory_pressure(&inspiratory_pressure);
+    get_expiratory_pressure(&expiratory_pressure);
+
+    return (inspiratory_pressure + expiratory_pressure) / 2;
+}
+
 
 void ventilation(){
+  /*Attention there is no initialisation of start_current_breath_cycle for the
+  * ventilation to start as soon as the code is called this will lead to a 
+  * a waiting period of breath_cycle_duration for the first ventilation preiod
+  */
   switch (ventilation_phase) {
     case EXPIRATORY_PAUSE:
       start_inspiration();
@@ -64,27 +77,47 @@ void ventilation(){
   }
 }
 
+void compute_breath_cycle_duration() {
+  uint32_t RR;
+  if (get_respiratory_rate(&RR) == STATUS_OK)
+  {
+    breath_cycle_duration = 60000 / RR;
+  }
+  else
+  {
+    breath_cycle_duration = PRESET_BREATH_CYCLE_DURATION; // todo: This value should be able to be manipulated
+  }
+}
+
 void start_inspiration(){
   uint32_t current_time = get_current_time();
-  uint32_t RR = 0;
-  uint32_t breath_cycle_duration = 125;
-  if (get_respiratory_rate(& RR) == STATUS_OK) {
-    breath_cycle_duration = RR / 60000;
-  }
+  compute_breath_cycle_duration();
   if (current_time >= start_current_breath_cycle + breath_cycle_duration) {
+    if (get_circuit_pressure() < MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP) {
       start_current_breath_cycle = current_time;
-    if (get_circuit_pressure() > MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP) {
-      dss();
-    } else {
       open_inspiratory_valve();
       ventilation_phase = INSPIRATION;
     }
   }
 }
 
+
+
 /*
  * function for test only
  */ 
 void reset_to_inspiration_start(){
    ventilation_phase = EXPIRATORY_PAUSE;
+}
+
+int get_ventilation_phase() {
+  return ventilation_phase;
+}
+
+int get_start_current_breath_cycle() {
+  return start_current_breath_cycle;
+}
+
+uint32_t get_breath_cycle_duration(){
+  return breath_cycle_duration;
 }

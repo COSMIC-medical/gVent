@@ -15,6 +15,7 @@
 status_t get_respiratory_rate(uint32_t * RR);
 
 /*
+<<<<<<< HEAD
  * Updates I:E ratio (inspiratory-expiratory) variable IE 
  * when a valid value was read from the clinician inputs
  * 
@@ -54,4 +55,13 @@ status_t get_acceptable_exhaled_tidal_volume(uint32_t * ML);
  */
 status_t get_ventilation_mode(enum VM);
 
+/*
+ * Updates <selected inspiratory time> variable insp_time 
+ * when a valid value was read from the clinician inputs
+ * 
+ * @return STATUS_OK if <selected inspiratory time> is valid 
+ *         STATUS_ERR if the r<selected inspiratory time> is invalid
+ *
+ */
+status_t get_selected_inspiratory_time(uint32_t * insp_time);
 
