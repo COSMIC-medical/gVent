@@ -215,5 +215,3 @@ gVent **shall** run with no interruption and no performance degradation for a du
 | FiO2 | |  inspired oxygen proportion.[1]
 | Critical Systems Labs | CSL | Critical Systems Labs is a Canadian-owned engineering consultancy with expertise in the management of safety risk and security vulnerabilities associated with complex hardware/software intensive systems. CSL has partnered with COSMIC Medical to assist in the project development, software process, and risk analysis of the gVent design-build. 
 | Centimeters of water | cmH2O | Unit of pressure used in clinical settings for ventilation systems.
-
-
