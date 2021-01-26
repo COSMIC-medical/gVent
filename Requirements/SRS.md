@@ -118,19 +118,29 @@ The rest of the document contains the software requirements, while in
 The inputs of the system are either the measured values or values entered by
 a clinician in the system.
 
-| Name            | Data type | Units | Validity Criteria   | Failsafe Value | 
+| Name            | Data type | Units | Validity Criteria   | Failsafe Value |
 | ------------------------- | --------- | ----- | ------------------- |------|
 | selected respiratory rate | int       | bpm   | [4, 50]             | 15   |
 | selected I:E ratio        | int       |       | [1, 5]              | 1    |
 | measured inspiratory pressure | int   |       | [-5, 40]            |      |
 | measured inspiratory flow | int       | cmH2O | [-250, 250]         |      |
 | measured expiratory pressure | int    | SPLM  | [-5, 40]            |      |
-| measured expiratory flow  | int       | cmH2O | [-250, 250]         |      | 
+| measured expiratory flow  | int       | cmH2O | [-250, 250]         |      |
 | selected input for modification | enum| NA    | {RR, TV, I:E ratio} | None |
 | Acceptable low PEEP value | int       | cmH2O | [0, 30]             | 4    |
 | Acceptable breath per minute | int    | bpm   | [10, 100]           | 30   |
 | Acceptable exhaled tidal volume | int | mL    | [150, 600]          | 300  |
 | Ventilation mode          | enum      | NA    | {triggered, timed}  | timed|
+
+### Defined values
+*Defined values* are values that are calculated or obtained in some non-trivial
+manner.
+
+| Name          | Data type | Units | Validity Criteria | Failsafe Value | Computation|
+| ---------------------- | --- | ---- | --------- | -- | ----------- |
+| breath cycle duration  | int | ms   |           |    | 60 000 / RR |
+| circuit pressure       | int | cmH2O| [10, 40]  |    | mean(measured inspiratory pressure, measured expiratory pressure)|
+| measured tidal volume  | int | mL   | [20, 1500]|    |             |
 
 ## Requirements
 
