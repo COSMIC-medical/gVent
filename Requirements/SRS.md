@@ -67,8 +67,9 @@ view of the software/hardware interface. These shall statements are
 accompanied by additional sentences (inter-woven with the shall statements)
 and graphics that clarify these shall statements.
 
-All project-specific terminology (words and phrases) are defined in the glossary,
-including, but not limited to inputs/outputs, state variables and system parameters.
+All project-specific terminology (words and phrases) are defined in the 
+glossary,including, but not limited to inputs/outputs, state variables and
+system parameters.
 
 ### Notation
 
@@ -78,7 +79,8 @@ set of requirements defined in the SRS. A requirement in the SRS is a
 “shall statement”, i.e., a sentence that uses the modal verb “shall” to
 mark these sentences as a “formal requirement”.  
 
- In general, every functional requirement is an instance of one of the following:
+ In general, every functional requirement is an instance of one of the 
+ following:
 
 - A requirement that specifies an “effect” in response to a stimulus.
 - A requirement that defines a condition.
@@ -86,17 +88,29 @@ mark these sentences as a “formal requirement”.
 Additionally, the requirements in this document follow the following rules:
 
 - Use one shall for each requirement.
-- Write concise and complete requirements. A requirement should fully define a functionality.
-- Write testable requirements. Avoid negative requirements, since they are difficult to verify. Use the active voice.
+- Write concise and complete requirements. A requirement should fully define
+a functionality.
+- Write testable requirements. Avoid negative requirements, since they are
+difficult to verify. Use the active voice.
 - Write requirements at an appropriate and consistent level of granularity.
-- Build robustness into the requirements by thinking through how the software will respond to abnormal inputs.
-- Include rationale and background for requirements to clear the requirement meaning or how it is related to a SLS.
-- Avoid ambiguous requirements. Avoid using and/or or using the slash (/) symbol to separate two words. Use adverbs ending in -ly cautiously (e.g., reasonably, quickly, significantly, and occasionally). Use pronouns cautiously (e.g., it or they). It is typically better to repeat the noun. Avoid words that sound alike or similar.
-- Minimize or avoid the use of words that indicate multiple requirements, such as unless or except.
+- Build robustness into the requirements by thinking through how the software
+will respond to abnormal inputs.
+- Include rationale and background for requirements to clear the requirement
+meaning or how it is related to a SLS.
+- Avoid ambiguous requirements. Avoid using and/or or using the slash (/)
+symbol to separate two words. Use adverbs ending in -ly cautiously (e.g.,
+reasonably, quickly, significantly, and occasionally). Use pronouns cautiously
+ (e.g., it or they). It is typically better to repeat the noun. Avoid words
+ that sound alike or similar.
+- Minimize or avoid the use of words that indicate multiple requirements,
+such as unless or except.
 
 ### Document Structure
 
-Section 2 of this document describes the software with its inputs and outputs. The rest of the document contains the software requirements, while in Section 4 the terms used in this document are defined.
+[Section 2](#system-description) of this document describes the software with
+its inputs and outputs.
+The rest of the document contains the software requirements, while in
+[Section 4](#dictionary) the terms used in this document are defined.
 
 ## System Description
 
