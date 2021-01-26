@@ -170,9 +170,25 @@ this table.
 
 ## Requirements
 
+### SRS-0000:  Start ventilation
+Upon system power-on, gVent **shall** default to timed-mode pressure-control ventilation (PCV).
+This requirement might not reflect the final behaviour of the system. 
+
 ### SRS-0001:  computation of breath cycle duration
+Related to: SLS-0055.
+The {duration of a breath cycle} **shall** be determined between breaths (i.e., just before starting a new inspiration) according to the <selected respiratory rate>. 
+This means that gVent will compute the length of the next breath cycle before starting this breath cycle.
+The {duration of a breath cycle} is given in ms.
+The computation is as follows:  60 000 / <selected respiratory rate>. The {duration of a breath cycle} is in ms. The division is an integer division. Utilisation of an integer division is acceptable in this case since the RR is given in breath per minute the  error introduced by this division is not significant. 
+The {duration of a breath cycle} is an input to the ventilation SRS requirements SRS-0010 and SRS-0025.
+
+
 
 ### SRS-0002:  computation of circuit pressure
+The {circuit pressure} **shall** be determined as the mean of the \<measured inspiratory pressure> and the \<measured expiratory pressure>. The computation is as follows: (\<measured inspiratory pressure> + \<measured expiratory pressure>)
+ / 2. The division is an integer division. This is acceptable since a +/- cmH20 error in the circuit pressure is acceptable.
+The {circuit pressure} is an input to the ventilation SRS requirements SRS-0010, SRS-0015, SRS-0020, and SRS-0025.
+
 
 ### SRS-0010: PC timed mode start inspiration
 
