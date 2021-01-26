@@ -114,6 +114,24 @@ The rest of the document contains the software requirements, while in
 
 ## System Description
 
+### System inputs
+The inputs of the system are either the measured values or values entered by
+a clinician in the system.
+
+| Name            | Data type | Units | Validity Criteria   | Failsafe Value | 
+| ------------------------- | --------- | ----- | ------------------- |------|
+| selected respiratory rate | int       | bpm   | [4, 50]             | 15   |
+| selected I:E ratio        | int       |       | [1, 5]              | 1    |
+| measured inspiratory pressure | int   |       | [-5, 40]            |      |
+| measured inspiratory flow | int       | cmH2O | [-250, 250]         |      |
+| measured expiratory pressure | int    | SPLM  | [-5, 40]            |      |
+| measured expiratory flow  | int       | cmH2O | [-250, 250]         |      | 
+| selected input for modification | enum| NA    | {RR, TV, I:E ratio} | None |
+| Acceptable low PEEP value | int       | cmH2O | [0, 30]             | 4    |
+| Acceptable breath per minute | int    | bpm   | [10, 100]           | 30   |
+| Acceptable exhaled tidal volume | int | mL    | [150, 600]          | 300  |
+| Ventilation mode          | enum      | NA    | {triggered, timed}  | timed|
+
 ## Requirements
 
 ### SRS-0001:  computation of breath cycle duration
@@ -162,7 +180,9 @@ The names of the defined values are enclosed within braces, e.g., {circuit press
 
 **<acceptable/set low PEEP value>** - The value for lowest acceptable PEEP value as set by the clinician into the machine. 
 
-**<acceptable breaths per minute averaged over 30 sec>** - The value for the acceptable averaged breaths per minute rate as set by the clinician. 
+**<acceptable breaths per minute>** - The value for the acceptable number of 
+breaths per minute as set by the clinician.  This is an average rate for 
+30 seconds.
 
 **<measured exhaled tidal volume>** - The exhaled tidal volume measured by the system.
 
