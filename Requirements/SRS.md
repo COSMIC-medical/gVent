@@ -121,28 +121,60 @@ Upon system power-on, gVent **shall** default to timed-mode pressure-control ven
 This requirement might not reflect the final behaviour of the system. 
 
 ### SRS-0001:  computation of breath cycle duration
-Related to: SLS-0055.
-The {duration of a breath cycle} **shall** be determined between breaths (i.e., just before starting a new inspiration) according to the <selected respiratory rate>. 
+Related to: [SLS-0055.](SLS.md#SLS-0055)  
+The {duration of a breath cycle} **shall** be determined between breaths (i.e., just before starting a new inspiration) according to the \<selected respiratory rate>.  
 This means that gVent will compute the length of the next breath cycle before starting this breath cycle.
-The {duration of a breath cycle} is given in ms.
+The {duration of a breath cycle} is given in ms.  
 The computation is as follows:  60 000 / <selected respiratory rate>. The {duration of a breath cycle} is in ms. The division is an integer division. Utilisation of an integer division is acceptable in this case since the RR is given in breath per minute the  error introduced by this division is not significant. 
 The {duration of a breath cycle} is an input to the ventilation SRS requirements SRS-0010 and SRS-0025.
 
 
 
 ### SRS-0002:  computation of circuit pressure
-The {circuit pressure} **shall** be determined as the mean of the \<measured inspiratory pressure> and the \<measured expiratory pressure>. The computation is as follows: (\<measured inspiratory pressure> + \<measured expiratory pressure>)
- / 2. The division is an integer division. This is acceptable since a +/- cmH20 error in the circuit pressure is acceptable.
-The {circuit pressure} is an input to the ventilation SRS requirements SRS-0010, SRS-0015, SRS-0020, and SRS-0025.
+The {circuit pressure} **shall** be determined as the mean of the \<measured inspiratory pressure> and the \<measured expiratory pressure>. The computation is as follows: (\<measured inspiratory pressure> + \<measured expiratory pressure>) / 2. The division is an integer division. This is acceptable since a +/- cmH20 error in the circuit pressure is acceptable.  
+The {circuit pressure} is an input to the ventilation SRS requirements SRS-0010, SRS-0015, SRS-0020, and SRS-0025.  
+  
+### SRS-0003:  impossible computation of circuit pressure
+Related to [SRS-0002.](SRS.md#SRS-0002)  
+If either of the  \<measured inspiratory pressure> or the  \<measured expiratory pressure> necessary to compute the circuit pressure is not available, gVent **shall** transition to DSS in less than TIME_TO_TRANSITION_TO_DSS_CSP ms.   
+A measured input such as the  \<measured inspiratory pressure> or the  \<measured expiratory pressure>  is not available when the platform returns the unavailable value. This could be caused by the sensor not sending any values or the value sensed being outside of the valid bounds. 
 
+### SRS-0004 : RR default failsafe value
+If the \<selected respiratory rate> is not available the RR **shall** be set equal to the default failsafe value (see table for value).  
+The value for respiratory rate selected by the clinician is not available when the platform returns the unavailable value. This could be caused by the clinician never setting this value or setting this value outside the validity bound for this value, or any other error in the hardware leading the platform to read a value out of the validity bounds.
 
 ### SRS-0010: PC timed mode start inspiration
+Related to: [SLS-0055.](SLS.md#SLS-0055)  
+While in ‘timed mode’, at the start of the current breath cycle, if the {circuit pressure} *is less than or equal to* MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP cmH2O gVENT **shall** command the inspiratory valve to open. 
+
+### SRS-0011: PC timed mode start inspiration pressure to high
+Related to [SRS-0010](SLS.md#SLS-0010), [SLS-0055.](SLS.md#SLS-0055)  
+While in ‘timed mode’, at the start of the current breath cycle, the {circuit pressure} is greater than MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP cmH2O, gVent **shall** transition to DSS in less than TIME_TO_TRANSITION_TO_DSS_CSP ms. 
+
+### SRS-0012: PC timed mode start inspiration closes expiratory valve
+Related to: [SLS-0055.](SLS.md#SLS-0055)  
+While in ‘timed mode’, at the start of the current breath cycle, if the {circuit pressure} is less than or equal to MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP cmH2O gVENT **shall** command the expiratory valve to close. 
+
+### SRS-0013: PC timed mode start inspiration closes tank valve
+Related to: [SLS-0055.](SLS.md#SLS-0055)  
+While in ‘timed mode’, at the start of the current breath cycle, if the {circuit pressure} is less than or equal to MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP cmH2O gVENT **shall** command the tank valve to close. 
 
 ### SRS-0015: PC timed mode end inspiration
+Related to [SRS-0010](SLS.md#SLS-0010), [SLS-0055.](SLS.md#SLS-0055)   
+While in ‘timed mode’, at the start of the current breath cycle, the {circuit pressure} is greater than MAX_CIRCUIT_PRESSURE_FOR_OPENING_INS_VALVE_CSP cmH2O, gVent **shall** transition to DSS in less than TIME_TO_TRANSITION_TO_DSS_CSP ms. 
+
 
 ### SRS-0020: PC timed mode start expiration
+Related to: [SLS-0055.](SLS.md#SLS-0055)  
+While in ‘timed’ mode,  \<selected inspiration time> ms after the start of  the current breath cycle, if the {circuit pressure} is less than MIN_CIRCUIT_PRESSMIN_CIRCUIT_PRESSURE_FOR_OPENING_EXP_VALVE_CSPURE_FOR_OPENING_EXP_VALVE_CSP cmH2O,  gVENT **shall** command the expiratory valve to open and tank valve to open.  
+Note: VALVE_CLOSING_TIME_CSP is used to ensure under normal conditions that the inspiratory valve is closed before the expiratory valve opens.
+
+### SRS-0021: PC timed mode start expiration
+While in ‘timed mode’, VALVE_CLOSING_TIME_CSP milliseconds after the end of the inspiratory for the current breath cycle,  if the {circuit pressure} is greater or equal than the MIN_CIRCUIT_PRESSURE_FOR_OPENING_EXP_VALVE_CSP cmH2O, gVent **shall** transition to DSS.
 
 ### SRS-0025: PC timed mode end expiration
+Related to: [SLS-0055.](SLS.md#SLS-0055)  
+While in ‘timed’ mode, VALVE_CLOSING_TIME_CSP milliseconds (<1000) before the end current breath cycle, gVENT **shall** command the expiratory valve to close and tank valve to close.
 
 ### SRS-0030: Timed mode maximal pressure control
 
