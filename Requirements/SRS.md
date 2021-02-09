@@ -230,13 +230,22 @@ While in ‘timed mode’, VALVE_CLOSING_TIME_CSP milliseconds after the end of 
 Related to: [SLS-0055.](SLS.md#SLS-0055)  
 While in ‘timed’ mode, VALVE_CLOSING_TIME_CSP milliseconds (<1000) before the end current breath cycle, gVENT **shall** command the expiratory valve to close and tank valve to close.
 
-### SRS-0030: Timed mode maximal pressure control
+## DSS
 
-### SRS-0035: Timed mode PIP pressure control
+### SRS-0050 DSS definition
+In DSS all the valves shall  be open.
 
-### SRS-0040: Timed mode minimal pressure control
+### SRS-0051 DSS led
+In DSS gVent shall turn on the alarm led.
 
-### SRS-0045: Timed mode PEEP pressure control
+### SRS-0052 DSS sound alarm
+In DSS gVent shall turn off the alarm buzzer.
+
+### SRS-0053 DSS display
+In DSS gVent shall display “DSS”.
+
+### SRS-0054 DSS persistence
+Once gVent has transitioned to the DSS, it shall remain in the DSS indefinitely, until it is power-cycled.
 
 ## Dictionary
 
