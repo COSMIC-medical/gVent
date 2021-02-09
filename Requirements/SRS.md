@@ -247,6 +247,55 @@ In DSS gVent shall display “DSS”.
 ### SRS-0054 DSS persistence
 Once gVent has transitioned to the DSS, it shall remain in the DSS indefinitely, until it is power-cycled.
 
+## Alarm Requirements
+Reference: https://www.notion.so/Alarm-Documents-790364c4ae0842dabbaa4d9f6f67821b#a75de7f03972482d9c61786357f3d80f use this as the basis of alarms
+
+### ALA5 
+#### SRS-0104: computation of {running breath count}
+Related to: ???
+Every ALA5B_FREQUENCY_CSP ms, the {running breath count} shall be computed as the running average of the number of times the inspiratory valve changes from open to closed in BREATH_COUNT_TIME_CSP ms.
+ALA5B_FREQUENCY_CSP = 1 second
+BREATH_COUNT_TIME_CSP  = 30 seconds
+
+#### SRS-0105: High RR Alarm LED (ALA5B)
+Related to: ???
+gVent shall turn on the alarm led if {running breath count} is greater than <acceptable breaths per minute averaged over 30 sec>.
+
+#### SRS-0106: High RR Alarm Buzzer On (ALA5B)
+Related to: ???
+gVent shall turn on the alarm buzzer if {running breath count} is greater than <acceptable breaths per minute averaged over 30 sec>.
+
+#### SRS-0107: High RR Alarm Buzzer Off (ALA5B)
+Related to: ???
+gVent shall turn off the alarm buzzer if {running breath count} is lower than <acceptable breaths per minute averaged over 30 sec>.
+
+#### SRS-0108: High RR Alarm display (ALA5B)
+Related to: ???
+gVent shall write the alarm level (i.e., ???) on the LCD if {running breath count} is greater than <acceptable breaths per minute averaged over 30 sec>.
+The breaths per minute is calculated then averaged over 30 seconds, the calculated value is compared to the value specified by the cilician on the device. If the calculated value is greater than the set value then the high RR alarm will be triggered.
+
+### ALA9
+
+#### SRS-0110: Low Tidal Volume Alarm (ALA9)
+Related to: ???
+gVent Shall turn on Low Tidal Volume Alarm if <measured exhaled tidal volume> is less than the <acceptable exhaled tidal volume value>.
+If the exhaled tidal volume is measured below the tidal volume value specified by the clinician on gVent then the Low Tidal Volume Alarm will be triggered.
+
+### ALA7
+
+#### SRS-0120: Low PEEP Alarm (ALA7B)
+Related to: ???
+gVent Shall turn on Low PEEP Alarm if <measured pressure at the expiratory end> is below <acceptable/set low PEEP value> and is sustained for more then MAX_TIME_BELOW_PEEP_CSP.
+If the positive end-expiratory pressure (PEEP) is measured below the specified value, for more than a specified time period, trigger the Low PEEP Alarm to indicate the presence of a leak or disconnect in the system. For a period less than the specified time do not trigger the Low PEEP Alarm as it is an acceptable low PEEP event for assisted breathing, or a cough.
+
+### ALA ??? 
+
+#### SRS-0130: High Airway Pressure Alarm ()
+Related to: ???
+gVent Shall enable the buzzer and LED, including showing values on screen, of High Airway Pressure Alarm if <measured pressure at inspiratory end> is gradually increasing instead of decreasing and is sustained for more than <(add time duration of pressure)> at <(add normal inspiratory pressure, need to look if there is a standard for this)>. 
+For events where the period is less than <(probably a short time period)>, do not trigger alarm.
+
+
 ## Dictionary
 
 The names of configurable System Parameters are in all-uppercase, e.g., `VALVE_CLOSING_TIME_CSP`.
